@@ -10,7 +10,7 @@
         "AI agents",
         "Local coding agents"
       ],
-      "title": "Clients: everyone talks to the same actions",
+      "title": "Clients: all use the same actions",
       "body": "The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.\n\n- Backend JavaScript: `@typo3/core/action/request`\n- Any HTTP client: `curl`, generated OpenAPI clients, automation tools\n- MCP clients: Claude, MCP Inspector, other AI agents",
       "components": []
     },
@@ -60,7 +60,7 @@
         "ActionInvoker",
         "JSON Schema"
       ],
-      "title": "Action core: one place for the hard parts",
+      "title": "Action core: checks, validation and invocation",
       "body": "The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it\n\n- checks the required scopes,\n- validates arguments and converts them to PHP types,\n- calls the action method with an `ActionContext`,\n- validates the result against the output schema,\n- maps declared errors to status codes.",
       "components": [
         "ActionRegistry",
@@ -94,7 +94,7 @@
         "TcaSchema",
         "Workspaces"
       ],
-      "title": "TYPO3: the familiar foundation",
+      "title": "TYPO3: the regular APIs",
       "body": "Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.\n\nRecord schemas are derived from `TcaSchema`, so the API describes the content model of each installation.",
       "components": []
     }
@@ -227,7 +227,7 @@
         {
           "layer": "protocols",
           "item": "MCP over HTTP",
-          "title": "MCP is just another endpoint",
+          "title": "MCP is an endpoint like any other",
           "body": "```text\nPOST /typo3/api/mcp\n{\"method\": \"tools/list\", …}\n```"
         },
         {

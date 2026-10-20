@@ -1,7 +1,7 @@
 {
-  "headline": "One API for TYPO3.",
-  "headline_accent": "Write it once, use it everywhere.",
-  "lead": "The Action API turns a typed PHP method into a feature that the TYPO3 backend, external applications and AI agents can use: validated, documented and secured, without writing a single controller.",
+  "headline": "The TYPO3 Action API",
+  "headline_accent": "A typed API for the backend, integrations and AI agents.",
+  "lead": "An action is a typed PHP method that the TYPO3 backend, external applications and AI agents can call. TYPO3 validates input and output, documents the action and checks access; no controller is needed.",
   "target_version": "TYPO3 v15",
   "code": {
     "language": "php",
@@ -35,7 +35,7 @@
   ],
   "facts": [
     {
-      "title": "Write once",
+      "title": "One implementation",
       "text": "One PHP method serves the backend, integrations and AI agents."
     },
     {
@@ -43,11 +43,11 @@
       "text": "JSON Schema derived from PHP types; input and output are checked."
     },
     {
-      "title": "Secure by design",
-      "text": "Runs as a backend user; scopes limit what an app may do."
+      "title": "Runs as the user",
+      "text": "Backend permissions apply; scopes limit what an app may do."
     },
     {
-      "title": "AI-ready",
+      "title": "MCP built in",
       "text": "A built-in MCP server offers every action as a tool."
     }
   ]

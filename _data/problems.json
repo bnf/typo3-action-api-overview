@@ -20,13 +20,13 @@
     "solution": "An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI."
   },
   {
-    "title": "AI agents cannot work with TYPO3",
+    "title": "No standard interface for AI agents",
     "today": "There is no safe, standard way for assistants to read or change content on behalf of an editor.",
     "solution": "A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes."
   },
   {
     "title": "The same logic is wrapped again for every consumer",
     "today": "Backend UI, integrations and automation each need their own glue code.",
-    "solution": "Write the feature once. Every channel is available automatically."
+    "solution": "The feature is implemented once, as an action, and is available in every channel."
   }
 ]

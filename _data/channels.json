@@ -4,7 +4,7 @@
     "label": "Backend JavaScript",
     "icon": "UI",
     "summary": "Backend modules call actions instead of AJAX routes",
-    "intro": "Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is never enough.",
+    "intro": "Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is not sufficient.",
     "snippets": [
       {
         "language": "javascript",

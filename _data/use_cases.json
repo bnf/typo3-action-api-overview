@@ -2,7 +2,7 @@
   {
     "title": "AI assistants work with TYPO3",
     "channel": "MCP · OAuth",
-    "text": "Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with exactly their own permissions.",
+    "text": "Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with their own permissions.",
     "example": "“Show my TYPO3 dashboard”",
     "patches": [
       92224,
@@ -52,7 +52,7 @@
     ]
   },
   {
-    "title": "Extensions get an API for free",
+    "title": "An API for extensions",
     "channel": "Extensions",
     "text": "An extension that adds `#[AsAction]` to a method gets an endpoint, documentation and an AI tool, and benefits from EXT:hub authorization.",
     "example": "`#[AsAction(name: 'news/latest')]`",
