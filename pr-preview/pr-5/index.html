@@ -4,10 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>
-    // Apply the stored colour scheme before rendering, see assets/js/components/color-scheme-toggle.js
+    // Apply a fixed colour scheme before rendering, see assets/js/components/color-scheme-toggle.js
     try {
-      if (localStorage.getItem('color-scheme') === 'inverse') {
-        document.documentElement.dataset.colorScheme = 'inverse';
+      const scheme = localStorage.getItem('color-scheme');
+      const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (scheme === 'light' || scheme === 'dark') {
+        if (scheme === system) {
+          localStorage.removeItem('color-scheme');
+        } else {
+          document.documentElement.dataset.colorScheme = scheme;
+        }
       }
     } catch {}
   </script>
