@@ -1,0 +1,18 @@
+<div class="scenarios"></div>
+<div class="explorer">
+  <div class="stack"></div>
+  <div class="panel"></div>
+</div>
+{%- for layer in site.data.stack.layers %}
+<template id="layer-{{ layer.id }}">
+  {{ layer.body | markdownify }}
+  {%- if layer.components.size > 0 %}
+  <p class="meta">Components: {% for component in layer.components %}<code>{{ component }}</code>{% unless forloop.last %}, {% endunless %}{% endfor %}</p>
+  {%- endif %}
+</template>
+{%- endfor %}
+{%- for scenario in site.data.stack.scenarios %}
+{%- for step in scenario.steps %}
+<template id="step-{{ scenario.id }}-{{ forloop.index0 }}">{{ step.body | markdownify }}</template>
+{%- endfor %}
+{%- endfor %}

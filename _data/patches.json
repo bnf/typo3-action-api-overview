@@ -1,0 +1,259 @@
+{
+  "source": {
+    "gerrit": "https://review.typo3.org",
+    "project": "Packages/TYPO3.CMS",
+    "tip": 92197,
+    "generated_by": "scripts/update-patches.py",
+    "generated_at": "2026-10-20T08:18:06Z"
+  },
+  "changes": [
+    {
+      "number": 93064,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93064",
+      "subject": "[FEATURE] Introduce JSON SchemaBuilder and Schema based Hydrator",
+      "change_id": "Id8ade10afb445bd03780cb3de57597e6343f81b7",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 24,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        109428
+      ],
+      "related": [],
+      "insertions": 2093,
+      "deletions": 0,
+      "updated": "2026-10-14T08:56:33Z"
+    },
+    {
+      "number": 91563,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563",
+      "subject": "[FEATURE] Introduce Action API",
+      "change_id": "I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 57,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111046
+      ],
+      "related": [],
+      "insertions": 2439,
+      "deletions": 153,
+      "updated": "2026-10-18T17:51:51Z"
+    },
+    {
+      "number": 91666,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91666",
+      "subject": "[TASK] Provide OpenAPI spec w/ Swagger UI for Actions API",
+      "change_id": "I54da4f59cf07af56fb1b766fbef7ff9e89ef51d0",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 33,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111052
+      ],
+      "related": [],
+      "insertions": 1135,
+      "deletions": 3,
+      "updated": "2026-10-14T13:10:56Z"
+    },
+    {
+      "number": 93423,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93423",
+      "subject": "[FEATURE] Implement standalone redirect route option",
+      "change_id": "I5dc801e852620b4fc65ef982017f1fb648b1b612",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 17,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111048
+      ],
+      "related": [],
+      "insertions": 62,
+      "deletions": 2,
+      "updated": "2026-10-14T13:10:32Z"
+    },
+    {
+      "number": 91486,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/91486",
+      "subject": "[FEATURE] Implement API Hub",
+      "change_id": "I4c2bf613b592221f458cf88c74c8fe4f6ee4bd9d",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 42,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111047
+      ],
+      "related": [],
+      "insertions": 5118,
+      "deletions": 1,
+      "updated": "2026-10-14T13:28:07Z"
+    },
+    {
+      "number": 92223,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223",
+      "subject": "[TASK] Provide AI tool provider based on Actions API",
+      "change_id": "I14b8fb18295100af456b439df452bef3773baddb",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 28,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111049
+      ],
+      "related": [],
+      "insertions": 220,
+      "deletions": 0,
+      "updated": "2026-10-14T13:35:21Z"
+    },
+    {
+      "number": 92224,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224",
+      "subject": "[WIP][FEATURE] Implement MCP Server based on Actions API",
+      "change_id": "I2f2ff276cb533422b6aa6393a16d1ea7c9bf55ef",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 32,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111050
+      ],
+      "related": [],
+      "insertions": 1468,
+      "deletions": 0,
+      "updated": "2026-10-18T17:52:43Z"
+    },
+    {
+      "number": 92322,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322",
+      "subject": "[WIP][TASK] Migrate Dashboard to Actions API",
+      "change_id": "I0fcc4e68d0c10918fe6fd761137f5023d57f4ea6",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 18,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 788,
+      "deletions": 680,
+      "updated": "2026-10-14T14:02:59Z"
+    },
+    {
+      "number": 92191,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191",
+      "subject": "[WIP][TASK] Migrate PageTree to Action API",
+      "change_id": "I659215cbaa53bf7688d3f799edadcefd60d62374",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 28,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 228,
+      "deletions": 190,
+      "updated": "2026-10-14T13:58:48Z"
+    },
+    {
+      "number": 93599,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599",
+      "subject": "[WIP][TASK] Migrate resource endpoints to Actions API",
+      "change_id": "I1c294383d6e9a835e3bd2b530a6687e55cc04fda",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 8,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 301,
+      "deletions": 104,
+      "updated": "2026-10-14T14:05:13Z"
+    },
+    {
+      "number": 92196,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92196",
+      "subject": "[WIP][TASK] Add Record DTO, Schema and Serializer",
+      "change_id": "Idb35eb28830066d73bf9667ae6744aaff8bc80b6",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 14,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 1374,
+      "deletions": 4,
+      "updated": "2026-10-14T14:09:38Z"
+    },
+    {
+      "number": 92197,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92197",
+      "subject": "[WIP][FEATURE] Provide Record Actions",
+      "change_id": "I455266664387f5bb28c7518fb962a13d90b75ff0",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 14,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 733,
+      "deletions": 0,
+      "updated": "2026-10-18T17:46:17Z"
+    },
+    {
+      "number": 88507,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/88507",
+      "subject": "[WIP][FEATURE] AI suggest demo using tools API",
+      "change_id": "If66bd60bafaf5866f0ea07af59e6760ac927ad7a",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 15,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 1777,
+      "deletions": 2,
+      "updated": "2026-08-31T09:01:28Z"
+    }
+  ]
+}

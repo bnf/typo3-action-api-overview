@@ -1,0 +1,62 @@
+// Before/after comparison in "Problems it solves"
+.versus { display: grid; gap: 10px; }
+.versus-head, .versus-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr);
+  align-items: stretch;
+}
+.versus-head span {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 0 16px 2px;
+}
+.versus-head .before { color: var(--no); }
+.versus-head .after { color: var(--ok); }
+.versus-row > .before, .versus-row > .after {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+.versus-row > .before {
+  background: var(--surface);
+  color: var(--muted);
+}
+.versus-row > .after {
+  background: var(--ok-soft);
+  border-color: color-mix(in srgb, var(--ok) 35%, var(--border));
+  box-shadow: var(--shadow);
+}
+.versus-row h4 { margin: 0 0 4px; font-size: 1.02em; color: var(--fg); }
+.versus-row p { margin: 0; font-size: 15.5px; line-height: 1.5; }
+.versus-row > .after p { color: var(--fg); }
+.versus-row .symbol {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+.versus-row > .before .symbol { background: var(--no-soft); color: var(--no); }
+.versus-row > .after .symbol { background: var(--ok); color: #fff; }
+.versus-row > .after > div { align-self: center; }
+.versus-row .arrow {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 24px;
+  font-weight: 700;
+}
+.sr-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (max-width: 760px) {
+  .versus-head { display: none; }
+  .versus-row { grid-template-columns: minmax(0, 1fr); }
+  .versus-row .arrow { transform: rotate(90deg); height: 32px; }
+}

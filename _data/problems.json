@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Every backend feature has its own AJAX controller",
+    "today": "Each controller parses arguments, validates them and formats errors in its own way.",
+    "solution": "One generic dispatcher. Arguments and results are validated against a schema derived from the method signature."
+  },
+  {
+    "title": "No general-purpose API in the core",
+    "today": "Integrations depend on extensions that each build and maintain their own endpoints.",
+    "solution": "Every action is an HTTP endpoint below `/typo3/api/`, provided by TYPO3 and extensions alike."
+  },
+  {
+    "title": "Authorization is reinvented per integration",
+    "today": "API keys, OAuth and fine-grained permissions are built again for every connection.",
+    "solution": "EXT:hub offers OAuth 2.0 and static tokens. Scopes limit apps; the user's permissions always apply."
+  },
+  {
+    "title": "No machine-readable description",
+    "today": "Endpoints are documented by hand, if at all, and the documentation drifts from the code.",
+    "solution": "An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI."
+  },
+  {
+    "title": "AI agents cannot work with TYPO3",
+    "today": "There is no safe, standard way for assistants to read or change content on behalf of an editor.",
+    "solution": "A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes."
+  },
+  {
+    "title": "The same logic is wrapped again for every consumer",
+    "today": "Backend UI, integrations and automation each need their own glue code.",
+    "solution": "Write the feature once. Every channel is available automatically."
+  }
+]

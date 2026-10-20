@@ -1,0 +1,73 @@
+{
+  "diagrams": [
+    {
+      "id": "http-lifecycle",
+      "title": "HTTP request lifecycle",
+      "caption": "HTTP request lifecycle with all error paths",
+      "source": "sequenceDiagram\n    autonumber\n    participant C as Client\n    participant MW as Backend middlewares\n    participant AH as ActionHandler\n    participant RH as RequestHandler\n    participant AI as ActionInvoker\n    participant S as Action method\n\n    C->>MW: GET /typo3/api/my-extension/page/42/titles\n    alt backend session cookie\n        Note over MW: Backend authentication<br/>scopes: all allowed for the user\n    else no cookie (EXT:hub)\n        Note over MW: Validate app token<br/>scopes: those of the token\n    end\n    MW->>AH: handle(request)\n    alt no valid token\n        AH-->>C: 401 Missing access token\n    end\n    AH->>RH: handle(request)\n    alt required scope not granted\n        RH-->>C: 403 Missing scope\n    end\n    alt invalid or missing argument\n        RH-->>C: 400 error message\n    end\n    RH->>AI: invoke(action, arguments, context)\n    AI->>S: titles(uid: 42, context)\n    alt declared error\n        S-->>RH: NotFoundError\n        RH-->>C: 404 Page not found\n    end\n    S-->>AI: result\n    alt result does not match the output schema\n        AI-->>C: 500 invalid result\n    end\n    AI-->>RH: validated result\n    RH-->>C: 200 JSON (204 if empty)"
+    },
+    {
+      "id": "mcp-nesting",
+      "title": "MCP: an action calling actions",
+      "caption": "An MCP tool call, nested in the Action API",
+      "intro": "The MCP server is the action `mcp` (`POST /typo3/api/mcp`, scope `mcp`). Authentication, scope checks and validation apply to it like to any other action. Inside, it calls the requested tool through the same `ActionInvoker`.",
+      "source": "sequenceDiagram\n    autonumber\n    participant A as AI client\n    participant H as EXT:hub\n    participant API as Action API\n    participant M as Action mcp\n    participant I as ActionInvoker\n    participant D as Action dashboards\n\n    A->>H: POST /typo3/api/mcp (tools/call fetch_dashboards)\n    Note over H: Validate OAuth token<br/>user + granted scopes\n    H->>API: request\n    Note over API: Scope mcp granted\n    API->>I: invoke mcp\n    I->>M: JSON-RPC message\n    Note over M: Tool only available if<br/>dashboard:read is granted\n    M->>I: invoke dashboards\n    I->>D: call method as the user\n    D-->>I: result\n    I-->>M: validated result\n    M-->>API: JSON-RPC result\n    API-->>A: 200 structuredContent"
+    }
+  ],
+  "status_codes": [
+    {
+      "status": "200 / 204",
+      "cause": "Success; `204` if the action returns nothing"
+    },
+    {
+      "status": "400",
+      "cause": "Missing argument, invalid JSON or value not matching the input schema"
+    },
+    {
+      "status": "401",
+      "cause": "No valid access token"
+    },
+    {
+      "status": "403",
+      "cause": "Required scope not granted, or `PermissionDeniedError`"
+    },
+    {
+      "status": "404",
+      "cause": "`NotFoundError`, or unknown route"
+    },
+    {
+      "status": "415",
+      "cause": "Request body not sent as `application/json`"
+    },
+    {
+      "status": "500",
+      "cause": "Result does not match the output schema"
+    }
+  ],
+  "mcp": [
+    {
+      "aspect": "Methods",
+      "behaviour": "`initialize`, `tools/list`, `tools/call`"
+    },
+    {
+      "aspect": "Tool list",
+      "behaviour": "All actions whose scopes are granted; the `mcp` action itself is not listed"
+    },
+    {
+      "aspect": "Tool names",
+      "behaviour": "Type and name, e.g. `fetch_dashboards_by_dashboardIdentifier_widgets_by_widgetIdentifier`"
+    },
+    {
+      "aspect": "Hints",
+      "behaviour": "`readOnlyHint` for `fetch`, `destructiveHint` for `delete` and `dispatch`, `idempotentHint` for `replace`"
+    },
+    {
+      "aspect": "Results",
+      "behaviour": "`structuredContent`; non-object results are wrapped as `{\"data\": …}`"
+    },
+    {
+      "aspect": "Errors",
+      "behaviour": "Invalid arguments or unknown tool: JSON-RPC “invalid params”; action errors: tool result with `isError`"
+    }
+  ]
+}

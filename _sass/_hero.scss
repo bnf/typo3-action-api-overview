@@ -1,0 +1,86 @@
+/* Hero */
+.hero { padding: 8px 0 8px; }
+.eyebrow {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: 3em;
+  line-height: 1.08;
+  letter-spacing: -.015em;
+  margin: 0 0 .35em;
+}
+.hero h1 span { color: var(--accent); }
+.hero .lead { font-size: 1.3em; color: var(--muted); max-width: 36em; margin: 0 0 28px; }
+.hero-diagram {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+.hero-diagram pre.highlight { font-size: 13px; }
+.hero-arrow {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  font-size: 32px;
+}
+.channels { display: grid; gap: 10px; }
+.channel {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--fg);
+  border-radius: 12px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform .15s, border-color .15s, box-shadow .15s;
+}
+.channel:hover { transform: translateX(4px); border-color: var(--accent); box-shadow: var(--shadow); }
+.channel .icon {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 700;
+  font-size: 13px;
+}
+.channel strong { display: block; line-height: 1.25; }
+.channel small { color: var(--muted); font-size: 14px; }
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin: 28px 0 0;
+}
+.fact {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.fact strong { display: block; font-size: 1.05em; margin-bottom: 4px; }
+.fact span { color: var(--muted); font-size: 15px; line-height: 1.45; display: block; }

@@ -1,0 +1,18 @@
+<div class="versus">
+  <div class="versus-head" aria-hidden="true">
+    <span class="before">Today</span><span></span><span class="after">With the Action API</span>
+  </div>
+  {%- for problem in site.data.problems %}
+  <div class="versus-row">
+    <div class="before">
+      <span class="symbol">✕</span>
+      <div><h4>{{ problem.title }}</h4><p>{% include inline.html text=problem.today %}</p></div>
+    </div>
+    <div class="arrow" aria-hidden="true">→</div>
+    <div class="after">
+      <span class="symbol">✓</span>
+      <div><span class="sr-label">With the Action API: </span><p>{% include inline.html text=problem.solution %}</p></div>
+    </div>
+  </div>
+  {%- endfor %}
+</div>

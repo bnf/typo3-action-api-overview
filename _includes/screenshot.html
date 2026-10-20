@@ -1,0 +1,14 @@
+{%- comment -%}
+  Renders a screenshot from _data/screenshots.json in a stylized window frame.
+  Parameters: id, class (optional)
+{%- endcomment -%}
+{%- assign shot = site.data.screenshots | where: "id", include.id | first -%}
+<figure class="shot {{ include.class }}">
+  <div class="backdrop">
+    <div class="window">
+      <div class="titlebar"><span class="lights"><i></i><i></i><i></i></span><span class="window-title">{{ shot.window }}</span></div>
+      <div class="frame"><img src="{{ shot.file | relative_url }}" alt="{{ shot.alt }}" loading="lazy"></div>
+    </div>
+  </div>
+  <figcaption><strong>{{ shot.title }}</strong>{% include inline.html text=shot.caption %}</figcaption>
+</figure>

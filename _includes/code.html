@@ -1,0 +1,10 @@
+{%- comment -%}
+  Renders a code snippet from _data ({"language": …, "code": …}) with Rouge.
+  Parameters: snippet
+{%- endcomment -%}
+{%- capture fence -%}
+```{{ include.snippet.language }}
+{{ include.snippet.code }}
+```
+{%- endcapture -%}
+<div class="code-wrap">{{ fence | markdownify }}</div>

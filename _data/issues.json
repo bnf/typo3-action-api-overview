@@ -1,0 +1,74 @@
+{
+  "source": {
+    "forge": "https://forge.typo3.org",
+    "epic": 111053,
+    "generated_by": "scripts/update-issues.py",
+    "generated_at": "2026-10-20T08:18:12Z"
+  },
+  "issues": [
+    {
+      "number": 111053,
+      "url": "https://forge.typo3.org/issues/111053",
+      "subject": "Action API: typed API for TYPO3 with OpenAPI, OAuth and MCP",
+      "tracker": "Epic",
+      "status": "In Progress",
+      "parent": null
+    },
+    {
+      "number": 109428,
+      "url": "https://forge.typo3.org/issues/109428",
+      "subject": "Introduce JSON SchemaBuilder and Schema based Hydrator",
+      "tracker": "Task",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111046,
+      "url": "https://forge.typo3.org/issues/111046",
+      "subject": "Introduce Action API as typed RPC layer for remote systems",
+      "tracker": "Feature",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111052,
+      "url": "https://forge.typo3.org/issues/111052",
+      "subject": "Provide OpenAPI description and API documentation for the Action API",
+      "tracker": "Task",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111048,
+      "url": "https://forge.typo3.org/issues/111048",
+      "subject": "Allow backend routes to be redirected to standalone after login",
+      "tracker": "Feature",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111047,
+      "url": "https://forge.typo3.org/issues/111047",
+      "subject": "Provide authenticated access to the Action API for external applications",
+      "tracker": "Feature",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111049,
+      "url": "https://forge.typo3.org/issues/111049",
+      "subject": "Provide internal AI tool provider based on Action API",
+      "tracker": "Task",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111050,
+      "url": "https://forge.typo3.org/issues/111050",
+      "subject": "Provide MCP server based on Action API",
+      "tracker": "Feature",
+      "status": "Under Review",
+      "parent": 111053
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{%- assign deep = site.data.deep_dive -%}
+{%- for diagram in deep.diagrams %}
+<h3 id="{{ diagram.id }}">{{ diagram.title }}</h3>
+{%- if diagram.intro %}<p>{% include inline.html text=diagram.intro %}</p>{% endif %}
+<pre class="mermaid" data-caption="{{ diagram.caption }}">{{ diagram.source | escape }}</pre>
+{%- if forloop.first %}
+<div class="table-wrap">
+  <table class="plain">
+    <thead><tr><th>Status</th><th>Cause</th></tr></thead>
+    <tbody>
+      {%- for row in deep.status_codes %}
+      <tr><td><code>{{ row.status }}</code></td><td>{% include inline.html text=row.cause %}</td></tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- else %}
+<div class="table-wrap">
+  <table class="plain">
+    <thead><tr><th>MCP aspect</th><th>Behaviour</th></tr></thead>
+    <tbody>
+      {%- for row in deep.mcp %}
+      <tr><td>{{ row.aspect }}</td><td>{% include inline.html text=row.behaviour %}</td></tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{%- endif %}
+{%- endfor %}

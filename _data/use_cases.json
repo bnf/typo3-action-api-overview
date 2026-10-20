@@ -1,0 +1,63 @@
+[
+  {
+    "title": "AI assistants work with TYPO3",
+    "channel": "MCP · OAuth",
+    "text": "Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with exactly their own permissions.",
+    "example": "“Show my TYPO3 dashboard”",
+    "patches": [
+      92224,
+      91486,
+      92322
+    ]
+  },
+  {
+    "title": "Coding agents during development",
+    "channel": "MCP · stdio",
+    "text": "Coding agents on a developer machine inspect and change a local installation through the same actions, without a web server.",
+    "example": "`typo3 mcp:serve --user=editor`",
+    "patches": [
+      92224
+    ]
+  },
+  {
+    "title": "Integrations and automation",
+    "channel": "HTTP · static token",
+    "text": "Chat bots, monitoring or workflow tools call TYPO3 with a token limited to the scopes they need.",
+    "example": "`GET /typo3/api/dashboards`",
+    "patches": [
+      91486,
+      92322
+    ]
+  },
+  {
+    "title": "Imports, migrations and headless clients",
+    "channel": "HTTP · OpenAPI",
+    "text": "Record actions read and write any record type. Their schema is derived from TCA, so clients can be generated for each installation.",
+    "example": "`PATCH /typo3/api/records/tt_content/42`",
+    "patches": [
+      92196,
+      92197,
+      91666
+    ]
+  },
+  {
+    "title": "A consistent backend",
+    "channel": "Backend UI",
+    "text": "The dashboard, the page tree and file list operations move from internal AJAX routes to actions, with the same validation everywhere.",
+    "example": "`action('/page/tree').get()`",
+    "patches": [
+      92322,
+      92191,
+      93599
+    ]
+  },
+  {
+    "title": "Extensions get an API for free",
+    "channel": "Extensions",
+    "text": "An extension that adds `#[AsAction]` to a method gets an endpoint, documentation and an AI tool, and benefits from EXT:hub authorization.",
+    "example": "`#[AsAction(name: 'news/latest')]`",
+    "patches": [
+      91563
+    ]
+  }
+]

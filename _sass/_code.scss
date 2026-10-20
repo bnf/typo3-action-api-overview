@@ -1,0 +1,74 @@
+code, pre { font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:not(pre) > code {
+  font-size: .86em;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: .08em .35em;
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+
+// Code blocks rendered by Rouge from _data snippets
+.code-wrap { position: relative; }
+.code-wrap + .code-wrap { margin-top: 12px; }
+.code-wrap div.highlighter-rouge, .panel div.highlighter-rouge { margin: 0; }
+.code-wrap pre.highlight, .panel pre.highlight {
+  margin: 0;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 12px;
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.panel pre.highlight { font-size: 13px; padding: 10px 14px; margin: 8px 0; }
+.highlight {
+  .c, .c1, .cm, .cd, .cs, .ch { color: #7f8896; font-style: italic; }
+  .k, .kd, .kn, .kr, .kc, .kt, .kp { color: #ff9e64; }
+  .nc, .nn, .no { color: #7dcfff; }
+  .nf, .fm, .nx { color: #9ece6a; }
+  .s, .s1, .s2, .sb, .sd, .se, .sh, .si, .sx { color: #e0c27a; }
+  .mi, .mf, .m, .mh, .il { color: #bb9af7; }
+  .nv, .vi, .vg { color: #f7768e; }
+  .na, .nl, .nt, .py, .nd { color: #7aa2f7; font-style: normal; }
+  .nb, .bp { color: #2ac3de; }
+  .o, .p, .ow { color: #b4bac4; }
+  .err { color: inherit; background: none; }
+}
+.copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #c9ced6;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s;
+}
+.code-wrap:hover .copy, .copy:focus { opacity: 1; }
+
+// Interactive marks in the annotated action
+.mark {
+  cursor: pointer;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.4);
+  transition: background .15s, box-shadow .15s;
+  &.on { background: rgba(255, 135, 0, 0.32); border-bottom-color: var(--accent); box-shadow: 0 2px 0 var(--accent); }
+}
+.mark-badge {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  color: #1d1f23;
+  background: var(--accent);
+  border-radius: 999px;
+  padding: 0 5px;
+  margin-left: 2px;
+  vertical-align: super;
+  font-style: normal;
+}

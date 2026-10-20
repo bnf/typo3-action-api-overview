@@ -1,0 +1,25 @@
+{%- assign intro = site.data.intro -%}
+<section class="hero">
+  <div class="eyebrow">Proposed for {{ intro.target_version }} · {{ site.data.patches.changes.size }} changes on Gerrit</div>
+  <h1>{{ intro.headline }}<br><span>{{ intro.headline_accent }}</span></h1>
+  <p class="lead">{{ intro.lead }}</p>
+
+  <div class="hero-diagram">
+    {% include code.html snippet=intro.code %}
+    <div class="hero-arrow" aria-hidden="true">➜</div>
+    <div class="channels">
+      {%- for channel in intro.channels %}
+      <button class="channel" type="button" data-show-tab="{{ channel.tab }}">
+        <span class="icon">{{ channel.icon }}</span>
+        <span><strong>{{ channel.title }}</strong><small>{{ channel.text }}</small></span>
+      </button>
+      {%- endfor %}
+    </div>
+  </div>
+
+  <div class="facts">
+    {%- for fact in intro.facts %}
+    <div class="fact"><strong>{{ fact.title }}</strong><span>{{ fact.text }}</span></div>
+    {%- endfor %}
+  </div>
+</section>

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "claude-dashboard-example",
+    "file": "images/claude-dashboard-example.png",
+    "window": "Claude",
+    "title": "An AI assistant renders the user’s dashboard",
+    "caption": "Claude uses the dashboard actions as MCP tools. EXT:dashboard contains no MCP-specific code.",
+    "alt": "Claude showing the user's TYPO3 dashboard via MCP tools",
+    "featured": true
+  },
+  {
+    "id": "claude-mcp-tools",
+    "file": "images/claude-mcp-tools.png",
+    "window": "Claude · Connectors",
+    "title": "Actions as MCP tools",
+    "caption": "Grouped as read-only tools thanks to the hints derived from the action type.",
+    "alt": "MCP tools of a TYPO3 instance in Claude",
+    "featured": false
+  },
+  {
+    "id": "oauth-consent",
+    "file": "images/oauth-consent.png",
+    "window": "TYPO3 · Authorize app",
+    "title": "OAuth consent",
+    "caption": "The user sees which app asks for which scopes and decides. After the login, the route option `redirect.standalone` leads straight back here.",
+    "alt": "OAuth consent screen of an MCP client",
+    "featured": false
+  },
+  {
+    "id": "hub-app-list",
+    "file": "images/hub-app-list.png",
+    "window": "TYPO3 · API Hub",
+    "title": "API Hub",
+    "caption": "All apps with access to the installation at a glance.",
+    "alt": "API Hub list of apps",
+    "featured": false
+  },
+  {
+    "id": "hub-app-details",
+    "file": "images/hub-app-details.png",
+    "window": "TYPO3 · Edit app",
+    "title": "App configuration",
+    "caption": "Administrators configure type, scopes, logo and redirect URI in System › Integrations › API Hub.",
+    "alt": "App record with type, identifier, secret, scopes and redirect URI",
+    "featured": false
+  },
+  {
+    "id": "swagger-routes",
+    "file": "images/swagger-routes.png",
+    "window": "TYPO3 · API documentation",
+    "title": "Swagger UI",
+    "caption": "Every action, generated from the code, with “try it out”.",
+    "alt": "Swagger UI listing the Action API routes",
+    "featured": false
+  },
+  {
+    "id": "swagger-tca-json-schema",
+    "file": "images/swagger-tca-json-schema.png",
+    "window": "TYPO3 · API documentation",
+    "title": "Schema from TCA",
+    "caption": "One variant per content type of `tt_content`.",
+    "alt": "JSON Schema of tt_content derived from TcaSchema",
+    "featured": false
+  }
+]

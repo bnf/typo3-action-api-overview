@@ -1,0 +1,31 @@
+@media (max-width: 1100px) {
+  .explorer, .anatomy { grid-template-columns: minmax(0, 1fr); }
+  .panel { position: static; min-height: 0; }
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 960px) {
+  .layout { display: block; }
+  .menu-toggle { display: inline-grid; place-items: center; }
+  .sidebar {
+    position: fixed;
+    z-index: 20;
+    top: var(--topbar-height);
+    left: 0;
+    width: min(320px, 86vw);
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(-105%);
+    transition: transform .2s ease;
+  }
+  body.nav-open .sidebar { transform: none; }
+  .content { padding: 28px 16px 64px; }
+  .hero h1 { font-size: 2.2em; }
+  .hero-diagram { grid-template-columns: minmax(0, 1fr); padding: 16px; }
+  .hero-arrow { height: 48px; transform: rotate(90deg); }
+  .grid-2, .grid-3, .shield, .actions-list { grid-template-columns: minmax(0, 1fr); }
+  .layer { grid-template-columns: minmax(0, 1fr); }
+  .anchor, .topbar .pill-link, .viewer .help { display: none; }
+}
+@media (max-width: 520px) {
+  .facts { grid-template-columns: minmax(0, 1fr); }
+}

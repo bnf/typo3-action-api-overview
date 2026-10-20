@@ -1,0 +1,25 @@
+{%- assign patches = site.data.patches -%}
+{%- assign issues = site.data.issues -%}
+{%- assign epic = issues.issues | where: "number", issues.source.epic | first -%}
+<p>Epic: <a href="{{ epic.url }}">#{{ epic.number }} {{ epic.subject }}</a> ({{ epic.status }})</p>
+<div class="table-wrap">
+  <table class="plain chain">
+    <thead><tr><th>#</th><th>Gerrit</th><th>Change</th><th>Forge issue</th><th>Status</th></tr></thead>
+    <tbody>
+      {%- for change in patches.changes %}
+      {%- assign issue = nil -%}
+      {%- if change.resolves.size > 0 -%}
+        {%- assign issue = issues.issues | where: "number", change.resolves[0] | first -%}
+      {%- endif -%}
+      <tr>
+        <td class="num">{{ forloop.index }}</td>
+        <td><a href="{{ change.url }}">{{ change.number }}</a></td>
+        <td>{{ change.subject }}<small>Patch set {{ change.patchset }} · +{{ change.insertions }} −{{ change.deletions }}</small></td>
+        <td>{% if issue %}<a href="{{ issue.url }}">#{{ issue.number }}</a><small>{{ issue.status }}</small>{% else %}<span class="muted">—</span>{% endif %}</td>
+        <td>{% if change.work_in_progress %}<span class="status wip">work in progress</span>{% else %}<span class="status review">ready for review</span>{% endif %}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+<p class="meta">Generated from Gerrit and Forge on {{ patches.source.generated_at | date: "%Y-%m-%d" }} by <code>{{ patches.source.generated_by }}</code> and <code>{{ issues.source.generated_by }}</code>. The chain is ordered from its base to its tip.</p>

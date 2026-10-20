@@ -24,3 +24,8 @@ exclude:
   - Gemfile.lock
   - serve.sh
   - README.md
+  - AGENTS.md
+  - CLAUDE.md
+  - scripts/
+  - schemas/
+  - vendor/

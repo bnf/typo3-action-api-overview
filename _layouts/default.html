@@ -13,9 +13,10 @@
 <body>
   <header class="topbar">
     <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
-    <a class="brand" href="#top"><span class="brand-mark">T3</span>{{ site.title }}</a>
+    <a class="brand" href="#top">{{ site.title }}</a>
     <span class="spacer"></span>
-    <a class="pill-link" href="https://forge.typo3.org/issues/111053">Epic #111053</a>
+    {%- assign epic = site.data.issues.issues | where: "number", site.data.issues.source.epic | first %}
+    <a class="pill-link" href="{{ epic.url }}">Epic #{{ epic.number }}</a>
   </header>
   <div class="layout" id="top">
     <nav class="sidebar" aria-label="Contents">
@@ -25,7 +26,7 @@
     <main class="content">
       {{ content }}
       <footer>
-        TYPO3 Action API · Epic <a href="https://forge.typo3.org/issues/111053">#111053</a> on forge.typo3.org
+        TYPO3 Action API · Epic <a href="{{ epic.url }}">#{{ epic.number }}</a> on forge.typo3.org · Content from <code>_data/</code>
       </footer>
     </main>
   </div>
@@ -41,6 +42,6 @@
     <div class="help">Scroll or pinch to zoom · drag to move · double-click to fit · Esc to close</div>
   </div>
 
-  <script type="module" src="{{ '/assets/site.js' | relative_url }}"></script>
+  <script type="module" src="{{ '/assets/js/main.js' | relative_url }}"></script>
 </body>
 </html>
