@@ -1,0 +1,30 @@
+/* Use cases */
+.usecase { display: flex; flex-direction: column; gap: 10px; }
+.usecase .top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.usecase .channel-tag {
+  font-size: var(--font-size-label);
+  font-weight: 700;
+  color: var(--info);
+  background: var(--info-soft);
+  border-radius: 999px;
+  padding: 2px 10px;
+}
+.status {
+  font-size: var(--font-size-label);
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 2px 10px;
+  white-space: nowrap;
+}
+.status.review { background: var(--ok-soft); color: var(--ok); }
+.status.wip { background: var(--accent-soft); color: var(--accent-strong); }
+.usecase .example {
+  margin-top: auto;
+  font-size: var(--font-size-small);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  color: var(--fg);
+}
+.usecase .example code { background: transparent; border: 0; padding: 0; }

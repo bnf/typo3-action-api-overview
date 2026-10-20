@@ -1,0 +1,24 @@
+code, pre { font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+:not(pre) > code {
+  font-size: .86em;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: .08em .35em;
+  border-radius: 5px;
+  overflow-wrap: anywhere;
+}
+
+// Code blocks: styles live in assets/js/components/code-block.js. Until the
+// component is defined, show the plain code in its final colours and size.
+code-block { display: block; }
+code-block + code-block { margin-top: 12px; }
+code-block:not(:defined) pre {
+  margin: 0;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-radius: 12px;
+  padding: var(--code-padding, 16px 20px);
+  overflow-x: auto;
+  font-size: var(--code-font-size, 15px);
+  line-height: 1.6;
+}

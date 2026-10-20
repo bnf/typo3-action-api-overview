@@ -1,0 +1,8 @@
+{%- assign concept = site.data.concept -%}
+<p class="meta">{{ concept.hint }}</p>
+<action-anatomy>
+  {% include code.html snippet=concept.code slot="code" %}
+  {%- for part in concept.parts %}
+  <anatomy-part ref="{{ part.ref }}" heading="{{ part.title | escape }}" match="{{ part.match | escape }}">{% include inline.html text=part.text %}</anatomy-part>
+  {%- endfor %}
+</action-anatomy>

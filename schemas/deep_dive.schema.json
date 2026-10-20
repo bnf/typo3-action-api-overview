@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "deep_dive.schema.json",
+  "title": "Deep dive: diagrams and reference tables",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "diagrams",
+    "status_codes",
+    "mcp"
+  ],
+  "properties": {
+    "diagrams": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "caption",
+          "source"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "caption": {
+            "type": "string",
+            "minLength": 1
+          },
+          "intro": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Markdown (inline)"
+          },
+          "source": {
+            "type": "string",
+            "description": "Mermaid source"
+          }
+        }
+      }
+    },
+    "status_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "cause"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cause": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Markdown (inline)"
+          }
+        }
+      }
+    },
+    "mcp": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "aspect",
+          "behaviour"
+        ],
+        "properties": {
+          "aspect": {
+            "type": "string",
+            "minLength": 1
+          },
+          "behaviour": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Markdown (inline)"
+          }
+        }
+      }
+    }
+  }
+}

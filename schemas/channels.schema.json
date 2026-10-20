@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "channels.schema.json",
+  "title": "One action as seen by each channel",
+  "$defs": {
+    "snippet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "language",
+        "code"
+      ],
+      "properties": {
+        "language": {
+          "enum": [
+            "php",
+            "javascript",
+            "json",
+            "yaml",
+            "shell",
+            "text"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "id",
+      "label",
+      "icon",
+      "summary",
+      "intro",
+      "snippets"
+    ],
+    "properties": {
+      "id": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+$"
+      },
+      "label": {
+        "type": "string",
+        "minLength": 1
+      },
+      "icon": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4,
+        "description": "Short badge text on the tab"
+      },
+      "summary": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 60,
+        "description": "One line on the tab that says what the channel shows"
+      },
+      "intro": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Markdown (inline)"
+      },
+      "snippets": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "$ref": "#/$defs/snippet"
+        }
+      }
+    }
+  }
+}

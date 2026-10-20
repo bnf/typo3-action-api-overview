@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "problems.schema.json",
+  "title": "Problems the Action API solves",
+  "type": "array",
+  "minItems": 1,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "title",
+      "today",
+      "solution"
+    ],
+    "properties": {
+      "title": {
+        "type": "string",
+        "minLength": 1
+      },
+      "today": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Markdown (inline)"
+      },
+      "solution": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Markdown (inline)"
+      }
+    }
+  }
+}

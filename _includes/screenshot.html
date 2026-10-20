@@ -1,0 +1,9 @@
+{%- comment -%}
+  Renders a screenshot from _data/screenshots.json as <screen-shot>
+  (assets/js/components/screen-shot.js). Parameters: id, featured (optional)
+{%- endcomment -%}
+{%- assign shot = site.data.screenshots | where: "id", include.id | first -%}
+<screen-shot window="{{ shot.window | escape }}" heading="{{ shot.title | escape }}"{% if include.featured %} featured{% endif %}>
+  <img slot="image" src="{{ shot.file | relative_url }}" alt="{{ shot.alt | escape }}" loading="lazy">
+  {% include inline.html text=shot.caption %}
+</screen-shot>

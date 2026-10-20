@@ -1,0 +1,2 @@
+{%- comment -%}Renders a Markdown string from _data without the surrounding paragraph. Parameters: text{%- endcomment -%}
+{{- include.text | markdownify | remove: '<p>' | remove: '</p>' | strip -}}

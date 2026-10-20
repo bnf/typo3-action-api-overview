@@ -1,0 +1,30 @@
+/* Cards */
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+.card h4 { margin: 0 0 6px; font-size: 1.05em; }
+.card p { margin: 0; color: var(--muted); font-size: var(--font-size-text); line-height: 1.5; }
+
+.problem { padding: 0; overflow: hidden; display: flex; flex-direction: column; }
+.problem .today, .problem .now { padding: 14px 18px; }
+.problem .today { flex: 1; }
+.problem .now { background: var(--ok-soft); border-top: 1px solid var(--border); }
+.problem .tag {
+  display: inline-block;
+  font-size: var(--font-size-label);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.problem .today .tag { color: var(--no); }
+.problem .now .tag { color: var(--ok); }
+.problem h4 { margin: 0 0 4px; }
+.problem p { margin: 0; font-size: var(--font-size-text); line-height: 1.5; color: var(--muted); }
+.problem .now p { color: var(--fg); }

@@ -1,0 +1,30 @@
+{%- assign security = site.data.security -%}
+<div class="shield">
+  {%- for principle in security.principles %}
+  <div class="card"><h4>{{ forloop.index }} · {{ principle.title }}</h4><p>{% include inline.html text=principle.text %}</p></div>
+  {%- endfor %}
+</div>
+
+<h3 id="scope-calculator">{{ security.calculator.title }}</h3>
+<p>{% include inline.html text=security.calculator.intro %}</p>
+<scope-calculator>
+  <script type="application/json">{{ security.calculator | jsonify }}</script>
+  <span slot="note">{% include inline.html text=security.calculator.note %}</span>
+</scope-calculator>
+
+<h3 id="apps">{{ security.app_types.title }}</h3>
+<div class="table-wrap">
+  <table class="plain">
+    <thead><tr><th></th>{% for column in security.app_types.columns %}<th>{{ column }}</th>{% endfor %}</tr></thead>
+    <tbody>
+      {%- for row in security.app_types.rows %}
+      <tr><td><strong>{{ row.label }}</strong></td>{% for value in row.values %}<td>{% include inline.html text=value %}</td>{% endfor %}</tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="grid-2">
+  {%- for id in security.app_types.screenshots %}
+  {% include screenshot.html id=id %}
+  {%- endfor %}
+</div>

@@ -1,0 +1,6 @@
+// Screenshots and diagrams are components (assets/js/components/screen-shot.js,
+// mermaid-diagram.js). Contexts only set the height a screenshot is cropped to.
+.gallery screen-shot { --shot-height: 220px; }
+.grid-2 screen-shot { --shot-height: 340px; }
+screen-shot[featured] { --shot-max-height: 560px; margin: 20px 0; }
+mermaid-diagram > pre { margin: 0; white-space: pre-wrap; color: var(--muted); }

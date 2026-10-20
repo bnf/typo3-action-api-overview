@@ -1,0 +1,9 @@
+// The stack explorer is a component (assets/js/components/stack-explorer.js).
+// These rules only cover the details it shows in its panel, which are page
+// content rendered from _data/stack.json.
+stack-explorer > [slot] > :first-child { margin-top: 0; }
+stack-explorer > [slot] > :last-child { margin-bottom: 0; }
+stack-explorer > [slot] p, stack-explorer > [slot] ul { margin: 0 0 10px; }
+stack-explorer > [slot] ul { padding-left: 1.2em; }
+stack-explorer > [slot] li { margin: 2px 0; }
+stack-explorer code-block { --code-font-size: 14px; --code-padding: 10px 14px; margin: 8px 0; }

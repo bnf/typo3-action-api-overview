@@ -1,0 +1,16 @@
+<div class="grid-3">
+  {%- for case in site.data.use_cases %}
+  {%- assign wip = false -%}
+  {%- for number in case.patches -%}
+    {%- assign change = site.data.patches.changes | where: "number", number | first -%}
+    {%- if change.work_in_progress -%}{%- assign wip = true -%}{%- endif -%}
+  {%- endfor %}
+  <div class="card usecase">
+    <div class="top"><span class="channel-tag">{{ case.channel }}</span>{% if wip %}<span class="status wip">work in progress</span>{% else %}<span class="status review">in review</span>{% endif %}</div>
+    <h4>{{ case.title }}</h4>
+    <p>{% include inline.html text=case.text %}</p>
+    <div class="example">{% include inline.html text=case.example %}</div>
+    <div class="patch-links">{% for number in case.patches %}{% assign change = site.data.patches.changes | where: "number", number | first %}<a href="{{ change.url }}" title="{{ change.subject }}">{{ number }}</a>{% endfor %}</div>
+  </div>
+  {%- endfor %}
+</div>

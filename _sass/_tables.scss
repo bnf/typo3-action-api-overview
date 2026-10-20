@@ -1,0 +1,15 @@
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 1.2em 0; }
+table.plain {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: var(--font-size-text);
+}
+table.plain th, table.plain td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+table.plain tr:last-child td { border-bottom: 0; }
+table.plain th { background: var(--surface-2); }

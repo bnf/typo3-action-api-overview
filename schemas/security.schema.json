@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "security.schema.json",
+  "title": "Security model, scope calculator and app types",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "principles",
+    "calculator",
+    "app_types"
+  ],
+  "properties": {
+    "principles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "text"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Markdown (inline)"
+          }
+        }
+      }
+    },
+    "calculator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "intro",
+        "note",
+        "scopes",
+        "users",
+        "defaults",
+        "actions"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intro": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
+        },
+        "scopes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "name",
+              "allowed_for"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9:_-]+$"
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "allowed_for": {
+                "enum": [
+                  "everyone",
+                  "dashboard_access",
+                  "admin"
+                ],
+                "description": "Mirrors ScopeInterface::allowedForUser() in TYPO3"
+              }
+            }
+          }
+        },
+        "users": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "label",
+              "admin",
+              "dashboard_access"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "admin": {
+                "type": "boolean"
+              },
+              "dashboard_access": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "defaults": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "user",
+            "requested",
+            "configured"
+          ],
+          "properties": {
+            "user": {
+              "type": "string",
+              "minLength": 1
+            },
+            "requested": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9:_-]+$"
+              }
+            },
+            "configured": {
+              "type": "array",
+              "minItems": 0,
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9:_-]+$"
+              }
+            }
+          }
+        },
+        "actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "method",
+              "name",
+              "path",
+              "scopes"
+            ],
+            "properties": {
+              "method": {
+                "enum": [
+                  "GET",
+                  "POST",
+                  "PUT",
+                  "PATCH",
+                  "DELETE"
+                ]
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "scopes": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9:_-]+$"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "app_types": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "columns",
+        "rows",
+        "screenshots"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "values"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "values": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Markdown (inline)"
+                }
+              }
+            }
+          }
+        },
+        "screenshots": {
+          "type": "array",
+          "minItems": 0,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,61 @@
+name: Pages
+
+# Publishes the site to the gh-pages branch: main at the root, every pull
+# request from this repository as a preview under pr-preview/pr-<number>/.
+# GitHub Pages must serve the gh-pages branch (Settings › Pages › Deploy from
+# a branch). Previews are public and removed when the pull request is closed.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# All jobs push to gh-pages, run them one after another
+concurrency: gh-pages
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    env:
+      PREVIEW_PATH: pr-preview/pr-${{ github.event.pull_request.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        if: github.event.action != 'closed'
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+
+      - name: Build site
+        if: github.event_name == 'push'
+        run: bundle exec jekyll build --baseurl "/${{ github.event.repository.name }}"
+      - name: Build preview
+        if: github.event_name == 'pull_request' && github.event.action != 'closed'
+        run: bundle exec jekyll build --baseurl "/${{ github.event.repository.name }}/${PREVIEW_PATH}"
+      # The branch holds the built site, GitHub Pages must not run Jekyll again
+      - run: touch _site/.nojekyll
+        if: github.event.action != 'closed'
+
+      - name: Deploy main
+        if: github.event_name == 'push'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site
+          branch: gh-pages
+          clean-exclude: pr-preview/
+          force: false
+      - name: Deploy or remove preview
+        if: github.event_name == 'pull_request'
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: _site
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          # The default QR code image would send every preview URL to a third party
+          qr-code: false
