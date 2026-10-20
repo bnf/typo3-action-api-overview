@@ -1,0 +1,25 @@
+title: The TYPO3 Action API
+description: >-
+  One typed, self-describing API for the TYPO3 backend, external
+  integrations and AI agents.
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+
+plugins:
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-relative-links
+  - jekyll-titles-from-headings
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
+
+exclude:
+  - Gemfile
+  - Gemfile.lock

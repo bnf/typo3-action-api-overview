@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ site.description | strip }}">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #1f2328;
+      --muted: #59636e;
+      --border: #d1d9e0;
+      --code-bg: #f6f8fa;
+      --accent: #ff8700;
+      --link: #0969da;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --fg: #e6edf3;
+        --muted: #9198a1;
+        --border: #3d444d;
+        --code-bg: #151b23;
+        --link: #4493f8;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+    h1 { border-top: 6px solid var(--accent); padding-top: 24px; font-size: 2.2em; margin-top: 0; }
+    h2 { border-bottom: 1px solid var(--border); padding-bottom: .3em; margin-top: 2em; }
+    a { color: var(--link); }
+    hr { border: 0; border-top: 1px solid var(--border); margin: 2.5em 0; }
+    blockquote {
+      margin: 1em 0;
+      padding: .5em 1em;
+      border-left: 4px solid var(--accent);
+      color: var(--muted);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .875em;
+    }
+    :not(pre) > code {
+      background: var(--code-bg);
+      padding: .15em .35em;
+      border-radius: 4px;
+    }
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 16px;
+      overflow-x: auto;
+    }
+    pre.mermaid {
+      background: #ffffff;
+      text-align: center;
+    }
+    table {
+      border-collapse: collapse;
+      display: block;
+      overflow-x: auto;
+      margin: 1em 0;
+    }
+    th, td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; vertical-align: top; }
+    th { background: var(--code-bg); }
+    img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: block;
+      margin: 1em auto;
+    }
+    footer { color: var(--muted); font-size: .875em; margin-top: 4em; }
+  </style>
+</head>
+<body>
+  <main>
+    {{ content }}
+    <footer>
+      <p>TYPO3 Action API, epic <a href="https://forge.typo3.org/issues/111053">#111053</a>.</p>
+    </footer>
+  </main>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    // kramdown renders ```mermaid blocks as highlighted code; turn them into mermaid diagrams
+    for (const block of document.querySelectorAll('div.language-mermaid, pre > code.language-mermaid')) {
+      const target = block.matches('code') ? block.parentElement : block;
+      const diagram = document.createElement('pre');
+      diagram.className = 'mermaid';
+      diagram.textContent = block.textContent;
+      target.replaceWith(diagram);
+    }
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    await mermaid.run({ querySelector: 'pre.mermaid' });
+  </script>
+</body>
+</html>
