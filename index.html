@@ -14,9 +14,3 @@ title: The TYPO3 Action API
   {% include sections/{{ section.id }}.html section=section %}
 </section>
 {% endfor %}
-
-<script type="application/json" id="page-data">
-{
-  "stack": {{ site.data.stack | jsonify }}
-}
-</script>
