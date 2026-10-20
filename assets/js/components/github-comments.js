@@ -5,6 +5,16 @@ const shaHex = async (text) => {
   return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
 };
 
+const snapdomUrl = new URL('../../vendor/snapdom.mjs', import.meta.url).href;
+let snapdomLoader = null;
+
+// The block that a screenshot of a selection shows: the nearest card, component or paragraph
+const captureTargets = 'problem-item, anatomy-part, channel-tabs, stack-explorer, scope-calculator, screen-shot, mermaid-diagram, '
+  + '.card, .fact, .channel, table, figure, p, li, h2, h3';
+
+// Words for a text fragment (#:~:text=…); "-", "," and "&" have a meaning in the directive
+const fragmentPart = (text) => encodeURIComponent(text).replace(/-/g, '%2D');
+
 // Compares rendered text with a line of JSON: no Markdown marks, no escapes, single spaces
 const normalize = (text) => text
   .replace(/\\n/g, ' ')
@@ -21,8 +31,14 @@ const normalize = (text) => text
  *
  * - in a preview, the line in the diff of the pull request, if the pull
  *   request changed the line, so that the comment is part of the review,
- * - otherwise a new issue with the quote, the section and a permalink to the
- *   line.
+ * - otherwise a new issue with the quote, a link that shows the text on the
+ *   page (text fragment), the section and a permalink to the line, which
+ *   GitHub embeds as a code snippet.
+ *
+ * In both cases, a screenshot of the block around the selection, with the
+ * selection highlighted, is copied to the clipboard, so that the reader can
+ * paste it into the comment. The screenshot is rendered with SnapDOM
+ * (assets/vendor/snapdom.mjs), which is loaded on the first selection.
  *
  * Attributes: repository (owner/name), revision (commit of the build),
  * pull-request (number, in previews), files (data files as a comma-separated
@@ -36,6 +52,7 @@ export class GithubComments extends LitElement {
     files: {},
     position: { state: true },
     busy: { state: true },
+    notice: { state: true },
   };
 
   static styles = css`
@@ -58,6 +75,19 @@ export class GithubComments extends LitElement {
     }
     button:hover, button:focus-visible { background: var(--accent-soft); outline: none; }
     svg { width: 14px; height: 14px; }
+    .notice {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--fg);
+      color: var(--bg);
+      font: 600 var(--font-size-small, 15.5px) "Source Sans 3", sans-serif;
+      box-shadow: var(--shadow-lg);
+      white-space: nowrap;
+    }
   `;
 
   constructor() {
@@ -82,9 +112,13 @@ export class GithubComments extends LitElement {
   }
 
   render() {
-    if (!this.position) {
-      return nothing;
-    }
+    return html`
+      ${this.position ? this.renderButton() : nothing}
+      ${this.notice ? html`<div class="notice" role="status">${this.notice}</div>` : nothing}
+    `;
+  }
+
+  renderButton() {
     return html`
       <button type="button" style="left: ${this.position.x}px; top: ${this.position.y}px"
         @mousedown=${(event) => event.preventDefault()} @click=${this.comment}>
@@ -117,6 +151,63 @@ export class GithubComments extends LitElement {
     const box = selected.range.getBoundingClientRect();
     this.position = { x: box.left + box.width / 2 + scrollX, y: box.top + scrollY };
     this.selected = selected;
+    // Render the screenshot now: the click must write it to the clipboard without waiting
+    this.screenshot = this.capture(selected.range.cloneRange()).catch(() => null);
+  }
+
+  // Renders the block around the selection and highlights the selection in it
+  async capture(range) {
+    const node = range.commonAncestorContainer;
+    const target = (node.nodeType === Node.ELEMENT_NODE ? node : node.parentElement)?.closest(captureTargets);
+    if (!target) {
+      return null;
+    }
+    snapdomLoader ??= import(snapdomUrl);
+    const { snapdom } = await snapdomLoader;
+    const box = target.getBoundingClientRect();
+    const marks = [...range.getClientRects()].map((rect) => ({
+      x: rect.left - box.left, y: rect.top - box.top, width: rect.width, height: rect.height,
+    }));
+    const background = getComputedStyle(document.body).backgroundColor;
+    const scale = 2;
+    const image = await (await snapdom(target, { scale, embedFonts: true, backgroundColor: background })).toCanvas();
+
+    // Long blocks (the stack, the calculator) are cut to the part around the selection
+    const top = Math.max(0, Math.min(...marks.map((mark) => mark.y)) - 240);
+    const bottom = Math.min(box.height, Math.max(...marks.map((mark) => mark.y + mark.height)) + 240);
+    const padding = 24;
+    const canvas = document.createElement('canvas');
+    canvas.width = (box.width + 2 * padding) * scale;
+    canvas.height = (bottom - top + 2 * padding) * scale;
+    const context = canvas.getContext('2d');
+    context.scale(scale, scale);
+    context.fillStyle = background;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(image, 0, top * scale, box.width * scale, (bottom - top) * scale, padding, padding, box.width, bottom - top);
+    const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim() || '#ff8700';
+    for (const mark of marks) {
+      context.globalAlpha = 0.25;
+      context.fillStyle = accent;
+      context.fillRect(padding + mark.x, padding + mark.y - top, mark.width, mark.height);
+      context.globalAlpha = 1;
+      context.fillRect(padding + mark.x, padding + mark.y - top + mark.height - 2, mark.width, 2);
+    }
+    return new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
+  }
+
+  // Writes the screenshot to the clipboard; must run during the click
+  copyScreenshot() {
+    if (!this.screenshot || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+      return Promise.resolve(false);
+    }
+    const blob = this.screenshot.then((value) => value ?? Promise.reject(new Error('No screenshot')));
+    return navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => true, () => false);
+  }
+
+  showNotice(text) {
+    this.notice = text;
+    clearTimeout(this.noticeTimer);
+    this.noticeTimer = setTimeout(() => { this.notice = null; }, 6000);
   }
 
   async loadFile(file, revision) {
@@ -159,17 +250,22 @@ export class GithubComments extends LitElement {
       return;
     }
     this.busy = true;
-    // Open the window now: browsers block windows that open after an await
+    // Copy and open now: browsers block both after an await
+    const copied = this.copyScreenshot();
     const target = window.open('about:blank', '_blank');
     if (target) {
       target.opener = null;
     }
+    this.copied = await copied;
     let url;
     try {
       url = await this.targetUrl(text);
     } catch {
       url = this.issueUrl(text, null);
     }
+    this.showNotice(this.copied
+      ? 'The screenshot is in the clipboard. Paste it into the comment on GitHub.'
+      : 'GitHub opens in a new tab.');
     try {
       if (target) {
         target.location = url;
@@ -196,19 +292,32 @@ export class GithubComments extends LitElement {
 
   issueUrl(text, source) {
     const revision = this.revision || 'main';
-    const section = this.selected?.range.startContainer.parentElement?.closest('section.chapter')?.querySelector('h2')?.textContent.replace(/^#/, '').trim();
-    const quote = text.length > 300 ? `${text.slice(0, 300)}…` : text;
-    const lines = [
+    const page = location.href.split('#')[0];
+    const heading = this.selected?.range.startContainer.parentElement?.closest('section.chapter')?.querySelector('h2[id]');
+    const section = heading ? { title: heading.textContent.replace(/^#/, '').trim(), id: heading.id } : null;
+    const words = text.split(' ');
+    const fragment = words.length > 10
+      ? `${fragmentPart(words.slice(0, 5).join(' '))},${fragmentPart(words.slice(-5).join(' '))}`
+      : fragmentPart(text);
+    const quote = text.length > 400 ? `${text.slice(0, 400)}…` : text;
+    const body = [
+      '### Comment',
+      '',
+      '',
+      '',
+      '### Text on the page',
+      '',
       `> ${quote}`,
       '',
-      section ? `Section: ${section}` : null,
-      `Page: ${location.href.split('#')[0]}`,
-      source ? `Source: https://github.com/${this.repository}/blob/${revision}/${source.file}#L${source.line}` : null,
+      `[Show the text on the page](${page}#${section?.id ?? ''}:~:text=${fragment})`
+        + (section ? ` in the section [${section.title}](${page}#${section.id})` : ''),
       '',
-      '',
-    ].filter((line) => line !== null);
-    const title = `Comment: ${quote.slice(0, 60)}${quote.length > 60 ? '…' : ''}`;
-    return `https://github.com/${this.repository}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(lines.join('\n'))}`;
+      ...(source ? ['Source of the text in the repository:', '', `https://github.com/${this.repository}/blob/${revision}/${source.file}#L${source.line}`, ''] : []),
+      ...(this.copied ? ['### Screenshot', '', '_The screenshot of the text is in the clipboard. Paste it here with Ctrl+V or ⌘V._', ''] : []),
+    ].join('\n');
+    const short = quote.length > 50 ? `${quote.slice(0, 50).trim()}…` : quote;
+    const title = section ? `${section.title}: “${short}”` : `“${short}”`;
+    return `https://github.com/${this.repository}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
   }
 }
 
