@@ -3,6 +3,7 @@ import { initNavigation } from './nav.js';
 import './components/code-block.js';
 import './components/action-anatomy.js';
 import './components/problem-comparison.js';
+import './components/color-scheme-toggle.js';
 import { initTabs } from './tabs.js';
 import { initStack } from './stack.js';
 import { initCalculator } from './calculator.js';

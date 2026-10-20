@@ -27,28 +27,34 @@
   --font-size-text: 17px;
   --font-size-small: 15.5px;
   --font-size-label: 13px;
+  color-scheme: light;
+}
+// Dark tokens. The page follows the system setting unless <html data-color-scheme>
+// fixes light or dark (see assets/js/components/color-scheme-toggle.js).
+@mixin dark-scheme {
+  color-scheme: dark;
+  --bg: #111316;
+  --surface: #191c20;
+  --surface-2: #22262b;
+  --fg: #e7e9ec;
+  --muted: #9aa1ac;
+  --border: #2e333a;
+  --accent-soft: #3a2611;
+  --link: #ffa64d;
+  --ok: #4ac26b;
+  --ok-soft: #12301b;
+  --no: #ff7b72;
+  --no-soft: #3a1714;
+  --info: #79a6ff;
+  --info-soft: #172443;
+  --code-bg: #0b0d10;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #111316;
-    --surface: #191c20;
-    --surface-2: #22262b;
-    --fg: #e7e9ec;
-    --muted: #9aa1ac;
-    --border: #2e333a;
-    --accent-soft: #3a2611;
-    --link: #ffa64d;
-    --ok: #4ac26b;
-    --ok-soft: #12301b;
-    --no: #ff7b72;
-    --no-soft: #3a1714;
-    --info: #79a6ff;
-    --info-soft: #172443;
-    --code-bg: #0b0d10;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.25);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
-  }
+  :root:not([data-color-scheme="light"]) { @include dark-scheme; }
 }
+:root[data-color-scheme="dark"] { @include dark-scheme; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-height) + 16px); }
 body {

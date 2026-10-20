@@ -120,10 +120,6 @@ of `rgb(r g b / a)`, and plain CSS features only.
 
 - Work on a branch per task and open a pull request against `main`. Never push
   to `main` directly; `main` is deployed to GitHub Pages.
-- Each pull request gets a public preview, linked in a comment on the pull
-  request. Point reviewers to it instead of describing visual changes. Never
-  edit the `gh-pages` branch by hand; it is written by
-  `.github/workflows/pages.yml`.
 - Keep changes small and focused on one concern. The split into one data
   file, one template, one stylesheet and one script per component exists so
   that parallel changes rarely touch the same file.
@@ -133,6 +129,48 @@ of `rgb(r g b / a)`, and plain CSS features only.
   existing entries, so diffs stay small and merge conflicts readable.
 - Do not regenerate `patches.json` or `issues.json` in a branch that changes
   other things; refresh them in a separate pull request.
+
+## Pull request workflow
+
+Every change, however small, goes through these steps:
+
+1. Branch off the current `main` (`git fetch origin main`, then
+   `git checkout -b <topic> origin/main`). Agents use the prefix of their
+   tool, e.g. `claude/<topic>`.
+2. Make the change and run `scripts/check.sh` until it passes.
+3. Commit (see [Commits](#commits)), push the branch and open a pull request
+   against `main`. The description says what changed, why, and how it was
+   tested; list any manual steps a maintainer has to do after merging.
+4. Two workflows run on the pull request: `check.yml` (validation and build)
+   and `pages.yml` (preview). Wait for both and fix failures before asking for
+   review.
+5. `pages.yml` publishes a preview at
+   `https://bnf.github.io/typo3-action-api-overview/pr-preview/pr-<number>/`
+   and posts the link as a comment. Open it and check the changed parts in
+   the browser, desktop and narrow widths, before handing over. Point
+   reviewers to it instead of describing visual changes. Previews are public.
+6. The maintainer reviews the preview and merges. Agents merge only when
+   asked to. After the merge, `main` is deployed to the root of the site and
+   the preview is removed.
+7. For follow-up work after a merge, start a new branch from `main`; never
+   add commits to a merged branch.
+
+The `gh-pages` branch is written only by `.github/workflows/pages.yml`: it
+holds the built site with a deployment history of its own. Never edit it by
+hand.
+
+### Notes for Claude Code cloud sessions
+
+- `gh pr create` and other GraphQL based `gh` commands are blocked; use the
+  REST API, e.g. `gh api repos/bnf/typo3-action-api-overview/pulls -f base=main
+  -f head=<branch> -f title=… -F body=@description.md`, and
+  `gh api -X PUT repos/bnf/typo3-action-api-overview/pulls/<number>/merge`
+  to merge.
+- Deleting remote branches is refused; leave merged branches for the
+  maintainer.
+- A shallow clone only tracks `main`. To see pushed branches, add
+  `git config --add remote.origin.fetch '+refs/heads/claude/*:refs/remotes/origin/claude/*'`.
+- Workflow runs: `gh api 'repos/bnf/typo3-action-api-overview/actions/runs?branch=<branch>'`.
 
 ## Commits
 

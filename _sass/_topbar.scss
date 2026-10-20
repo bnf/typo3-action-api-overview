@@ -24,6 +24,7 @@
   text-overflow: ellipsis;
 }
 .topbar .spacer { flex: 1; }
+color-scheme-toggle { width: 34px; height: 34px; flex: none; }
 .pill-link {
   font-size: var(--font-size-small);
   color: var(--muted);
