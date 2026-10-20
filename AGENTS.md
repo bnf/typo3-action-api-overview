@@ -89,7 +89,9 @@ The remaining scripts (`stack.js`, `calculator.js`, `tabs.js`, …) are plain
 modules and are moved to components step by step.
 
 A new section needs an entry in `_data/sections.json` and a template
-`_includes/sections/<id>.html`; the sidebar (`assets/js/components/page-navigation.js`)
+`_includes/sections/<id>.html`. The entry names the data files that the
+template renders in `sources`. The comments on GitHub search these files
+first for the line of a text. The sidebar (`assets/js/components/page-navigation.js`)
 lists every `h2` and `h3` with an id automatically.
 
 ## Accuracy

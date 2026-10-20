@@ -73,6 +73,9 @@ def check_references(data):
     for section in data['sections']:
         if not (ROOT / '_includes' / 'sections' / f'{section["id"]}.html').exists():
             errors.append(f'sections.json: no template _includes/sections/{section["id"]}.html for "{section["id"]}"')
+        for source in section['sources']:
+            if source not in data:
+                errors.append(f'sections.json: section "{section["id"]}" names unknown data file "{source}"')
 
     channels = {channel['id'] for channel in data['channels']}
     for tile in data['intro']['channels']:

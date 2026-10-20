@@ -8,8 +8,8 @@ title: The TYPO3 Action API
 {% include hero.html %}
 
 {% for section in site.data.sections %}
-<section class="chapter" id="section-{{ section.id }}">
-  <header data-comment="{{ section.id }}-intro">
+<section class="chapter" id="section-{{ section.id }}" data-source="{{ section.sources | join: ',' }}">
+  <header data-comment="{{ section.id }}-intro" data-source="sections">
     <h2 id="{{ section.id }}">{{ section.title }}</h2>
     <p class="section-lead">{% include inline.html text=section.lead %}</p>
   </header>
