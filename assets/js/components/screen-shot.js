@@ -98,7 +98,7 @@ export class ScreenShot extends LitElement {
         <div class="backdrop">
           <div class="window">
             <div class="titlebar" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="title">${this.window}</span></div>
-            <button type="button" class="frame" aria-label="Enlarge: ${this.heading}" @click=${this.zoom}><slot name="image"></slot></button>
+            <button type="button" class="frame" aria-label="Enlarge the screenshot ${this.heading}" @click=${this.zoom}><slot name="image"></slot></button>
           </div>
         </div>
         <figcaption><strong>${this.heading}</strong><slot></slot></figcaption>

@@ -122,16 +122,12 @@ export class AnatomyPart extends LitElement {
 
   static styles = css`
     :host { display: block; }
-    button {
+    .card {
       display: grid;
       grid-template-columns: 24px minmax(0, 1fr);
       gap: 12px;
       align-items: start;
-      width: 100%;
-      margin: 0;
       padding: 9px 14px;
-      text-align: left;
-      font: inherit;
       font-size: var(--font-size-text, 17px);
       line-height: 1.55;
       color: var(--muted);
@@ -141,9 +137,20 @@ export class AnatomyPart extends LitElement {
       cursor: pointer;
       transition: border-color .15s, background .15s;
     }
-    button:hover { border-color: var(--accent); }
-    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    :host([active]) button { border-color: var(--accent); background: var(--accent-soft); }
+    .card:hover { border-color: var(--accent); }
+    .card:has(button:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+    :host([active]) .card { border-color: var(--accent); background: var(--accent-soft); }
+    button {
+      display: block;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: none;
+      text-align: left;
+      cursor: pointer;
+    }
+    button:focus { outline: none; }
     .badge {
       width: 24px;
       height: 24px;
@@ -157,7 +164,7 @@ export class AnatomyPart extends LitElement {
       font-weight: 700;
       line-height: 1;
     }
-    .heading { display: block; color: var(--fg); font-weight: 700; font-size: var(--font-size-base, 18px); line-height: 26px; }
+    .heading { color: var(--fg); font: 700 var(--font-size-base, 18px)/26px "Source Sans 3", sans-serif; }
     .text { display: var(--part-text-display, block); margin-top: 2px; }
   `;
 
@@ -168,11 +175,13 @@ export class AnatomyPart extends LitElement {
 
   render() {
     return html`
-      <button type="button" aria-pressed=${this.active ? 'true' : 'false'}
-        @click=${this.select} @focus=${this.select}>
+      <div class="card" @click=${this.select}>
         <span class="badge" aria-hidden="true">${this.ref}</span>
-        <span><span class="heading">${this.heading}</span><span class="text"><slot></slot></span></span>
-      </button>
+        <div>
+          <button type="button" class="heading" aria-pressed=${this.active ? 'true' : 'false'} @focus=${this.select}>${this.heading}</button>
+          <div class="text"><slot></slot></div>
+        </div>
+      </div>
     `;
   }
 

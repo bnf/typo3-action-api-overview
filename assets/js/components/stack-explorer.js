@@ -201,7 +201,7 @@ export class StackExplorer extends LitElement {
             <h4>${layer?.title}</h4>
           `}
           <slot name="panel"></slot>
-          ${scenario ? this.renderControls(scenario) : html`<p class="hint">Pick a scenario above to follow a request through the stack.</p>`}
+          ${scenario ? this.renderControls(scenario) : html`<p class="hint">Select a scenario to follow a request through the stack.</p>`}
         </div>
       </div>
     `;

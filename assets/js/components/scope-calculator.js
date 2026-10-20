@@ -131,7 +131,7 @@ export class ScopeCalculator extends LitElement {
     const granted = new Set(rows.filter((row) => row.granted).map((row) => row.scope.id));
     return html`
       <div class="calc">
-        <div class="label" id="user-label">Backend user who grants access</div>
+        <div class="label" id="user-label">Granting backend user</div>
         <div class="users" role="group" aria-labelledby="user-label">
           ${users.map((user) => html`
             <button type="button" aria-pressed=${user === this.user ? 'true' : 'false'} @click=${() => { this.user = user; }}>${user.label}</button>
@@ -141,7 +141,7 @@ export class ScopeCalculator extends LitElement {
           <table>
             <thead>
               <tr>
-                <th>Scope</th><th>Requested<br>by the app</th><th></th><th>Configured<br>for the app</th><th></th><th>Allowed<br>for the user</th><th></th><th>Token</th>
+                <th>Scope</th><th>Requested<br>by the app</th><th></th><th>Configured<br>for the app</th><th></th><th>Available<br>to the user</th><th></th><th>Token</th>
               </tr>
             </thead>
             <tbody>
@@ -152,7 +152,7 @@ export class ScopeCalculator extends LitElement {
                   <td class="op" aria-hidden="true">∩</td>
                   <td>${this.renderToggle(this.configured, scope, 'configured for the app')}</td>
                   <td class="op" aria-hidden="true">∩</td>
-                  <td><span class="state ${allowed ? 'yes' : 'no'}" role="img" aria-label=${allowed ? 'allowed' : 'not allowed'}>${allowed ? '✓' : '✕'}</span></td>
+                  <td><span class="state ${allowed ? 'yes' : 'no'}" role="img" aria-label=${allowed ? 'available' : 'not available'}>${allowed ? '✓' : '✕'}</span></td>
                   <td class="op" aria-hidden="true">=</td>
                   <td><span class="result ${ok ? 'granted' : 'denied'}">${ok ? 'granted' : 'not granted'}</span></td>
                 </tr>
@@ -160,7 +160,7 @@ export class ScopeCalculator extends LitElement {
             </tbody>
           </table>
         </div>
-        <div class="label spaced" id="actions-label">What the app can call</div>
+        <div class="label spaced" id="actions-label">Callable actions</div>
         <ul class="actions" aria-labelledby="actions-label" aria-live="polite">
           ${actions.map((action) => {
             const missing = action.scopes.filter((scope) => !granted.has(scope));
@@ -169,7 +169,7 @@ export class ScopeCalculator extends LitElement {
               <li class="action ${allowed ? 'allowed' : 'blocked'}">
                 <span class="verb ${action.method === 'GET' ? '' : 'write'}">${action.method}</span>
                 <span class="name">${action.name}<small>${allowed ? action.path : `missing ${missing.join(', ')}`}</small></span>
-                <span class="check" role="img" aria-label=${allowed ? 'allowed' : 'not allowed'}>${allowed ? '✓' : '✕'}</span>
+                <span class="check" role="img" aria-label=${allowed ? 'callable' : 'not callable'}>${allowed ? '✓' : '✕'}</span>
               </li>
             `;
           })}
@@ -183,7 +183,7 @@ export class ScopeCalculator extends LitElement {
     const on = set.has(scope.id);
     return html`
       <button type="button" class="toggle ${on ? 'yes' : 'no'}" aria-pressed=${on ? 'true' : 'false'}
-        aria-label="${scope.id} ${column}" title="Click to toggle" @click=${() => this.toggle(set, scope.id)}>${on ? '✓' : '✕'}</button>
+        aria-label="${scope.id} ${column}" title="Toggle the scope" @click=${() => this.toggle(set, scope.id)}>${on ? '✓' : '✕'}</button>
     `;
   }
 
