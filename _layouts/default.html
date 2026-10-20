@@ -21,7 +21,7 @@
 </head>
 <body>
   <header class="topbar">
-    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="navigation" aria-expanded="false">☰</button>
     <a class="brand" href="#top">{{ site.title }}</a>
     <span class="spacer"></span>
     <color-scheme-toggle></color-scheme-toggle>
@@ -29,9 +29,8 @@
     <a class="pill-link" href="{{ epic.url }}">Epic #{{ epic.number }}</a>
   </header>
   <div class="layout" id="top">
-    <nav class="sidebar" aria-label="Contents">
-      <p class="label">Contents</p>
-      <ol></ol>
+    <nav class="sidebar" id="navigation" aria-label="Contents">
+      <page-navigation for=".content"></page-navigation>
     </nav>
     <main class="content">
       {{ content }}
@@ -41,16 +40,7 @@
     </main>
   </div>
 
-  <div class="viewer" role="dialog" aria-modal="true" aria-label="Zoomed view">
-    <div class="stage"><div class="canvas"></div></div>
-    <div class="toolbar">
-      <button type="button" data-zoom="in" title="Zoom in">+</button>
-      <button type="button" data-zoom="out" title="Zoom out">−</button>
-      <button type="button" data-zoom="fit" title="Fit to screen">⤢</button>
-      <button type="button" data-zoom="close" title="Close (Esc)">✕</button>
-    </div>
-    <div class="help">Scroll or pinch to zoom · drag to move · double-click to fit · Esc to close</div>
-  </div>
+  <zoom-viewer></zoom-viewer>
 
   <script type="importmap">{ "imports": { "lit": "{{ '/assets/vendor/lit-core.min.js' | relative_url }}" } }</script>
   <script type="module" src="{{ '/assets/js/main.js' | relative_url }}"></script>

@@ -1,6 +1,6 @@
 {%- assign featured = site.data.screenshots | where: "featured", true -%}
 {%- for shot in featured %}
-{% include screenshot.html id=shot.id class="feature-shot" %}
+{% include screenshot.html id=shot.id featured=true %}
 {%- endfor %}
 <div class="grid-3 gallery">
   {%- for shot in site.data.screenshots %}

@@ -1,8 +1,10 @@
-{%- for channel in site.data.channels %}
-<channel-entry id="channel-{{ channel.id }}" heading="{{ channel.label | escape }}">
-  <span slot="intro">{% include inline.html text=channel.intro %}</span>
-  {%- for snippet in channel.snippets %}
-  {% include code.html snippet=snippet %}
+<channel-tabs>
+  {%- for channel in site.data.channels %}
+  <div id="channel-{{ channel.id }}" data-label="{{ channel.label | escape }}" data-icon="{{ channel.icon | escape }}" data-summary="{{ channel.summary | escape }}">
+    <p class="channel-intro">{% include inline.html text=channel.intro %}</p>
+    {%- for snippet in channel.snippets %}
+    {% include code.html snippet=snippet %}
+    {%- endfor %}
+  </div>
   {%- endfor %}
-</channel-entry>
-{%- endfor %}
+</channel-tabs>

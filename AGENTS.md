@@ -44,13 +44,13 @@ these scripts locally.
 | Order, titles and leads of sections | `_data/sections.json` | `index.html` |
 | Problems it solves | `_data/problems.json` | `_includes/sections/problems.html`, `assets/js/components/problem-comparison.js` |
 | Annotated example action | `_data/concept.json` | `_includes/sections/concept.html`, `assets/js/components/action-anatomy.js` |
-| One action in every channel | `_data/channels.json` | `_includes/sections/channels.html`, `assets/js/components/channel-entry.js` |
-| Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/stack.js` |
-| Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/calculator.js` |
+| One action in every channel | `_data/channels.json` | `_includes/sections/channels.html`, `assets/js/components/channel-tabs.js` |
+| Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/components/stack-explorer.js` |
+| Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/components/scope-calculator.js` |
 | Use cases | `_data/use_cases.json` | `_includes/sections/use-cases.html` |
-| Screenshots | `_data/screenshots.json`, `images/` | `_includes/screenshot.html`, `_includes/sections/in-action.html` |
+| Screenshots | `_data/screenshots.json`, `images/` | `_includes/screenshot.html`, `_includes/sections/in-action.html`, `assets/js/components/screen-shot.js`, `zoom-viewer.js` |
 | Guide for extension developers | `_data/extend.json` | `_includes/sections/build.html` |
-| Diagrams and reference tables | `_data/deep_dive.json` | `_includes/sections/deep-dive.html` |
+| Diagrams and reference tables | `_data/deep_dive.json` | `_includes/sections/deep-dive.html`, `assets/js/components/mermaid-diagram.js` |
 | Patch chain and issues | `_data/patches.json`, `_data/issues.json` | `_includes/sections/status.html` |
 
 Styles are split per component in `_sass/_<component>.scss` and imported by
@@ -73,8 +73,11 @@ styles cannot leak into the rest of the page or be broken by it:
 - Font sizes use the type scale in `_sass/_base.scss` (`--font-size-base`,
   `--font-size-text`, `--font-size-small`, `--font-size-label`), also inside
   components; do not introduce new pixel sizes for text.
-- Keep content visible. Do not hide it behind tabs, accordions or `<details>`;
-  readers rarely open them. Use headings, lists and side-by-side layouts instead.
+- Keep content visible where it fits; avoid accordions and `<details>`, readers
+  rarely open them. Where variants of the same thing would take too much room
+  (like the channels of the example action), use tabs that invite a click:
+  cards that say what is behind them, and a link to the next one, see
+  `assets/js/components/channel-tabs.js`.
 - Code snippets always go through `_includes/code.html`, which renders
   `<code-block>` (highlighting theme, copy button, marks).
 - Lit is vendored as `assets/vendor/lit-core.min.js` (3.3.1, from
@@ -86,7 +89,8 @@ The remaining scripts (`stack.js`, `calculator.js`, `tabs.js`, …) are plain
 modules and are moved to components step by step.
 
 A new section needs an entry in `_data/sections.json` and a template
-`_includes/sections/<id>.html`; the sidebar is built automatically.
+`_includes/sections/<id>.html`; the sidebar (`assets/js/components/page-navigation.js`)
+lists every `h2` and `h3` with an id automatically.
 
 ## Accuracy
 
