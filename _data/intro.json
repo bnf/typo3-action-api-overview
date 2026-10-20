@@ -1,0 +1,54 @@
+{
+  "headline": "The TYPO3 Action API",
+  "headline_accent": "A typed API for the backend, integrations and AI agents.",
+  "lead": "An action is a typed PHP method that the TYPO3 backend, external applications and AI agents can call. TYPO3 validates input and output, documents the action and checks access; no controller is needed.",
+  "target_version": "TYPO3 v15",
+  "code": {
+    "language": "php",
+    "code": "#[AsAction(\n    type: ActionType::fetch,\n    name: 'my-extension/page/{uid}/titles',\n    summary: 'Fetch the titles of a page',\n    scopes: [ContentReadScope::class],\n)]\npublic function titles(int $uid): array\n{\n    // your business logic\n}"
+  },
+  "channels": [
+    {
+      "channel": "js",
+      "icon": "UI",
+      "title": "TYPO3 backend",
+      "text": "JavaScript client, replaces AJAX routes"
+    },
+    {
+      "channel": "http",
+      "icon": "API",
+      "title": "External applications",
+      "text": "HTTP + JSON, OAuth 2.0 or token"
+    },
+    {
+      "channel": "openapi",
+      "icon": "DOC",
+      "title": "API documentation",
+      "text": "OpenAPI 3.1 and Swagger UI"
+    },
+    {
+      "channel": "mcp",
+      "icon": "AI",
+      "title": "AI agents",
+      "text": "MCP tools, over HTTP or stdio"
+    }
+  ],
+  "facts": [
+    {
+      "title": "One implementation",
+      "text": "One PHP method serves the backend, integrations and AI agents."
+    },
+    {
+      "title": "Typed and validated",
+      "text": "JSON Schema derived from PHP types; input and output are checked."
+    },
+    {
+      "title": "Runs as the user",
+      "text": "Backend permissions apply; scopes limit what an app may do."
+    },
+    {
+      "title": "MCP built in",
+      "text": "A built-in MCP server offers every action as a tool."
+    }
+  ]
+}

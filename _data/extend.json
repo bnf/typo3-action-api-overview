@@ -1,0 +1,52 @@
+{
+  "intro": "An action is a method of a regular service in your extension. With the default `Configuration/Services.yaml` of an extension, nothing needs to be registered: the attribute is picked up automatically.",
+  "steps": [
+    {
+      "title": "Add the attribute",
+      "text": "Mark a public method with `#[AsAction]`, give it a name and pick an existing scope such as `content:read`."
+    },
+    {
+      "title": "Type input and output",
+      "text": "Typed parameters and a precise PHPDoc return type become the JSON Schema. Values are validated and converted for you."
+    },
+    {
+      "title": "Declare errors",
+      "text": "Throw `NotFoundError` or `PermissionDeniedError` and declare each one with `@throws`."
+    }
+  ],
+  "action_example": {
+    "language": "php",
+    "code": "namespace MyVendor\\MyExtension\\Action;\n\nuse MyVendor\\MyExtension\\Domain\\NewsRepository;\nuse TYPO3\\CMS\\Core\\Action\\Error\\NotFoundError;\nuse TYPO3\\CMS\\Core\\Attribute\\AsAction;\nuse TYPO3\\CMS\\Core\\Scope\\ContentReadScope;\n\nfinal readonly class NewsActions\n{\n    public function __construct(\n        private NewsRepository $newsRepository,\n    ) {}\n\n    /**\n     * @return list<array{uid: int, title: string, date: string}>\n     */\n    #[AsAction(\n        name: 'my-extension/news/latest',\n        summary: 'Fetch the latest news',\n        scopes: [ContentReadScope::class],\n    )]\n    public function latest(int $limit = 10): array\n    {\n        return $this->newsRepository->findLatest($limit);\n    }\n\n    /**\n     * @return array{uid: int, title: string, teaser: string}\n     * @throws NotFoundError if the news record does not exist\n     */\n    #[AsAction(\n        name: 'my-extension/news/{uid}',\n        summary: 'Fetch a news record',\n        scopes: [ContentReadScope::class],\n    )]\n    public function show(int $uid): array\n    {\n        return $this->newsRepository->findByUid($uid)\n            ?? throw new NotFoundError('News not found', 1792000001);\n    }\n}"
+  },
+  "results_intro": "No further code is needed. Both methods are available as follows:",
+  "results": [
+    {
+      "channel": "Backend JavaScript",
+      "value": "`action('/my-extension/news/latest', {}).get()`"
+    },
+    {
+      "channel": "HTTP API",
+      "value": "`GET /typo3/api/my-extension/news/latest?limit=5` and `GET /typo3/api/my-extension/news/42`"
+    },
+    {
+      "channel": "OpenAPI",
+      "value": "Both operations with parameters, response schemas and the documented `404`"
+    },
+    {
+      "channel": "MCP tools",
+      "value": "`fetch_my_extension_news_latest` and `fetch_my_extension_news_by_uid`, for every client that holds `content:read`"
+    },
+    {
+      "channel": "Validation",
+      "value": "`limit` must be an integer, results must match the declared array shapes"
+    }
+  ],
+  "scope": {
+    "title": "Optional: a scope of your own",
+    "text": "The scopes shipped with TYPO3 cover most cases. If an app should be able to get access to your actions separately, register a scope and reference its class in `scopes`.",
+    "example": {
+      "language": "php",
+      "code": "use Symfony\\Component\\DependencyInjection\\Attribute\\AsTaggedItem;\nuse TYPO3\\CMS\\Core\\Scope\\ScopeInterface;\nuse TYPO3\\CMS\\Core\\Scope\\ScopeUser;\n\n#[AsTaggedItem(index: 'my-extension:news:read')]\nfinal class NewsReadScope implements ScopeInterface\n{\n    public function getName(): string { return 'Read access to news'; }\n    public function getDescription(): string { return 'Read news records.'; }\n    public function getIcon(): string { return 'content-news'; }\n\n    // Decides whether a user may hold this scope at all\n    public function allowedForUser(ScopeUser $user): bool { return true; }\n}"
+    }
+  }
+}
