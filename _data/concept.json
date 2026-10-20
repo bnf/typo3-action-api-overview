@@ -2,7 +2,7 @@
   "hint": "Hover over or tap a highlighted part to see what TYPO3 derives from the part.",
   "code": {
     "language": "php",
-    "code": "final readonly class PageTitleAction\n{\n    /**\n     * @return list<string>\n     * @throws NotFoundError if the page does not exist\n     */\n    #[AsAction(\n        type: ActionType::fetch,\n        name: 'my-extension/page/{uid}/titles',\n        summary: 'Fetch the titles of a page',\n        scopes: [ContentReadScope::class],\n    )]\n    public function titles(\n        int $uid,\n        ActionContext $context,\n    ): array {\n        // …\n        throw new NotFoundError('Page not found', 1791975434);\n    }\n}"
+    "code": "final readonly class PageTitleAction\n{\n    public function __construct(\n        private PageTitleRepository $pageTitles,\n    ) {}\n\n    /**\n     * @return list<string>\n     * @throws NotFoundError if the page does not exist\n     */\n    #[AsAction(\n        type: ActionType::fetch,\n        name: 'my-extension/page/{uid}/titles',\n        summary: 'Fetch the titles of a page',\n        scopes: [ContentReadScope::class],\n    )]\n    public function titles(\n        int $uid,\n        ActionContext $context,\n    ): array {\n        $titles = $this->pageTitles->findByPage($uid);\n        if ($titles === []) {\n            throw new NotFoundError('Page not found', 1791975434);\n        }\n        return $titles;\n    }\n}"
   },
   "parts": [
     {
