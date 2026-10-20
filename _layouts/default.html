@@ -5,107 +5,738 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ page.title | default: site.title }}</title>
   <meta name="description" content="{{ site.description | strip }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #ffffff;
-      --fg: #1f2328;
-      --muted: #59636e;
-      --border: #d1d9e0;
-      --code-bg: #f6f8fa;
+      --bg: #f7f7f8;
+      --surface: #ffffff;
+      --surface-2: #f1f2f4;
+      --fg: #1d1f23;
+      --muted: #5c6370;
+      --border: #e2e4e8;
       --accent: #ff8700;
-      --link: #0969da;
+      --accent-strong: #e66b00;
+      --accent-soft: #fff3e6;
+      --link: #c25400;
+      --code-bg: #1e2329;
+      --code-fg: #e6e8eb;
+      --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 16px rgb(16 24 40 / 6%);
+      --sidebar-width: 280px;
+      --topbar-height: 56px;
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0d1117;
-        --fg: #e6edf3;
-        --muted: #9198a1;
-        --border: #3d444d;
-        --code-bg: #151b23;
-        --link: #4493f8;
+        --bg: #111316;
+        --surface: #191c20;
+        --surface-2: #22262b;
+        --fg: #e7e9ec;
+        --muted: #9aa1ac;
+        --border: #2e333a;
+        --accent-soft: #3a2611;
+        --link: #ffa64d;
+        --code-bg: #0b0d10;
+        --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 16px rgb(0 0 0 / 25%);
       }
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-height) + 16px); }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--fg);
-      font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      font: 17px/1.65 "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
     }
-    main {
-      max-width: 920px;
-      margin: 0 auto;
-      padding: 32px 16px 64px;
+    a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+    /* Top bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      height: var(--topbar-height);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
     }
-    h1 { border-top: 6px solid var(--accent); padding-top: 24px; font-size: 2.2em; margin-top: 0; }
-    h2 { border-bottom: 1px solid var(--border); padding-bottom: .3em; margin-top: 2em; }
-    a { color: var(--link); }
-    hr { border: 0; border-top: 1px solid var(--border); margin: 2.5em 0; }
-    blockquote {
-      margin: 1em 0;
-      padding: .5em 1em;
-      border-left: 4px solid var(--accent);
+    .topbar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--fg);
+      text-decoration: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-mark {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .topbar .spacer { flex: 1; }
+    .topbar .epic {
+      font-size: 14px;
       color: var(--muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 12px;
+      white-space: nowrap;
     }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size: .875em;
+    .topbar .epic:hover { border-color: var(--accent); color: var(--fg); }
+    .menu-toggle {
+      display: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      border-radius: 8px;
+      width: 38px;
+      height: 38px;
+      font-size: 18px;
+      cursor: pointer;
     }
+
+    /* Layout */
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    .sidebar {
+      position: sticky;
+      top: var(--topbar-height);
+      height: calc(100vh - var(--topbar-height));
+      overflow-y: auto;
+      padding: 28px 16px 28px 20px;
+      border-right: 1px solid var(--border);
+    }
+    .sidebar .label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 0 10px 12px;
+    }
+    .sidebar ol { list-style: none; margin: 0; padding: 0; }
+    .sidebar li a {
+      display: block;
+      padding: 6px 12px;
+      border-radius: 8px;
+      color: var(--fg);
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.35;
+      border-left: 3px solid transparent;
+    }
+    .sidebar li a:hover { background: var(--surface-2); }
+    .sidebar li a.active {
+      background: var(--accent-soft);
+      border-left-color: var(--accent);
+      font-weight: 600;
+    }
+    .sidebar li.sub a { padding-left: 28px; font-size: 14px; color: var(--muted); }
+    .sidebar li.sub a.active { color: var(--fg); }
+    .sidebar .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+
+    /* Content */
+    .content {
+      min-width: 0;
+      padding: 40px 48px 80px;
+      max-width: 940px;
+    }
+    .content > h1:first-child {
+      font-size: 2.6em;
+      line-height: 1.15;
+      margin: 0 0 .3em;
+      letter-spacing: -.01em;
+    }
+    .content > h1:first-child + p {
+      font-size: 1.25em;
+      color: var(--muted);
+      margin-top: 0;
+    }
+    .content > h1:first-child + p em { font-style: normal; }
+    .content h2 {
+      font-size: 1.75em;
+      line-height: 1.25;
+      margin: 0 0 .6em;
+      padding-top: .2em;
+    }
+    .content h3 { font-size: 1.25em; margin: 1.8em 0 .5em; }
+    .content h2, .content h3 { position: relative; }
+    .anchor {
+      position: absolute;
+      left: -1em;
+      padding-right: .3em;
+      color: var(--muted);
+      text-decoration: none;
+      opacity: 0;
+      transition: opacity .15s;
+    }
+    h2:hover .anchor, h3:hover .anchor { opacity: 1; }
+    .content hr { border: 0; margin: 56px 0 40px; height: 1px; background: var(--border); }
+    #contents, #contents + ol { display: none; }
+
+    blockquote {
+      margin: 1.5em 0;
+      padding: 14px 18px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      background: var(--accent-soft);
+    }
+    blockquote p { margin: 0; }
+
+    code, pre { font-family: "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
     :not(pre) > code {
-      background: var(--code-bg);
-      padding: .15em .35em;
-      border-radius: 4px;
-    }
-    pre {
-      background: var(--code-bg);
+      font-size: .86em;
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px 16px;
+      padding: .08em .35em;
+      border-radius: 5px;
+      overflow-wrap: anywhere;
+    }
+    div.highlighter-rouge { position: relative; margin: 1.2em 0; }
+    pre.highlight, .content > pre {
+      margin: 0;
+      background: var(--code-bg);
+      color: var(--code-fg);
+      border-radius: 12px;
+      padding: 16px 20px;
       overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      box-shadow: var(--shadow);
     }
-    pre.mermaid {
-      background: #ffffff;
-      text-align: center;
+    .copy {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      border: 1px solid rgb(255 255 255 / 15%);
+      background: rgb(255 255 255 / 8%);
+      color: #c9ced6;
+      border-radius: 6px;
+      font: 600 12px "Source Sans 3", sans-serif;
+      padding: 3px 9px;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity .15s;
     }
+    div.highlighter-rouge:hover .copy, .copy:focus { opacity: 1; }
+    /* Rouge tokens */
+    .highlight .c, .highlight .c1, .highlight .cm, .highlight .cd, .highlight .cs { color: #7f8896; font-style: italic; }
+    .highlight .k, .highlight .kd, .highlight .kn, .highlight .kr, .highlight .kc { color: #ff9e64; }
+    .highlight .kt, .highlight .nc, .highlight .nn { color: #7dcfff; }
+    .highlight .nf, .highlight .fm { color: #9ece6a; }
+    .highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sd, .highlight .se { color: #e0c27a; }
+    .highlight .mi, .highlight .mf, .highlight .m { color: #bb9af7; }
+    .highlight .nv, .highlight .vi { color: #f7768e; }
+    .highlight .na, .highlight .nl, .highlight .nt { color: #7aa2f7; }
+    .highlight .nb, .highlight .bp { color: #2ac3de; }
+    .highlight .o, .highlight .p { color: #b4bac4; }
+
     table {
-      border-collapse: collapse;
-      display: block;
-      overflow-x: auto;
-      margin: 1em 0;
-    }
-    th, td { border: 1px solid var(--border); padding: 6px 12px; text-align: left; vertical-align: top; }
-    th { background: var(--code-bg); }
-    img {
-      max-width: 100%;
-      height: auto;
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 1.4em 0;
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      display: block;
-      margin: 1em auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      font-size: 15.5px;
     }
-    footer { color: var(--muted); font-size: .875em; margin-top: 4em; }
+    .table-wrap { overflow-x: auto; }
+    th, td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+    tr:last-child td { border-bottom: 0; }
+    th { background: var(--surface-2); font-weight: 700; }
+
+    /* Figures and diagrams */
+    figure {
+      margin: 1.8em 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    figure .frame {
+      position: relative;
+      cursor: zoom-in;
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    figure.screenshot .frame { padding: 0; background: var(--surface-2); }
+    figure img { display: block; max-width: 100%; height: auto; max-height: 720px; }
+    figure .frame svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+    figure figcaption {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+    .zoom-hint {
+      flex: none;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--fg);
+      border-radius: 999px;
+      padding: 2px 12px;
+      font: 600 13px "Source Sans 3", sans-serif;
+      cursor: pointer;
+    }
+    .zoom-hint:hover { border-color: var(--accent); }
+    pre.mermaid { visibility: hidden; margin: 0; width: 100%; }
+
+    /* Viewer */
+    .viewer {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      background: rgb(10 12 15 / 82%);
+      backdrop-filter: blur(4px);
+    }
+    .viewer.open { display: block; }
+    .viewer .stage {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      cursor: grab;
+      touch-action: none;
+    }
+    .viewer .stage.dragging { cursor: grabbing; }
+    .viewer .canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: 0 0;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgb(0 0 0 / 40%);
+    }
+    .viewer .canvas.image { padding: 0; overflow: hidden; }
+    .viewer .canvas svg, .viewer .canvas img { display: block; max-width: none !important; }
+    .viewer .toolbar {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      display: flex;
+      gap: 6px;
+      z-index: 1;
+    }
+    .viewer .toolbar button {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid rgb(255 255 255 / 18%);
+      background: rgb(30 34 40 / 90%);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .viewer .toolbar button:hover { background: var(--accent-strong); border-color: var(--accent-strong); }
+    .viewer .help {
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #c9ced6;
+      font-size: 14px;
+      background: rgb(30 34 40 / 80%);
+      padding: 6px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    /* Mobile */
+    @media (max-width: 960px) {
+      .layout { display: block; }
+      .menu-toggle { display: inline-grid; place-items: center; }
+      .sidebar {
+        position: fixed;
+        z-index: 20;
+        top: var(--topbar-height);
+        left: 0;
+        width: min(320px, 86vw);
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        transform: translateX(-105%);
+        transition: transform .2s ease;
+      }
+      body.nav-open .sidebar { transform: none; }
+      .content { padding: 28px 16px 64px; }
+      .content > h1:first-child { font-size: 2em; }
+      .anchor { display: none; }
+      .topbar .epic { display: none; }
+      .viewer .help { display: none; }
+    }
   </style>
 </head>
 <body>
-  <main>
-    {{ content }}
-    <footer>
-      <p>TYPO3 Action API, epic <a href="https://forge.typo3.org/issues/111053">#111053</a>.</p>
-    </footer>
-  </main>
+  <header class="topbar">
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <a class="brand" href="#top"><span class="brand-mark">T3</span>{{ site.title }}</a>
+    <span class="spacer"></span>
+    <a class="epic" href="https://forge.typo3.org/issues/111053">Epic #111053</a>
+  </header>
+  <div class="layout" id="top">
+    <nav class="sidebar" aria-label="Contents">
+      <p class="label">Contents</p>
+      <ol></ol>
+    </nav>
+    <main class="content">
+      {{ content }}
+      <footer>
+        TYPO3 Action API · Epic <a href="https://forge.typo3.org/issues/111053">#111053</a> on forge.typo3.org
+      </footer>
+    </main>
+  </div>
+
+  <div class="viewer" role="dialog" aria-modal="true" aria-label="Zoomed view">
+    <div class="stage"><div class="canvas"></div></div>
+    <div class="toolbar">
+      <button type="button" data-zoom="in" title="Zoom in">+</button>
+      <button type="button" data-zoom="out" title="Zoom out">−</button>
+      <button type="button" data-zoom="fit" title="Fit to screen">⤢</button>
+      <button type="button" data-zoom="close" title="Close (Esc)">✕</button>
+    </div>
+    <div class="help">Scroll or pinch to zoom · drag to move · double-click to fit · Esc to close</div>
+  </div>
+
   <script type="module">
     import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
 
-    // kramdown renders ```mermaid blocks as highlighted code; turn them into mermaid diagrams
-    for (const block of document.querySelectorAll('div.language-mermaid, pre > code.language-mermaid')) {
+    const content = document.querySelector('.content');
+
+    // Sidebar navigation, built from the headings of the document
+    const navList = document.querySelector('.sidebar ol');
+    let chapter = 0;
+    const navLinks = [];
+    for (const heading of content.querySelectorAll('h2[id], h3[id]')) {
+      if (heading.id === 'contents') {
+        continue;
+      }
+      const anchor = document.createElement('a');
+      anchor.className = 'anchor';
+      anchor.href = '#' + heading.id;
+      anchor.textContent = '#';
+      anchor.setAttribute('aria-hidden', 'true');
+      heading.prepend(anchor);
+
+      const item = document.createElement('li');
+      const link = document.createElement('a');
+      link.href = '#' + heading.id;
+      if (heading.tagName === 'H2') {
+        chapter++;
+        const num = document.createElement('span');
+        num.className = 'num';
+        num.textContent = String(chapter).padStart(2, '0');
+        link.append(num);
+      } else {
+        item.className = 'sub';
+      }
+      link.append(heading.textContent.replace(/^#/, ''));
+      item.append(link);
+      navList.append(item);
+      navLinks.push({ heading, link });
+    }
+
+    const setActive = () => {
+      let current = navLinks[0];
+      for (const entry of navLinks) {
+        if (entry.heading.getBoundingClientRect().top < 140) {
+          current = entry;
+        }
+      }
+      for (const entry of navLinks) {
+        entry.link.classList.toggle('active', entry === current);
+      }
+    };
+    document.addEventListener('scroll', setActive, { passive: true });
+    setActive();
+
+    const toggle = document.querySelector('.menu-toggle');
+    toggle.addEventListener('click', () => {
+      const open = document.body.classList.toggle('nav-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    navList.addEventListener('click', (event) => {
+      if (event.target.closest('a')) {
+        document.body.classList.remove('nav-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Copy buttons for code blocks
+    for (const block of content.querySelectorAll('div.highlighter-rouge:not(.language-mermaid)')) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'copy';
+      button.textContent = 'Copy';
+      button.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(block.querySelector('code').textContent);
+        button.textContent = 'Copied';
+        setTimeout(() => { button.textContent = 'Copy'; }, 1500);
+      });
+      block.append(button);
+    }
+
+    // Wide tables scroll horizontally on small screens
+    for (const table of content.querySelectorAll('table')) {
+      const wrap = document.createElement('div');
+      wrap.className = 'table-wrap';
+      table.replaceWith(wrap);
+      wrap.append(table);
+    }
+
+    const createFigure = (className, element, caption) => {
+      const figure = document.createElement('figure');
+      figure.className = className;
+      const frame = document.createElement('div');
+      frame.className = 'frame';
+      frame.append(element);
+      const figcaption = document.createElement('figcaption');
+      const text = document.createElement('span');
+      text.textContent = caption;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'zoom-hint';
+      button.textContent = 'Enlarge';
+      figcaption.append(text, button);
+      figure.append(frame, figcaption);
+      frame.addEventListener('click', () => openViewer(element));
+      button.addEventListener('click', () => openViewer(element));
+      return figure;
+    };
+
+    // Screenshots as figures, captioned with their alt text
+    for (const image of content.querySelectorAll('p > img:only-child')) {
+      image.loading = 'lazy';
+      const paragraph = image.parentElement;
+      paragraph.replaceWith(createFigure('screenshot', image, image.alt));
+    }
+
+    // kramdown renders ```mermaid blocks as highlighted code; turn them into diagrams
+    for (const block of content.querySelectorAll('div.language-mermaid, pre > code.language-mermaid')) {
       const target = block.matches('code') ? block.parentElement : block;
       const diagram = document.createElement('pre');
       diagram.className = 'mermaid';
       diagram.textContent = block.textContent;
-      target.replaceWith(diagram);
+      const source = diagram.textContent.trimStart();
+      const caption = source.startsWith('sequenceDiagram') ? 'Sequence diagram' : 'Diagram';
+      target.replaceWith(createFigure('diagram', diagram, caption));
     }
-    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'base',
+      fontFamily: '"Source Sans 3", sans-serif',
+      sequence: { actorFontSize: 16, messageFontSize: 16, noteFontSize: 15 },
+      flowchart: { useMaxWidth: true },
+      themeVariables: {
+        primaryColor: '#fff3e6',
+        primaryBorderColor: '#ff8700',
+        primaryTextColor: '#1d1f23',
+        lineColor: '#5c6370',
+        secondaryColor: '#eef4ff',
+        tertiaryColor: '#f6f7f9',
+        clusterBkg: '#fafafb',
+        clusterBorder: '#d5d8de',
+        noteBkgColor: '#fff8d6',
+        noteBorderColor: '#e8cf6a',
+        actorBkg: '#fff3e6',
+        actorBorder: '#ff8700',
+        signalColor: '#3b4048',
+        signalTextColor: '#1d1f23',
+        labelBoxBkgColor: '#ffffff',
+        labelBoxBorderColor: '#d5d8de',
+        fontSize: '15px',
+      },
+    });
+    // Mermaid measures labels when rendering, so the web font has to be available first
+    await document.fonts.load('400 15px "Source Sans 3"');
+    await document.fonts.ready;
     await mermaid.run({ querySelector: 'pre.mermaid' });
+    for (const diagram of content.querySelectorAll('pre.mermaid')) {
+      diagram.style.visibility = 'visible';
+    }
+
+    // Zoom and pan viewer for diagrams and screenshots
+    const viewer = document.querySelector('.viewer');
+    const stage = viewer.querySelector('.stage');
+    const canvas = viewer.querySelector('.canvas');
+    let state = { scale: 1, x: 0, y: 0 };
+    let shown = null;
+    let placeholder = null;
+    let natural = { width: 0, height: 0 };
+
+    const apply = () => {
+      canvas.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+    };
+    const fit = () => {
+      const box = stage.getBoundingClientRect();
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+      const top = 72;
+      const bottom = 56;
+      const scale = Math.min((box.width - 48) / width, (box.height - top - bottom) / height);
+      state = {
+        scale,
+        x: (box.width - width * scale) / 2,
+        y: top + (box.height - top - bottom - height * scale) / 2,
+      };
+      apply();
+    };
+    const zoomAt = (factor, clientX, clientY) => {
+      const scale = Math.min(Math.max(state.scale * factor, 0.1), 12);
+      const real = scale / state.scale;
+      state.x = clientX - (clientX - state.x) * real;
+      state.y = clientY - (clientY - state.y) * real;
+      state.scale = scale;
+      apply();
+    };
+
+    function openViewer(element) {
+      canvas.replaceChildren();
+      canvas.classList.toggle('image', element.tagName === 'IMG');
+      if (element.tagName === 'IMG') {
+        const image = new Image();
+        image.src = element.currentSrc || element.src;
+        image.alt = element.alt;
+        image.width = element.naturalWidth;
+        image.height = element.naturalHeight;
+        canvas.append(image);
+      } else {
+        const svg = element.querySelector('svg');
+        // Move the rendered SVG instead of cloning it, so its scoped styles keep applying
+        placeholder = document.createElement('div');
+        placeholder.style.height = svg.getBoundingClientRect().height + 'px';
+        svg.replaceWith(placeholder);
+        shown = svg;
+        const viewBox = svg.viewBox.baseVal;
+        natural = { width: svg.style.width, height: svg.style.height, maxWidth: svg.style.maxWidth };
+        svg.style.maxWidth = 'none';
+        svg.style.width = viewBox.width + 'px';
+        svg.style.height = viewBox.height + 'px';
+        canvas.append(svg);
+      }
+      viewer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(fit);
+    }
+
+    function closeViewer() {
+      if (shown) {
+        shown.style.width = natural.width;
+        shown.style.height = natural.height;
+        shown.style.maxWidth = natural.maxWidth;
+        placeholder.replaceWith(shown);
+        shown = null;
+        placeholder = null;
+      }
+      canvas.replaceChildren();
+      viewer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    stage.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      zoomAt(Math.exp(-event.deltaY * 0.0015), event.clientX, event.clientY);
+    }, { passive: false });
+
+    const pointers = new Map();
+    let pinchDistance = 0;
+    stage.addEventListener('pointerdown', (event) => {
+      stage.setPointerCapture(event.pointerId);
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      stage.classList.add('dragging');
+    });
+    stage.addEventListener('pointermove', (event) => {
+      const previous = pointers.get(event.pointerId);
+      if (!previous) {
+        return;
+      }
+      const current = { x: event.clientX, y: event.clientY };
+      pointers.set(event.pointerId, current);
+      if (pointers.size === 2) {
+        const [a, b] = [...pointers.values()];
+        const distance = Math.hypot(a.x - b.x, a.y - b.y);
+        if (pinchDistance > 0) {
+          zoomAt(distance / pinchDistance, (a.x + b.x) / 2, (a.y + b.y) / 2);
+        }
+        pinchDistance = distance;
+        return;
+      }
+      state.x += current.x - previous.x;
+      state.y += current.y - previous.y;
+      apply();
+    });
+    const release = (event) => {
+      pointers.delete(event.pointerId);
+      pinchDistance = 0;
+      if (pointers.size === 0) {
+        stage.classList.remove('dragging');
+      }
+    };
+    stage.addEventListener('pointerup', release);
+    stage.addEventListener('pointercancel', release);
+    stage.addEventListener('dblclick', fit);
+
+    viewer.querySelector('.toolbar').addEventListener('click', (event) => {
+      const action = event.target.closest('button')?.dataset.zoom;
+      const box = stage.getBoundingClientRect();
+      if (action === 'in') zoomAt(1.4, box.width / 2, box.height / 2);
+      if (action === 'out') zoomAt(1 / 1.4, box.width / 2, box.height / 2);
+      if (action === 'fit') fit();
+      if (action === 'close') closeViewer();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (!viewer.classList.contains('open')) {
+        return;
+      }
+      if (event.key === 'Escape') closeViewer();
+      if (event.key === '+' || event.key === '=') zoomAt(1.4, innerWidth / 2, innerHeight / 2);
+      if (event.key === '-') zoomAt(1 / 1.4, innerWidth / 2, innerHeight / 2);
+      if (event.key === '0') fit();
+    });
+    window.addEventListener('resize', () => {
+      if (viewer.classList.contains('open')) {
+        fit();
+      }
+    });
   </script>
 </body>
 </html>
