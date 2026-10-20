@@ -21,7 +21,8 @@ concurrency: gh-pages
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    # No preview for forks and for the review pull request (scripts/update-review-branch.sh)
+    if: github.event_name == 'push' || (github.event.pull_request.head.repo.full_name == github.repository && github.head_ref != 'review-head')
     env:
       PREVIEW_PATH: pr-preview/pr-${{ github.event.pull_request.number }}
     steps:
@@ -32,12 +33,20 @@ jobs:
           ruby-version: '3.3'
           bundler-cache: true
 
+      # Commit and pull request of the build, for the comment links (site.build)
+      - name: Write build information
+        if: github.event.action != 'closed'
+        run: |
+          printf 'build:\n  revision: %s\n  pull_request: %s\n' "$REVISION" "$PULL_REQUEST" > _build.yml
+        env:
+          REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+          PULL_REQUEST: ${{ github.event.pull_request.number }}
       - name: Build site
         if: github.event_name == 'push'
-        run: bundle exec jekyll build --baseurl "/${{ github.event.repository.name }}"
+        run: bundle exec jekyll build --config _config.yml,_build.yml --baseurl "/${{ github.event.repository.name }}"
       - name: Build preview
         if: github.event_name == 'pull_request' && github.event.action != 'closed'
-        run: bundle exec jekyll build --baseurl "/${{ github.event.repository.name }}/${PREVIEW_PATH}"
+        run: bundle exec jekyll build --config _config.yml,_build.yml --baseurl "/${{ github.event.repository.name }}/${PREVIEW_PATH}"
       # The branch holds the built site, GitHub Pages must not run Jekyll again
       - run: touch _site/.nojekyll
         if: github.event.action != 'closed'

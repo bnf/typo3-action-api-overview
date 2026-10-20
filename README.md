@@ -51,3 +51,8 @@ the link is posted as a comment on the pull request and the preview is
 removed when it is closed. The workflow `.github/workflows/pages.yml` builds
 the site and publishes it to the `gh-pages` branch, which GitHub Pages serves
 (Settings › Pages › Deploy from a branch › `gh-pages`).
+
+Readers can comment on any text: select it on the site and click
+"Comment on GitHub". The link leads to the line in the diff of the pull
+request (in previews), to the line in the review pull request #14, or to a
+new issue. `AGENTS.md` describes how this works.
