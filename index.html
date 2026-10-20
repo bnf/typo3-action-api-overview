@@ -465,23 +465,10 @@
 
 <h3 id="scope-calculator">Try it: which scopes does an OAuth app get?</h3>
 <p>The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.</p>
-<div class="calc">
-  <div class="calc-label">Backend user who grants access</div>
-  <div class="users"></div>
-  <div class="matrix-wrap">
-    <table class="matrix">
-      <thead>
-        <tr>
-          <th>Scope</th><th>Requested<br>by the app</th><th></th><th>Configured<br>for the app</th><th></th><th>Allowed<br>for the user</th><th></th><th>Token</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <div class="calc-label calc-label-spaced">What the app can call</div>
-  <div class="actions-list"></div>
-  <p class="calc-note">Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.</p>
-</div>
+<scope-calculator>
+  <script type="application/json">{"title":"Try it: which scopes does an OAuth app get?","intro":"The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.","note":"Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/page/tree","scopes":["content:read"]},{"method":"PATCH","name":"Update a record","path":"/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/token/generate","scopes":["token:generate"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"]}]}</script>
+  <span slot="note">Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.</span>
+</scope-calculator>
 
 <h3 id="apps">Apps, tokens and consent</h3>
 <div class="table-wrap">
@@ -930,12 +917,6 @@
 
 </section>
 
-
-<script type="application/json" id="page-data">
-{
-  "calculator": {"title":"Try it: which scopes does an OAuth app get?","intro":"The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.","note":"Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/page/tree","scopes":["content:read"]},{"method":"PATCH","name":"Update a record","path":"/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/token/generate","scopes":["token:generate"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"]}]}
-}
-</script>
 
       <footer>
         TYPO3 Action API · Epic <a href="https://forge.typo3.org/issues/111053">#111053</a> on forge.typo3.org · Content from <code>_data/</code>
