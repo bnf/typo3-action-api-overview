@@ -267,8 +267,15 @@ Readers select a text on the site and click "Comment on GitHub"
 
 - in a preview, the line in the diff of the pull request, if the pull
   request changed the line; the comment is then part of the review,
-- otherwise a new issue with the quote, the section and a permalink to the
-  line.
+- otherwise a new issue with the quote, a link that shows the text on the
+  page (text fragment, with the section as fallback) and a permalink to the
+  line, which GitHub embeds as a code snippet.
+
+In both cases, a screenshot of the block around the selection, with the
+selection highlighted, goes to the clipboard, so that the reader can paste it
+into the comment. SnapDOM renders it; it is vendored as
+`assets/vendor/snapdom.mjs` (3.3.0, `dist/snapdom.mjs` of the npm package
+`@zumer/snapdom`, MIT) and loaded on the first selection.
 
 Handle these issues in normal pull requests and reference the issue in the
 commit message. The workflow `pages.yml` writes the commit and the pull
