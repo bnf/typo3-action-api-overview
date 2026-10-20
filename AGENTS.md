@@ -45,7 +45,7 @@ these scripts locally.
 | Problems it solves | `_data/problems.json` | `_includes/sections/problems.html`, `assets/js/components/problem-comparison.js` |
 | Annotated example action | `_data/concept.json` | `_includes/sections/concept.html`, `assets/js/components/action-anatomy.js` |
 | One action in every channel | `_data/channels.json` | `_includes/sections/channels.html` |
-| Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/stack.js` |
+| Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/components/stack-explorer.js` |
 | Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/calculator.js` |
 | Use cases | `_data/use_cases.json` | `_includes/sections/use-cases.html` |
 | Screenshots | `_data/screenshots.json`, `images/` | `_includes/screenshot.html`, `_includes/sections/in-action.html` |
