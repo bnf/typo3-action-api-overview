@@ -36,6 +36,8 @@ export class ProblemComparison extends LitElement {
     .rows { display: grid; gap: 12px; }
     @media (max-width: 760px) {
       .columns.heads { display: none; }
+      /* Stacked, the space between two problems must be larger than inside one problem */
+      .rows { gap: 36px; }
     }
   `];
 
@@ -104,7 +106,7 @@ export class ProblemItem extends LitElement {
     }
     .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
     @media (max-width: 760px) {
-      .arrow { height: 32px; transform: rotate(90deg); }
+      .arrow { height: 24px; font-size: 18px; transform: rotate(90deg); }
     }
   `];
 
