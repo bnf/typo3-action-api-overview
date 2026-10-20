@@ -33,8 +33,8 @@ const commentIcon = html`<svg viewBox="0 0 16 16" fill="currentColor" aria-hidde
  * Lets readers comment on a text of the page on GitHub, in two ways:
  *
  * - Select text: on screens with a mouse, a button appears at the selection;
- *   on touch screens, a bar at the bottom, because the browser shows its own
- *   menu at the selection.
+ *   on touch screens, a bar below the top bar, because the browser shows its
+ *   own menu at the selection and its own bars at the bottom.
  * - Comment mode (round button at the bottom right): click or tap a block
  *   (card, paragraph, table, component) to comment on the whole block.
  *
@@ -167,6 +167,12 @@ export class GithubComments extends LitElement {
       line-height: 1;
     }
     .primary:focus-visible, .close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .primary:disabled, .at-selection:disabled { opacity: .7; cursor: progress; }
+    /* On touch screens, the browser shows its own bars at the bottom during a selection (Google Lens) */
+    @media (pointer: coarse) {
+      .bar { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
+      .notice { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
+    }
     @media (max-width: 560px) {
       .bar { flex-wrap: wrap; padding: 12px; }
       .quote { flex-basis: 100%; }
@@ -246,9 +252,9 @@ export class GithubComments extends LitElement {
     const bar = this.mode || (this.current && (this.current.block || touch.matches));
     return html`
       ${this.position && !touch.matches && !this.mode ? html`
-        <button type="button" class="at-selection" style="left: ${this.position.x}px; top: ${this.position.y}px"
+        <button type="button" class="at-selection" ?disabled=${!this.current?.ready} style="left: ${this.position.x}px; top: ${this.position.y}px"
           @mousedown=${(event) => event.preventDefault()} @click=${this.comment}>
-          ${commentIcon} ${this.busy ? 'Opening GitHub…' : 'Comment on GitHub'}
+          ${commentIcon} ${this.label('Opening GitHub…')}
         </button>
       ` : nothing}
       ${this.hoverBox ? html`<div class="outline hover" style=${this.boxStyle(this.hoverBox)}></div>` : nothing}
@@ -261,13 +267,21 @@ export class GithubComments extends LitElement {
     `;
   }
 
+  // The buttons wait for the screenshot: copying it after GitHub opened in a new tab can fail
+  label(opening) {
+    if (this.busy) {
+      return opening;
+    }
+    return this.current?.ready ? 'Comment on GitHub' : 'Preparing screenshot…';
+  }
+
   renderBar() {
     return html`
       <div class="bar" role="region" aria-label="Comment on GitHub">
         ${this.current ? html`
           <span class="quote">“${this.current.text}”</span>
-          <button type="button" class="primary" @mousedown=${(event) => event.preventDefault()} @click=${this.comment}>
-            ${commentIcon} ${this.busy ? 'Opening…' : 'Comment on GitHub'}
+          <button type="button" class="primary" ?disabled=${!this.current.ready} @mousedown=${(event) => event.preventDefault()} @click=${this.comment}>
+            ${commentIcon} ${this.label('Opening…')}
           </button>
         ` : html`
           <span class="quote">Click or tap a block of the page to comment on it.</span>
@@ -335,9 +349,9 @@ export class GithubComments extends LitElement {
     const box = range.getBoundingClientRect();
     this.position = { x: box.left + box.width / 2 + scrollX, y: box.top + scrollY };
     const marks = [...range.getClientRects()];
-    const block = anchor.closest(blocks);
-    // Render the screenshot now: the click must write it to the clipboard without waiting
-    this.current = { text, anchor, screenshot: block ? this.capture(block, marks).catch(() => null) : null };
+    // A selection across several blocks shows the section around it, cut to the selection
+    const block = anchor.closest(blocks) ?? anchor.closest('section.chapter, .hero');
+    this.prepare({ text, anchor }, block, marks);
   }
 
   selectBlock(block) {
@@ -347,7 +361,22 @@ export class GithubComments extends LitElement {
     const parts = [heading, ...[...block.children].map((child) => clean(child.innerText))].filter((part) => part.length >= 3);
     const text = clean([heading, block.innerText].join(' '));
     this.hoverBox = null;
-    this.current = { text, parts, anchor: block, block, box: this.box(block), screenshot: this.capture(block, []).catch(() => null) };
+    this.prepare({ text, parts, anchor: block, block, box: this.box(block) }, block, []);
+  }
+
+  // Renders the screenshot before the click: the click must copy it without waiting
+  prepare(current, block, marks) {
+    const token = Symbol('selection');
+    this.current = { ...current, token, ready: !block, image: null };
+    if (!block) {
+      return;
+    }
+    this.capture(block, marks).catch(() => null).then((image) => {
+      // Only if the reader did not select something else in the meantime
+      if (this.current?.token === token) {
+        this.current = { ...this.current, ready: true, image };
+      }
+    });
   }
 
   // Renders a block and highlights the given client rects of a selection in it
@@ -385,12 +414,14 @@ export class GithubComments extends LitElement {
 
   // Writes the screenshot to the clipboard; must run during the click
   copyScreenshot() {
-    const screenshot = this.current?.screenshot;
-    if (!screenshot || !navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
-      return Promise.resolve(false);
+    const image = this.current?.image;
+    if (!image) {
+      return Promise.resolve('none');
     }
-    const blob = screenshot.then((value) => value ?? Promise.reject(new Error('No screenshot')));
-    return navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(() => true, () => false);
+    if (!navigator.clipboard?.write || typeof ClipboardItem === 'undefined') {
+      return Promise.resolve('failed');
+    }
+    return navigator.clipboard.write([new ClipboardItem({ 'image/png': image })]).then(() => 'copied', () => 'failed');
   }
 
   showNotice(text) {
@@ -438,7 +469,7 @@ export class GithubComments extends LitElement {
 
   async comment() {
     const current = this.current;
-    if (!current?.text) {
+    if (!current?.text || !current.ready) {
       return;
     }
     this.busy = true;
@@ -448,7 +479,8 @@ export class GithubComments extends LitElement {
     if (target) {
       target.opener = null;
     }
-    current.copied = await copied;
+    const copy = await copied;
+    current.copied = copy === 'copied';
     let url;
     try {
       url = await this.targetUrl(current);
@@ -464,9 +496,11 @@ export class GithubComments extends LitElement {
     } finally {
       this.busy = false;
       this.reset();
-      this.showNotice(current.copied
-        ? 'The screenshot is in the clipboard. Paste it into the comment on GitHub.'
-        : 'GitHub opens in a new tab.');
+      this.showNotice({
+        copied: 'The screenshot is in the clipboard. Paste it into the comment on GitHub.',
+        failed: 'Your browser did not let the page copy the screenshot. GitHub opens in a new tab.',
+        none: 'GitHub opens in a new tab.',
+      }[copy]);
     }
   }
 
