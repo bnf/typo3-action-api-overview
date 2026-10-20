@@ -33,8 +33,8 @@ const commentIcon = html`<svg viewBox="0 0 16 16" fill="currentColor" aria-hidde
  * Lets readers comment on a text of the page on GitHub, in two ways:
  *
  * - Select text: on screens with a mouse, a button appears at the selection;
- *   on touch screens, a bar at the bottom, because the browser shows its own
- *   menu at the selection.
+ *   on touch screens, a bar below the top bar, because the browser shows its
+ *   own menu at the selection and its own bars at the bottom.
  * - Comment mode (round button at the bottom right): click or tap a block
  *   (card, paragraph, table, component) to comment on the whole block.
  *
@@ -168,6 +168,11 @@ export class GithubComments extends LitElement {
     }
     .primary:focus-visible, .close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .primary:disabled, .at-selection:disabled { opacity: .7; cursor: progress; }
+    /* On touch screens, the browser shows its own bars at the bottom during a selection (Google Lens) */
+    @media (pointer: coarse) {
+      .bar { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
+      .notice { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
+    }
     @media (max-width: 560px) {
       .bar { flex-wrap: wrap; padding: 12px; }
       .quote { flex-basis: 100%; }
