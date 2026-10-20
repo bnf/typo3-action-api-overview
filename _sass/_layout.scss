@@ -13,35 +13,6 @@
   padding: 28px 16px 28px 20px;
   border-right: 1px solid var(--border);
 }
-.sidebar .label {
-  font-size: var(--font-size-label);
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0 0 10px 12px;
-}
-.sidebar ol { list-style: none; margin: 0; padding: 0; }
-.sidebar li a {
-  display: block;
-  padding: 6px 12px;
-  border-radius: 8px;
-  color: var(--fg);
-  text-decoration: none;
-  font-size: var(--font-size-text);
-  line-height: 1.35;
-  border-left: 3px solid transparent;
-}
-.sidebar li a:hover { background: var(--surface-2); }
-.sidebar li a.active {
-  background: var(--accent-soft);
-  border-left-color: var(--accent);
-  font-weight: 600;
-}
-.sidebar li.sub a { padding-left: 30px; font-size: var(--font-size-small); color: var(--muted); }
-.sidebar li.sub a.active { color: var(--fg); }
-.sidebar .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
-
 .content {
   min-width: 0;
   padding: 40px 48px 80px;
