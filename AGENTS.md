@@ -263,23 +263,16 @@ hand.
 
 Readers select a text on the site and click "Comment on GitHub"
 (`assets/js/components/github-comments.js`). The component finds the line in
-`_data/` that the text comes from and opens:
+`_data/` that the text comes from and opens
 
-1. in a preview, the line in the diff of the pull request, if the pull
-   request changed the line,
-2. otherwise the line in the review pull request #14
-   (`review-head` → `review-base`), whose diff shows every content file as
-   new; `.github/workflows/review-branch.yml` updates `review-head` after
-   every change of `_data/` on `main` (`scripts/update-review-branch.sh`),
-3. a new issue with the quote and a permalink, if the text is not in
-   `_data/` (labels in templates and components).
+- in a preview, the line in the diff of the pull request, if the pull
+  request changed the line; the comment is then part of the review,
+- otherwise a new issue with the quote, the section and a permalink to the
+  line.
 
-Never merge or close the review pull request, and never push to
-`review-base` or `review-head` by hand. Collect the comments of the review
-pull request and of issues, and handle them in normal pull requests. The
-number of the review pull request is `comments.review_pull_request` in
-`_config.yml`; the workflow `pages.yml` writes the commit and the pull
-request of each build to `_build.yml`.
+Handle these issues in normal pull requests and reference the issue in the
+commit message. The workflow `pages.yml` writes the commit and the pull
+request of each build to `_build.yml` (`site.build`) for the links.
 
 ### Notes for Claude Code cloud sessions
 

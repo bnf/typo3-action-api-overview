@@ -24,8 +24,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # No preview for forks and for the review pull request (scripts/update-review-branch.sh)
-    if: github.event_name == 'push' || (github.event.pull_request.head.repo.full_name == github.repository && github.head_ref != 'review-head')
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     env:
       PREVIEW_PATH: pr-preview/pr-${{ github.event.pull_request.number }}
     steps:
