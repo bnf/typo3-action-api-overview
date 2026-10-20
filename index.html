@@ -13,7 +13,7 @@
     } catch {}
   </script>
   <title>The TYPO3 Action API</title>
-  <meta name="description" content="One typed, self-describing API for the TYPO3 backend, external integrations and AI agents.">
+  <meta name="description" content="A typed API for the TYPO3 backend, external integrations and AI agents.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -34,8 +34,8 @@
     <main class="content">
       <section class="hero">
   <div class="eyebrow">Proposed for TYPO3 v15 · 13 changes on Gerrit</div>
-  <h1>One API for TYPO3.<br><span>Write it once, use it everywhere.</span></h1>
-  <p class="lead">The Action API turns a typed PHP method into a feature that the TYPO3 backend, external applications and AI agents can use: validated, documented and secured, without writing a single controller.</p>
+  <h1>The TYPO3 Action API <span>A typed API for the backend, integrations and AI agents.</span></h1>
+  <p class="lead">An action is a typed PHP method that the TYPO3 backend, external applications and AI agents can call. TYPO3 validates input and output, documents the action and checks access; no controller is needed.</p>
 
   <div class="hero-diagram">
     <code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#[AsAction(</span>
@@ -73,10 +73,10 @@
   </div>
 
   <div class="facts">
-    <div class="fact"><strong>Write once</strong><span>One PHP method serves the backend, integrations and AI agents.</span></div>
+    <div class="fact"><strong>One implementation</strong><span>One PHP method serves the backend, integrations and AI agents.</span></div>
     <div class="fact"><strong>Typed and validated</strong><span>JSON Schema derived from PHP types; input and output are checked.</span></div>
-    <div class="fact"><strong>Secure by design</strong><span>Runs as a backend user; scopes limit what an app may do.</span></div>
-    <div class="fact"><strong>AI-ready</strong><span>A built-in MCP server offers every action as a tool.</span></div>
+    <div class="fact"><strong>Runs as the user</strong><span>Backend permissions apply; scopes limit what an app may do.</span></div>
+    <div class="fact"><strong>MCP built in</strong><span>A built-in MCP server offers every action as a tool.</span></div>
   </div>
 </section>
 
@@ -84,7 +84,7 @@
 
 <section class="chapter" id="section-problems">
   <h2 id="problems">Problems it solves</h2>
-  <p class="section-lead">Today, every way of talking to TYPO3 is built separately. The Action API replaces these islands with one consistent model.</p>
+  <p class="section-lead">Today, each way of talking to TYPO3 is built separately. The Action API puts them on one common model.</p>
   <problem-comparison before="Today" after="With the Action API">
   <problem-item heading="Every backend feature has its own AJAX controller" label="With the Action API">
     <span slot="before">Each controller parses arguments, validates them and formats errors in its own way.</span>
@@ -102,13 +102,13 @@
     <span slot="before">Endpoints are documented by hand, if at all, and the documentation drifts from the code.</span>
     <span slot="after">An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI.</span>
   </problem-item>
-  <problem-item heading="AI agents cannot work with TYPO3" label="With the Action API">
+  <problem-item heading="No standard interface for AI agents" label="With the Action API">
     <span slot="before">There is no safe, standard way for assistants to read or change content on behalf of an editor.</span>
     <span slot="after">A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes.</span>
   </problem-item>
   <problem-item heading="The same logic is wrapped again for every consumer" label="With the Action API">
     <span slot="before">Backend UI, integrations and automation each need their own glue code.</span>
-    <span slot="after">Write the feature once. Every channel is available automatically.</span>
+    <span slot="after">The feature is implemented once, as an action, and is available in every channel.</span>
   </problem-item>
 </problem-comparison>
 
@@ -156,10 +156,10 @@
 
 <section class="chapter" id="section-channels">
   <h2 id="channels">One action, every channel</h2>
-  <p class="section-lead">The example action above, as each consumer sees it. Nothing on this list requires additional code.</p>
+  <p class="section-lead">The example action above, as each consumer sees it. None of this requires additional code.</p>
   <channel-tabs>
   <div id="channel-js" data-label="Backend JavaScript" data-icon="UI" data-summary="Backend modules call actions instead of AJAX routes">
-    <p class="channel-intro">Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is never enough.</p>
+    <p class="channel-intro">Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is not sufficient.</p>
     <code-block><div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">action</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@typo3/core/action/request.js</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">action</span><span class="p">(</span><span class="dl">'</span><span class="s1">/my-extension/page/{uid}/titles</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">uid</span><span class="p">:</span> <span class="dl">'</span><span class="s1">42</span><span class="dl">'</span> <span class="p">}).</span><span class="kd">get</span><span class="p">();</span>
@@ -250,7 +250,7 @@
   <h2 id="stack">The stack</h2>
   <p class="section-lead">Six layers, each with one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step.</p>
   <stack-explorer>
-  <div data-layer-id="clients" data-name="Clients" data-tagline="Who calls" data-title="Clients: everyone talks to the same actions" data-items="[&quot;Backend UI&quot;,&quot;Scripts &amp; integrations&quot;,&quot;AI agents&quot;,&quot;Local coding agents&quot;]">
+  <div data-layer-id="clients" data-name="Clients" data-tagline="Who calls" data-title="Clients: all use the same actions" data-items="[&quot;Backend UI&quot;,&quot;Scripts &amp; integrations&quot;,&quot;AI agents&quot;,&quot;Local coding agents&quot;]">
     <p>The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.</p>
 
 <ul>
@@ -272,7 +272,7 @@
 
     <p class="meta">Components: <code>Backend authentication</code>, <code>AppResolver</code>, <code>OAuth 2.0 server</code>, <code>ScopeRegistry</code></p>
   </div>
-  <div data-layer-id="core" data-name="Action core" data-tagline="Check, validate, invoke" data-title="Action core: one place for the hard parts" data-items="[&quot;ActionRegistry&quot;,&quot;RequestHandler&quot;,&quot;ActionInvoker&quot;,&quot;JSON Schema&quot;]">
+  <div data-layer-id="core" data-name="Action core" data-tagline="Check, validate, invoke" data-title="Action core: checks, validation and invocation" data-items="[&quot;ActionRegistry&quot;,&quot;RequestHandler&quot;,&quot;ActionInvoker&quot;,&quot;JSON Schema&quot;]">
     <p>The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it</p>
 
 <ul>
@@ -291,7 +291,7 @@
 <p>TYPO3 provides actions for the dashboard, the page tree, file resources and records. Even the MCP server is an action. Extensions add their own.</p>
 
   </div>
-  <div data-layer-id="typo3" data-name="TYPO3" data-tagline="Where it happens" data-title="TYPO3: the familiar foundation" data-items="[&quot;DataHandler&quot;,&quot;Permissions&quot;,&quot;TcaSchema&quot;,&quot;Workspaces&quot;]">
+  <div data-layer-id="typo3" data-name="TYPO3" data-tagline="Where it happens" data-title="TYPO3: the regular APIs" data-items="[&quot;DataHandler&quot;,&quot;Permissions&quot;,&quot;TcaSchema&quot;,&quot;Workspaces&quot;]">
     <p>Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.</p>
 
 <p>Record schemas are derived from <code class="language-plaintext highlighter-rouge">TcaSchema</code>, so the API describes the content model of each installation.</p>
@@ -380,7 +380,7 @@
     <p>The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user.</p>
 
   </div>
-  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="protocols" data-item="MCP over HTTP" data-title="MCP is just another endpoint">
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="protocols" data-item="MCP over HTTP" data-title="MCP is an endpoint like any other">
     <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /typo3/api/mcp
 {"method": "tools/list", …}
 </code></pre></div></div>
@@ -492,12 +492,12 @@
 
 <section class="chapter" id="section-use-cases">
   <h2 id="use-cases">Use cases</h2>
-  <p class="section-lead">What becomes possible once features are actions.</p>
+  <p class="section-lead">What actions can be used for.</p>
   <div class="grid-3">
   <div class="card usecase">
     <div class="top"><span class="channel-tag">MCP · OAuth</span><span class="status wip">work in progress</span></div>
     <h4>AI assistants work with TYPO3</h4>
-    <p>Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with exactly their own permissions.</p>
+    <p>Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with their own permissions.</p>
     <div class="example">“Show my TYPO3 dashboard”</div>
     <div class="patch-links"><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224" title="[WIP][FEATURE] Implement MCP Server based on Actions API">92224</a><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/91486" title="[FEATURE] Implement API Hub">91486</a><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322" title="[WIP][TASK] Migrate Dashboard to Actions API">92322</a></div>
   </div>
@@ -531,7 +531,7 @@
   </div>
   <div class="card usecase">
     <div class="top"><span class="channel-tag">Extensions</span><span class="status wip">work in progress</span></div>
-    <h4>Extensions get an API for free</h4>
+    <h4>An API for extensions</h4>
     <p>An extension that adds <code class="language-plaintext highlighter-rouge">#[AsAction]</code> to a method gets an endpoint, documentation and an AI tool, and benefits from EXT:hub authorization.</p>
     <div class="example"><code class="language-plaintext highlighter-rouge">#[AsAction(name: 'news/latest')]</code></div>
     <div class="patch-links"><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563" title="[FEATURE] Introduce Action API">91563</a></div>
@@ -587,7 +587,7 @@
 
 <section class="chapter" id="section-build">
   <h2 id="build">Build your own action</h2>
-  <p class="section-lead">Turn a method of your extension into an action: an endpoint, documentation and an AI tool, in a few lines.</p>
+  <p class="section-lead">A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool.</p>
   <p>An action is a method of a regular service in your extension. With the default <code class="language-plaintext highlighter-rouge">Configuration/Services.yaml</code> of an extension, nothing needs to be registered: the attribute is picked up automatically.</p>
 <div class="grid-3">
   <div class="card"><h4>1 · Add the attribute</h4><p>Mark a public method with <code class="language-plaintext highlighter-rouge">#[AsAction]</code>, give it a name and pick an existing scope such as <code class="language-plaintext highlighter-rouge">content:read</code>.</p></div>
@@ -638,7 +638,7 @@
 </code></pre></div></div>
 </code-block>
 </div>
-<p class="spaced">That is all. Without further code, both methods are available:</p>
+<p class="spaced">No further code is needed. Both methods are available as follows:</p>
 <div class="table-wrap">
   <table class="plain">
     <tbody>
