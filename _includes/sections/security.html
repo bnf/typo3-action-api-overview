@@ -7,23 +7,10 @@
 
 <h3 id="scope-calculator">{{ security.calculator.title }}</h3>
 <p>{% include inline.html text=security.calculator.intro %}</p>
-<div class="calc">
-  <div class="calc-label">Backend user who grants access</div>
-  <div class="users"></div>
-  <div class="matrix-wrap">
-    <table class="matrix">
-      <thead>
-        <tr>
-          <th>Scope</th><th>Requested<br>by the app</th><th></th><th>Configured<br>for the app</th><th></th><th>Allowed<br>for the user</th><th></th><th>Token</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <div class="calc-label calc-label-spaced">What the app can call</div>
-  <div class="actions-list"></div>
-  <p class="calc-note">{% include inline.html text=security.calculator.note %}</p>
-</div>
+<scope-calculator>
+  <script type="application/json">{{ security.calculator | jsonify }}</script>
+  <span slot="note">{% include inline.html text=security.calculator.note %}</span>
+</scope-calculator>
 
 <h3 id="apps">{{ security.app_types.title }}</h3>
 <div class="table-wrap">

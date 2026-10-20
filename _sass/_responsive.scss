@@ -22,7 +22,7 @@
   .hero h1 { font-size: 2.2em; }
   .hero-diagram { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .hero-arrow { height: 48px; transform: rotate(90deg); }
-  .grid-2, .grid-3, .shield, .actions-list { grid-template-columns: minmax(0, 1fr); }
+  .grid-2, .grid-3, .shield { grid-template-columns: minmax(0, 1fr); }
   .layer { grid-template-columns: minmax(0, 1fr); }
   .anchor, .topbar .pill-link, .viewer .help { display: none; }
 }
