@@ -15,8 +15,11 @@ permissions:
   contents: write
   pull-requests: write
 
-# All jobs push to gh-pages, run them one after another
-concurrency: gh-pages
+# One group for main and one per pull request: a newer run replaces a waiting
+# run of the same group only, so closing a pull request cannot cancel the
+# deployment of main
+concurrency:
+  group: gh-pages-${{ github.event.pull_request.number || 'main' }}
 
 jobs:
   deploy:

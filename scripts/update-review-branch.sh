@@ -19,9 +19,10 @@ HEAD_BRANCH=review-head
 # Generated files are not content to comment on
 GENERATED='^_data/(patches|issues)\.json$'
 
-index=$(mktemp)
-trap 'rm -f "$index"' EXIT
-export GIT_INDEX_FILE=$index
+# A separate index; git refuses an empty file as index, so it must not exist yet
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+export GIT_INDEX_FILE=$tmp/index
 
 # Adds the content files of HEAD to the index
 add_content() {
