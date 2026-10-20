@@ -249,9 +249,12 @@ Every change, however small, goes through these steps:
    and posts the link as a comment. Open it and check the changed parts in
    the browser, desktop and narrow widths, before handing over. Point
    reviewers to it instead of describing visual changes. Previews are public.
-6. The maintainer reviews the preview and merges. Agents merge only when
-   asked to. After the merge, `main` is deployed to the root of the site and
-   the preview is removed.
+6. The maintainer reviews the pull request, its preview and the related
+   issues and review comments, and merges. Agents never merge on their own,
+   also not so that the maintainer can test a change on the live site, and
+   also not for a pull request that fixes an issue. A request to merge
+   applies only to the pull requests it names. After the merge, `main` is
+   deployed to the root of the site and the preview is removed.
 7. For follow-up work after a merge, start a new branch from `main`; never
    add commits to a merged branch.
 
@@ -281,8 +284,10 @@ into the comment. SnapDOM renders it; it is vendored as
 `assets/vendor/snapdom.mjs` (3.3.0, `dist/snapdom.mjs` of the npm package
 `@zumer/snapdom`, MIT) and loaded on the first selection.
 
-Handle these issues in normal pull requests and reference the issue in the
-commit message. The workflow `pages.yml` writes the commit and the pull
+Handle these issues in normal pull requests (see the steps above, the
+maintainer merges). Reference an issue with `Refs #<number>` in the commit
+message and the pull request, not with `Fixes` or `Closes`: the issue stays
+open until the maintainer has reviewed the result and closes it. The workflow `pages.yml` writes the commit and the pull
 request of each build to `_build.yml` (`site.build`) for the links.
 
 ### Notes for Claude Code cloud sessions
