@@ -2,18 +2,21 @@ import { LitElement, css, html } from 'lit';
 
 const storageKey = 'color-scheme';
 const systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+const systemScheme = () => (systemDark.matches ? 'dark' : 'light');
 
 /**
- * Toggles between "auto" (follow the system setting) and "inverse" (the
- * opposite of the system setting). The choice is stored per browser and
- * applied as <html data-color-scheme="inverse">, which _sass/_base.scss
- * evaluates; an inline script in _layouts/default.html sets it before the
- * page is rendered.
+ * Toggles between "auto" (follow the system setting) and the opposite of the
+ * current system setting, which is then fixed. Once the system setting
+ * changes to the fixed scheme, the page is back to "auto" and follows the
+ * system again. The fixed scheme is stored per browser and applied as
+ * <html data-color-scheme="light|dark">, which _sass/_base.scss evaluates;
+ * an inline script in _layouts/default.html sets it before the page is
+ * rendered.
  */
 export class ColorSchemeToggle extends LitElement {
   static properties = {
-    mode: { state: true },
-    dark: { state: true },
+    fixed: { state: true },
+    system: { state: true },
   };
 
   static styles = css`
@@ -39,9 +42,15 @@ export class ColorSchemeToggle extends LitElement {
 
   constructor() {
     super();
-    this.mode = document.documentElement.dataset.colorScheme === 'inverse' ? 'inverse' : 'auto';
-    this.dark = systemDark.matches !== (this.mode === 'inverse');
-    this.onSystemChange = () => { this.dark = systemDark.matches !== (this.mode === 'inverse'); };
+    this.system = systemScheme();
+    const fixed = document.documentElement.dataset.colorScheme;
+    this.fixed = fixed === 'light' || fixed === 'dark' ? fixed : null;
+    this.onSystemChange = () => {
+      this.system = systemScheme();
+      if (this.fixed === this.system) {
+        this.apply(null);
+      }
+    };
   }
 
   connectedCallback() {
@@ -55,29 +64,32 @@ export class ColorSchemeToggle extends LitElement {
   }
 
   render() {
-    const target = this.dark ? 'light' : 'dark';
-    const label = this.mode === 'inverse'
-      ? `Use ${target} mode (follow the system setting)`
-      : `Use ${target} mode (opposite of the system setting)`;
+    const current = this.fixed ?? this.system;
+    const label = this.fixed
+      ? `Follow the system setting (${this.system} mode)`
+      : `Use ${current === 'dark' ? 'light' : 'dark'} mode`;
     return html`
-      <button type="button" aria-pressed=${this.mode === 'inverse' ? 'true' : 'false'}
+      <button type="button" aria-pressed=${this.fixed ? 'true' : 'false'}
         aria-label=${label} title=${label} @click=${this.toggle}>
-        ${this.dark ? sun : moon}
+        ${current === 'dark' ? sun : moon}
       </button>
     `;
   }
 
   toggle() {
-    this.mode = this.mode === 'inverse' ? 'auto' : 'inverse';
-    this.dark = systemDark.matches !== (this.mode === 'inverse');
-    if (this.mode === 'inverse') {
-      document.documentElement.dataset.colorScheme = 'inverse';
+    this.apply(this.fixed ? null : (this.system === 'dark' ? 'light' : 'dark'));
+  }
+
+  apply(fixed) {
+    this.fixed = fixed;
+    if (fixed) {
+      document.documentElement.dataset.colorScheme = fixed;
     } else {
       delete document.documentElement.dataset.colorScheme;
     }
     try {
-      if (this.mode === 'inverse') {
-        localStorage.setItem(storageKey, 'inverse');
+      if (fixed) {
+        localStorage.setItem(storageKey, fixed);
       } else {
         localStorage.removeItem(storageKey);
       }

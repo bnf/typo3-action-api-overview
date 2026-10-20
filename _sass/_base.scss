@@ -24,8 +24,8 @@
   --radius: 14px;
   color-scheme: light;
 }
-// Dark tokens. The page follows the system setting, or its opposite when
-// <html data-color-scheme="inverse"> is set (see assets/js/components/color-scheme-toggle.js).
+// Dark tokens. The page follows the system setting unless <html data-color-scheme>
+// fixes light or dark (see assets/js/components/color-scheme-toggle.js).
 @mixin dark-scheme {
   color-scheme: dark;
   --bg: #111316;
@@ -47,11 +47,9 @@
   --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-color-scheme="inverse"]) { @include dark-scheme; }
+  :root:not([data-color-scheme="light"]) { @include dark-scheme; }
 }
-@media not all and (prefers-color-scheme: dark) {
-  :root[data-color-scheme="inverse"] { @include dark-scheme; }
-}
+:root[data-color-scheme="dark"] { @include dark-scheme; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--topbar-height) + 16px); }
 body {
