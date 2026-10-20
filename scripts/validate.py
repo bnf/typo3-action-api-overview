@@ -74,10 +74,10 @@ def check_references(data):
         if not (ROOT / '_includes' / 'sections' / f'{section["id"]}.html').exists():
             errors.append(f'sections.json: no template _includes/sections/{section["id"]}.html for "{section["id"]}"')
 
-    tabs = {tab['id'] for tab in data['channels']}
-    for channel in data['intro']['channels']:
-        if channel['tab'] not in tabs:
-            errors.append(f'intro.json: channel "{channel["title"]}" points to unknown tab "{channel["tab"]}"')
+    channels = {channel['id'] for channel in data['channels']}
+    for tile in data['intro']['channels']:
+        if tile['channel'] not in channels:
+            errors.append(f'intro.json: tile "{tile["title"]}" points to unknown channel "{tile["channel"]}"')
 
     code = data['concept']['code']['code']
     for part in data['concept']['parts']:

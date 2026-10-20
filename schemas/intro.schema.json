@@ -66,15 +66,16 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
-          "tab",
+          "channel",
           "icon",
           "title",
           "text"
         ],
         "properties": {
-          "tab": {
+          "channel": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "description": "id of the entry in channels.json the tile links to"
           },
           "icon": {
             "type": "string",

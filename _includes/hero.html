@@ -9,10 +9,10 @@
     <div class="hero-arrow" aria-hidden="true">➜</div>
     <div class="channels">
       {%- for channel in intro.channels %}
-      <button class="channel" type="button" data-show-tab="{{ channel.tab }}">
+      <a class="channel" href="#channel-{{ channel.channel }}">
         <span class="icon">{{ channel.icon }}</span>
         <span><strong>{{ channel.title }}</strong><small>{{ channel.text }}</small></span>
-      </button>
+      </a>
       {%- endfor %}
     </div>
   </div>

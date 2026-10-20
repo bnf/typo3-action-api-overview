@@ -9,25 +9,25 @@
   },
   "channels": [
     {
-      "tab": "js",
+      "channel": "js",
       "icon": "UI",
       "title": "TYPO3 backend",
       "text": "JavaScript client, replaces AJAX routes"
     },
     {
-      "tab": "http",
+      "channel": "http",
       "icon": "API",
       "title": "External applications",
       "text": "HTTP + JSON, OAuth 2.0 or token"
     },
     {
-      "tab": "openapi",
+      "channel": "openapi",
       "icon": "DOC",
       "title": "API documentation",
       "text": "OpenAPI 3.1 and Swagger UI"
     },
     {
-      "tab": "mcp",
+      "channel": "mcp",
       "icon": "AI",
       "title": "AI agents",
       "text": "MCP tools, over HTTP or stdio"

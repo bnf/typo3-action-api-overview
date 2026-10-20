@@ -1,13 +1,3 @@
-details.deep {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 0 18px;
-  margin: 14px 0;
-}
-details.deep summary { cursor: pointer; font-weight: 700; padding: 14px 0; }
-details.deep[open] summary { border-bottom: 1px solid var(--border); margin-bottom: 8px; }
-
 footer {
   margin-top: 64px;
   padding-top: 24px;

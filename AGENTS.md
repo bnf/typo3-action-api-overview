@@ -44,7 +44,7 @@ these scripts locally.
 | Order, titles and leads of sections | `_data/sections.json` | `index.html` |
 | Problems it solves | `_data/problems.json` | `_includes/sections/problems.html`, `assets/js/components/problem-comparison.js` |
 | Annotated example action | `_data/concept.json` | `_includes/sections/concept.html`, `assets/js/components/action-anatomy.js` |
-| One action in every channel | `_data/channels.json` | `_includes/sections/channels.html` |
+| One action in every channel | `_data/channels.json` | `_includes/sections/channels.html`, `assets/js/components/channel-entry.js` |
 | Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/stack.js` |
 | Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/calculator.js` |
 | Use cases | `_data/use_cases.json` | `_includes/sections/use-cases.html` |
@@ -73,6 +73,8 @@ styles cannot leak into the rest of the page or be broken by it:
 - Font sizes use the type scale in `_sass/_base.scss` (`--font-size-base`,
   `--font-size-text`, `--font-size-small`, `--font-size-label`), also inside
   components; do not introduce new pixel sizes for text.
+- Keep content visible. Do not hide it behind tabs, accordions or `<details>`;
+  readers rarely open them. Use headings, lists and side-by-side layouts instead.
 - Code snippets always go through `_includes/code.html`, which renders
   `<code-block>` (highlighting theme, copy button, marks).
 - Lit is vendored as `assets/vendor/lit-core.min.js` (3.3.1, from
