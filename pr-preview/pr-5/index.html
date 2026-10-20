@@ -7,13 +7,8 @@
     // Apply a fixed colour scheme before rendering, see assets/js/components/color-scheme-toggle.js
     try {
       const scheme = localStorage.getItem('color-scheme');
-      const system = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       if (scheme === 'light' || scheme === 'dark') {
-        if (scheme === system) {
-          localStorage.removeItem('color-scheme');
-        } else {
-          document.documentElement.dataset.colorScheme = scheme;
-        }
+        document.documentElement.dataset.colorScheme = scheme;
       }
     } catch {}
   </script>

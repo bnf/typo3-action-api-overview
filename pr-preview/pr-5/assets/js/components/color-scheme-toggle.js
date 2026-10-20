@@ -6,9 +6,9 @@ const systemScheme = () => (systemDark.matches ? 'dark' : 'light');
 
 /**
  * Toggles between "auto" (follow the system setting) and the opposite of the
- * current system setting, which is then fixed. Once the system setting
- * changes to the fixed scheme, the page is back to "auto" and follows the
- * system again. The fixed scheme is stored per browser and applied as
+ * current system setting, which then stays fixed, also when the system
+ * setting changes, until the toggle returns to "auto". The fixed scheme is
+ * stored per browser and applied as
  * <html data-color-scheme="light|dark">, which _sass/_base.scss evaluates;
  * an inline script in _layouts/default.html sets it before the page is
  * rendered.
@@ -45,12 +45,7 @@ export class ColorSchemeToggle extends LitElement {
     this.system = systemScheme();
     const fixed = document.documentElement.dataset.colorScheme;
     this.fixed = fixed === 'light' || fixed === 'dark' ? fixed : null;
-    this.onSystemChange = () => {
-      this.system = systemScheme();
-      if (this.fixed === this.system) {
-        this.apply(null);
-      }
-    };
+    this.onSystemChange = () => { this.system = systemScheme(); };
   }
 
   connectedCallback() {
