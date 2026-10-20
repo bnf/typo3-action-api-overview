@@ -9,3 +9,4 @@ import './components/zoom-viewer.js';
 import './components/screen-shot.js';
 import './components/mermaid-diagram.js';
 import './components/channel-tabs.js';
+import './components/github-comments.js';

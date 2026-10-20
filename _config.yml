@@ -2,6 +2,12 @@ title: The TYPO3 Action API
 description: >-
   A typed API for the TYPO3 backend, external integrations and AI agents.
 
+# Comments on GitHub, see assets/js/components/github-comments.js
+comments:
+  repository: bnf/typo3-action-api-overview
+  review_branch: review-head
+  review_pull_request: 14
+
 markdown: kramdown
 kramdown:
   input: GFM
@@ -27,4 +33,5 @@ exclude:
   - CLAUDE.md
   - scripts/
   - schemas/
+  - _build.yml
   - vendor/

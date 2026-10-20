@@ -5,3 +5,4 @@ Gemfile.lock
 /vendor/
 .bundle/
 .claude/settings.local.json
+_build.yml

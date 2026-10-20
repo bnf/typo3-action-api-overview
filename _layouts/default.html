@@ -41,6 +41,9 @@
   </div>
 
   <zoom-viewer></zoom-viewer>
+  {%- capture data_files -%}{% for file in site.data %}{% unless file[0] == "patches" or file[0] == "issues" %}{{ file[0] }}.json,{% endunless %}{% endfor %}{%- endcapture %}
+  <github-comments repository="{{ site.comments.repository }}" revision="{{ site.build.revision }}" pull-request="{{ site.build.pull_request }}"
+    review-pull-request="{{ site.comments.review_pull_request }}" review-branch="{{ site.comments.review_branch }}" files="{{ data_files }}"></github-comments>
 
   <script type="importmap">{ "imports": { "lit": "{{ '/assets/vendor/lit-core.min.js' | relative_url }}" } }</script>
   <script type="module" src="{{ '/assets/js/main.js' | relative_url }}"></script>
