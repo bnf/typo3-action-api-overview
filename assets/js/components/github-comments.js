@@ -17,26 +17,22 @@ const normalize = (text) => text
 /**
  * Lets readers comment on a text of the page on GitHub. When a reader selects
  * text in the content, a button appears; it finds the line in _data/ that the
- * text comes from and opens, in this order:
+ * text comes from and opens
  *
- * 1. in a preview, the line in the diff of the pull request, if the pull
- *    request changed the line,
- * 2. the line in the review pull request (attribute review-pull-request),
- *    whose diff shows every content file as new, see
- *    .github/workflows/review-branch.yml,
- * 3. a new issue with the quote and a permalink to the line.
+ * - in a preview, the line in the diff of the pull request, if the pull
+ *   request changed the line, so that the comment is part of the review,
+ * - otherwise a new issue with the quote, the section and a permalink to the
+ *   line.
  *
  * Attributes: repository (owner/name), revision (commit of the build),
- * pull-request (number, in previews), review-pull-request, review-branch,
- * files (data files as a comma-separated list).
+ * pull-request (number, in previews), files (data files as a comma-separated
+ * list).
  */
 export class GithubComments extends LitElement {
   static properties = {
     repository: {},
     revision: {},
     pullRequest: { attribute: 'pull-request' },
-    reviewPullRequest: { attribute: 'review-pull-request' },
-    reviewBranch: { attribute: 'review-branch' },
     files: {},
     position: { state: true },
     busy: { state: true },
@@ -193,13 +189,6 @@ export class GithubComments extends LitElement {
       const changed = (await this.changedLines()).get(source.file);
       if (changed?.has(source.line)) {
         return `https://github.com/${this.repository}/pull/${this.pullRequest}/files#diff-${await shaHex(source.file)}R${source.line}`;
-      }
-    }
-    if (this.reviewPullRequest) {
-      // The review pull request shows the files of the review branch, which follows main
-      const reviewed = this.pullRequest ? await this.findLine(text, this.reviewBranch || 'main') : source;
-      if (reviewed) {
-        return `https://github.com/${this.repository}/pull/${this.reviewPullRequest}/files#diff-${await shaHex(reviewed.file)}R${reviewed.line}`;
       }
     }
     return this.issueUrl(text, source);
