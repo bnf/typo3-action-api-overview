@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Apply a fixed colour scheme before rendering, see assets/js/components/color-scheme-toggle.js
+    try {
+      const scheme = localStorage.getItem('color-scheme');
+      if (scheme === 'light' || scheme === 'dark') {
+        document.documentElement.dataset.colorScheme = scheme;
+      }
+    } catch {}
+  </script>
   <title>The TYPO3 Action API</title>
   <meta name="description" content="One typed, self-describing API for the TYPO3 backend, external integrations and AI agents.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +24,7 @@
     <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
     <a class="brand" href="#top">The TYPO3 Action API</a>
     <span class="spacer"></span>
+    <color-scheme-toggle></color-scheme-toggle>
     <a class="pill-link" href="https://forge.typo3.org/issues/111053">Epic #111053</a>
   </header>
   <div class="layout" id="top">
