@@ -48,9 +48,9 @@ these scripts locally.
 | Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/components/stack-explorer.js` |
 | Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/components/scope-calculator.js` |
 | Use cases | `_data/use_cases.json` | `_includes/sections/use-cases.html` |
-| Screenshots | `_data/screenshots.json`, `images/` | `_includes/screenshot.html`, `_includes/sections/in-action.html` |
+| Screenshots | `_data/screenshots.json`, `images/` | `_includes/screenshot.html`, `_includes/sections/in-action.html`, `assets/js/components/screen-shot.js`, `zoom-viewer.js` |
 | Guide for extension developers | `_data/extend.json` | `_includes/sections/build.html` |
-| Diagrams and reference tables | `_data/deep_dive.json` | `_includes/sections/deep-dive.html` |
+| Diagrams and reference tables | `_data/deep_dive.json` | `_includes/sections/deep-dive.html`, `assets/js/components/mermaid-diagram.js` |
 | Patch chain and issues | `_data/patches.json`, `_data/issues.json` | `_includes/sections/status.html` |
 
 Styles are split per component in `_sass/_<component>.scss` and imported by

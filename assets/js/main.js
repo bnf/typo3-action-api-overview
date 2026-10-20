@@ -5,13 +5,12 @@ import './components/problem-comparison.js';
 import './components/color-scheme-toggle.js';
 import './components/stack-explorer.js';
 import './components/scope-calculator.js';
+import './components/zoom-viewer.js';
+import './components/screen-shot.js';
+import './components/mermaid-diagram.js';
 import { initTabs } from './tabs.js';
-import { initViewer } from './viewer.js';
-import { initDiagrams } from './diagrams.js';
 
 const content = document.querySelector('.content');
 
 initNavigation(content);
 initTabs(content);
-initViewer(content);
-await initDiagrams(content);

@@ -21,7 +21,7 @@
   .hero-diagram { grid-template-columns: minmax(0, 1fr); padding: 16px; }
   .hero-arrow { height: 48px; transform: rotate(90deg); }
   .grid-2, .grid-3, .shield { grid-template-columns: minmax(0, 1fr); }
-  .anchor, .topbar .pill-link, .viewer .help { display: none; }
+  .anchor, .topbar .pill-link { display: none; }
 }
 @media (max-width: 520px) {
   .facts { grid-template-columns: minmax(0, 1fr); }

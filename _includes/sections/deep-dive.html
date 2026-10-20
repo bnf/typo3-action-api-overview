@@ -2,7 +2,7 @@
 {%- for diagram in deep.diagrams %}
 <h3 id="{{ diagram.id }}">{{ diagram.title }}</h3>
 {%- if diagram.intro %}<p>{% include inline.html text=diagram.intro %}</p>{% endif %}
-<pre class="mermaid" data-caption="{{ diagram.caption }}">{{ diagram.source | escape }}</pre>
+<mermaid-diagram caption="{{ diagram.caption | escape }}"><pre>{{ diagram.source | escape }}</pre></mermaid-diagram>
 {%- if forloop.first %}
 <div class="table-wrap">
   <table class="plain">
