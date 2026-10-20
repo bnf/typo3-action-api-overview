@@ -13,3 +13,8 @@ table.plain {
 table.plain th, table.plain td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
 table.plain tr:last-child td { border-bottom: 0; }
 table.plain th { background: var(--surface-2); }
+
+// Table inside an explained part of the annotated action (concept.json → parts → table)
+anatomy-part .part-table { width: 100%; margin: 8px 0 2px; border-collapse: collapse; font-size: var(--font-size-small); }
+anatomy-part .part-table th { text-align: left; font-size: var(--font-size-label); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 0 8px 4px 0; }
+anatomy-part .part-table td { padding: 3px 8px 3px 0; border-top: 1px solid var(--border); color: var(--fg); }

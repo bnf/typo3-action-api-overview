@@ -73,6 +73,37 @@
             "type": "string",
             "minLength": 1,
             "description": "Markdown (inline)"
+          },
+          "table": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "columns",
+              "rows"
+            ],
+            "description": "Optional table below the text, for example a mapping. Cells are Markdown (inline).",
+            "properties": {
+              "columns": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "rows": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
           }
         }
       }

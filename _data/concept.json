@@ -9,7 +9,46 @@
       "ref": 1,
       "match": "type: ActionType::fetch",
       "title": "Type",
-      "text": "The type sets the HTTP method and MCP hints such as “read-only”. `fetch` → `GET`, `create` → `POST`, `replace` → `PUT`, `update` → `PATCH`, `delete` → `DELETE`, `dispatch` → `POST`."
+      "text": "The type sets the HTTP method of the route and the hints of the MCP tool.",
+      "table": {
+        "columns": [
+          "Type",
+          "HTTP method",
+          "MCP hint"
+        ],
+        "rows": [
+          [
+            "`fetch`",
+            "`GET`",
+            "`readOnlyHint`"
+          ],
+          [
+            "`create`",
+            "`POST`",
+            "—"
+          ],
+          [
+            "`replace`",
+            "`PUT`",
+            "`idempotentHint`"
+          ],
+          [
+            "`update`",
+            "`PATCH`",
+            "—"
+          ],
+          [
+            "`delete`",
+            "`DELETE`",
+            "`destructiveHint`"
+          ],
+          [
+            "`dispatch`",
+            "`POST`",
+            "`destructiveHint`"
+          ]
+        ]
+      }
     },
     {
       "ref": 2,
