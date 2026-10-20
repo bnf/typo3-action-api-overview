@@ -261,9 +261,13 @@ hand.
 
 ### Comments on GitHub
 
-Readers select a text on the site and click "Comment on GitHub"
-(`assets/js/components/github-comments.js`). The component finds the line in
-`_data/` that the text comes from and opens
+Readers comment on the site with "Comment on GitHub"
+(`assets/js/components/github-comments.js`) in two ways: they select a text
+(the button appears at the selection, or in a bar at the bottom on touch
+screens, where the browser shows its own menu at the selection), or they
+switch on the comment mode with the round button at the bottom right and
+click or tap a block (card, paragraph, table, component). The component
+finds the line in `_data/` that the text comes from and opens
 
 - in a preview, the line in the diff of the pull request, if the pull
   request changed the line; the comment is then part of the review,
