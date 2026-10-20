@@ -7,7 +7,8 @@ import { LitElement, css, html } from 'lit';
  *
  * Properties: marks ([{ref, match}], wraps the first occurrence of each match),
  * active (ref of the highlighted mark). Fires `mark-select` with {ref}.
- * Size and spacing follow --code-font-size and --code-padding.
+ * Size and spacing follow --code-font-size and --code-padding. The code fills
+ * the height of the element, so a layout can stretch it.
  */
 export class CodeBlock extends LitElement {
   static properties = {
@@ -18,7 +19,10 @@ export class CodeBlock extends LitElement {
 
   static styles = css`
     :host { display: block; position: relative; }
+    .code { height: 100%; }
     pre {
+      box-sizing: border-box;
+      height: 100%;
       margin: 0;
       background: var(--code-bg);
       color: var(--code-fg);
@@ -88,7 +92,7 @@ export class CodeBlock extends LitElement {
 
   render() {
     return html`
-      <div @click=${this.onPointer} @mouseover=${this.onPointer}>${this.pre}</div>
+      <div class="code" @click=${this.onPointer} @mouseover=${this.onPointer}>${this.pre}</div>
       <button class="copy" type="button" @click=${this.copy}>${this.copied ? 'Copied' : 'Copy'}</button>
     `;
   }
