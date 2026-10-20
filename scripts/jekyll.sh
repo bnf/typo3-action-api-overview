@@ -12,6 +12,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Sass reads files in the locale's encoding and fails on UTF-8 characters
+# without one (e.g. in Claude Code cloud sessions, where LANG is unset).
+if [ -z "${LC_ALL:-}${LC_CTYPE:-}${LANG:-}" ]; then
+    export LANG=C.UTF-8
+fi
+
 COMMAND="${1:-build}"
 PORT="${PORT:-4000}"
 LIVERELOAD_PORT="${LIVERELOAD_PORT:-35729}"
