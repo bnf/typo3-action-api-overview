@@ -94,6 +94,10 @@ of `rgb(r g b / a)`, and plain CSS features only.
 
 - Work on a branch per task and open a pull request against `main`. Never push
   to `main` directly; `main` is deployed to GitHub Pages.
+- Each pull request gets a public preview, linked in a comment on the pull
+  request. Point reviewers to it instead of describing visual changes. Never
+  edit the `gh-pages` branch by hand; it is written by
+  `.github/workflows/pages.yml`.
 - Keep changes small and focused on one concern. The split into one data
   file, one template, one stylesheet and one script per component exists so
   that parallel changes rarely touch the same file.
