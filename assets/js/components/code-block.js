@@ -29,7 +29,7 @@ export class CodeBlock extends LitElement {
       border-radius: 12px;
       padding: var(--code-padding, 16px 20px);
       overflow-x: auto;
-      font: var(--code-font-size, 14px)/1.6 "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font: var(--code-font-size, 15px)/1.6 "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
     .c, .c1, .cm, .cd, .cs, .ch { color: #7f8896; font-style: italic; }
     .k, .kd, .kn, .kr, .kc, .kt, .kp { color: #ff9e64; }
@@ -50,7 +50,7 @@ export class CodeBlock extends LitElement {
       background: rgba(255, 255, 255, 0.08);
       color: #c9ced6;
       border-radius: 6px;
-      font: 600 12px "Source Sans 3", sans-serif;
+      font: 600 var(--font-size-label, 13px) "Source Sans 3", sans-serif;
       padding: 3px 9px;
       cursor: pointer;
       opacity: 0;

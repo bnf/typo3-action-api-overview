@@ -25,7 +25,7 @@
 }
 .topbar .spacer { flex: 1; }
 .pill-link {
-  font-size: 14px;
+  font-size: var(--font-size-small);
   color: var(--muted);
   text-decoration: none;
   border: 1px solid var(--border);

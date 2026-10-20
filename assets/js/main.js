@@ -2,6 +2,7 @@ import { pageData } from './dom.js';
 import { initNavigation } from './nav.js';
 import './components/code-block.js';
 import './components/action-anatomy.js';
+import './components/problem-comparison.js';
 import { initTabs } from './tabs.js';
 import { initStack } from './stack.js';
 import { initCalculator } from './calculator.js';

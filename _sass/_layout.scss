@@ -14,7 +14,7 @@
   border-right: 1px solid var(--border);
 }
 .sidebar .label {
-  font-size: 12px;
+  font-size: var(--font-size-label);
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -28,7 +28,7 @@
   border-radius: 8px;
   color: var(--fg);
   text-decoration: none;
-  font-size: 15px;
+  font-size: var(--font-size-text);
   line-height: 1.35;
   border-left: 3px solid transparent;
 }
@@ -38,14 +38,14 @@
   border-left-color: var(--accent);
   font-weight: 600;
 }
-.sidebar li.sub a { padding-left: 30px; font-size: 14px; color: var(--muted); }
+.sidebar li.sub a { padding-left: 30px; font-size: var(--font-size-small); color: var(--muted); }
 .sidebar li.sub a.active { color: var(--fg); }
 .sidebar .num { color: var(--muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
 
 .content {
   min-width: 0;
   padding: 40px 48px 80px;
-  max-width: 1060px;
+  max-width: 1120px;
 }
 .content h2 {
   font-size: 1.85em;
@@ -54,7 +54,7 @@
   position: relative;
 }
 .content h3 { font-size: 1.25em; margin: 1.8em 0 .5em; position: relative; }
-.meta { color: var(--muted); font-size: 15px; }
+.meta { color: var(--muted); font-size: var(--font-size-text); }
 .section-lead { font-size: 1.12em; color: var(--muted); margin-top: 0; max-width: 46em; }
 section.chapter { padding-top: 24px; margin-top: 56px; border-top: 1px solid var(--border); }
 .anchor {
