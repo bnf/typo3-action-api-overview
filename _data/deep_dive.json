@@ -8,20 +8,20 @@
     },
     {
       "id": "mcp-nesting",
-      "title": "MCP: an action calling actions",
-      "caption": "An MCP tool call, nested in the Action API",
-      "intro": "The MCP server is the action `mcp` (`POST /typo3/api/mcp`, scope `mcp`). Authentication, scope checks and validation apply to it like to any other action. Inside, it calls the requested tool through the same `ActionInvoker`.",
+      "title": "MCP tool calls",
+      "caption": "An MCP tool call inside the action mcp",
+      "intro": "The MCP server is the action `mcp` (`POST /typo3/api/mcp`, scope `mcp`). TYPO3 authenticates, checks the scopes and validates a call to the action `mcp` like any other call. The action `mcp` then calls the requested tool through the same `ActionInvoker`.",
       "source": "sequenceDiagram\n    autonumber\n    participant A as AI client\n    participant H as EXT:hub\n    participant API as Action API\n    participant M as Action mcp\n    participant I as ActionInvoker\n    participant D as Action dashboards\n\n    A->>H: POST /typo3/api/mcp (tools/call fetch_dashboards)\n    Note over H: Validate OAuth token<br/>user + granted scopes\n    H->>API: request\n    Note over API: Scope mcp granted\n    API->>I: invoke mcp\n    I->>M: JSON-RPC message\n    Note over M: Tool only available if<br/>dashboard:read is granted\n    M->>I: invoke dashboards\n    I->>D: call method as the user\n    D-->>I: result\n    I-->>M: validated result\n    M-->>API: JSON-RPC result\n    API-->>A: 200 structuredContent"
     }
   ],
   "status_codes": [
     {
       "status": "200 / 204",
-      "cause": "Success; `204` if the action returns nothing"
+      "cause": "Success, or `204` if the action returns nothing"
     },
     {
       "status": "400",
-      "cause": "Missing argument, invalid JSON or value not matching the input schema"
+      "cause": "A missing argument, invalid JSON or a value that does not match the input schema"
     },
     {
       "status": "401",
@@ -29,19 +29,19 @@
     },
     {
       "status": "403",
-      "cause": "Required scope not granted, or `PermissionDeniedError`"
+      "cause": "The token lacks a needed scope, or the action throws `PermissionDeniedError`"
     },
     {
       "status": "404",
-      "cause": "`NotFoundError`, or unknown route"
+      "cause": "The action throws `NotFoundError`, or the route is unknown"
     },
     {
       "status": "415",
-      "cause": "Request body not sent as `application/json`"
+      "cause": "The request body is not `application/json`"
     },
     {
       "status": "500",
-      "cause": "Result does not match the output schema"
+      "cause": "The result does not match the output schema"
     }
   ],
   "mcp": [
@@ -51,11 +51,11 @@
     },
     {
       "aspect": "Tool list",
-      "behaviour": "All actions whose scopes are granted; the `mcp` action itself is not listed"
+      "behaviour": "All actions with granted scopes. The tool list does not show the action `mcp`."
     },
     {
       "aspect": "Tool names",
-      "behaviour": "Type and name, e.g. `fetch_dashboards_by_dashboardIdentifier_widgets_by_widgetIdentifier`"
+      "behaviour": "Type and name, for example `fetch_dashboards_by_dashboardIdentifier_widgets_by_widgetIdentifier`"
     },
     {
       "aspect": "Hints",
@@ -63,11 +63,11 @@
     },
     {
       "aspect": "Results",
-      "behaviour": "`structuredContent`; non-object results are wrapped as `{\"data\": …}`"
+      "behaviour": "`structuredContent`. TYPO3 wraps a result that is not an object as `{\"data\": …}`."
     },
     {
       "aspect": "Errors",
-      "behaviour": "Invalid arguments or unknown tool: JSON-RPC “invalid params”; action errors: tool result with `isError`"
+      "behaviour": "The JSON-RPC error “invalid params” for invalid arguments or an unknown tool. A tool result with `isError` for an error of the action."
     }
   ]
 }

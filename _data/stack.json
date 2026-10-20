@@ -3,29 +3,29 @@
     {
       "id": "clients",
       "name": "Clients",
-      "tagline": "Who calls",
+      "tagline": "Callers",
       "items": [
         "Backend UI",
         "Scripts & integrations",
         "AI agents",
         "Local coding agents"
       ],
-      "title": "Clients: all use the same actions",
-      "body": "The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.\n\n- Backend JavaScript: `@typo3/core/action/request`\n- Any HTTP client: `curl`, generated OpenAPI clients, automation tools\n- MCP clients: Claude, MCP Inspector, other AI agents",
+      "title": "Shared actions for all clients",
+      "body": "The backend, external scripts and integrations, AI assistants and local coding agents use the same actions. No client needs a separate endpoint.\n\n- Backend JavaScript with `@typo3/core/action/request`\n- Any HTTP client, for example `curl`, generated OpenAPI clients and automation tools\n- MCP clients, for example Claude, MCP Inspector and other AI agents",
       "components": []
     },
     {
       "id": "protocols",
       "name": "Protocols",
-      "tagline": "How they talk",
+      "tagline": "Wire formats",
       "items": [
         "HTTP + JSON",
         "MCP over HTTP",
         "MCP over stdio",
         "OpenAPI"
       ],
-      "title": "Protocols: different wire formats, one model",
-      "body": "Every action is reachable as a JSON endpoint below `/typo3/api/`, with the HTTP method derived from its type. The same actions are offered as MCP tools, over HTTP or locally via `mcp:serve`, and described in an OpenAPI 3.1 document at `/typo3/api/schema`.",
+      "title": "Different wire formats with one model",
+      "body": "Every action has a JSON endpoint below `/typo3/api/`, and the type of the action sets the HTTP method. TYPO3 also offers the same actions as MCP tools, over HTTP or locally through `mcp:serve`, and describes the actions in an OpenAPI 3.1 document at `/typo3/api/schema`.",
       "components": [
         "ActionHandler",
         "MCP server",
@@ -35,14 +35,14 @@
     {
       "id": "access",
       "name": "Access",
-      "tagline": "Who is it, what may they do",
+      "tagline": "Identity and permissions",
       "items": [
         "Backend session",
         "EXT:hub (OAuth 2.0, tokens)",
         "Scopes"
       ],
-      "title": "Access: identify the user, limit the app",
-      "body": "Every call runs as a backend user. Inside the backend, the session identifies the user. External applications authenticate with a token issued by **EXT:hub**, via OAuth 2.0 or as a static token.\n\n**Scopes** limit which actions an application may call on behalf of the user, for example `content:read` or `dashboard:write`.",
+      "title": "User identification and app limits",
+      "body": "Every call runs as a backend user. In the backend, the session identifies the user. External applications authenticate with a token from **EXT:hub**, through OAuth 2.0 or as a static token.\n\n**Scopes** limit the actions that an application can call for the user, for example `content:read` or `dashboard:write`.",
       "components": [
         "Backend authentication",
         "AppResolver",
@@ -53,15 +53,15 @@
     {
       "id": "core",
       "name": "Action core",
-      "tagline": "Check, validate, invoke",
+      "tagline": "Checks, validation and invocation",
       "items": [
         "ActionRegistry",
         "RequestHandler",
         "ActionInvoker",
         "JSON Schema"
       ],
-      "title": "Action core: checks, validation and invocation",
-      "body": "The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it\n\n- checks the required scopes,\n- validates arguments and converts them to PHP types,\n- calls the action method with an `ActionContext`,\n- validates the result against the output schema,\n- maps declared errors to status codes.",
+      "title": "Central checks and invocation",
+      "body": "The core knows every action and its JSON Schema. TYPO3 compiles the actions and the schemas once with the dependency injection container. For each call, the core does these steps:\n\n- check the needed scopes\n- validate the arguments and convert them to PHP types\n- call the action method with an `ActionContext`\n- validate the result against the output schema\n- map declared errors to status codes",
       "components": [
         "ActionRegistry",
         "RequestHandler",
@@ -72,7 +72,7 @@
     {
       "id": "actions",
       "name": "Actions",
-      "tagline": "What can be done",
+      "tagline": "Business logic",
       "items": [
         "Dashboard",
         "Page tree",
@@ -80,77 +80,77 @@
         "MCP server",
         "Your extension"
       ],
-      "title": "Actions: plain PHP methods with #[AsAction]",
-      "body": "Actions are methods of regular services, marked with the `#[AsAction]` attribute. They contain only the business logic: no request parsing, no serialization, no authentication.\n\nTYPO3 provides actions for the dashboard, the page tree, file resources and records. Even the MCP server is an action. Extensions add their own.",
+      "title": "PHP methods with #[AsAction]",
+      "body": "Actions are methods of regular services with the attribute `#[AsAction]`. An action contains only the business logic, without request parsing, serialization or authentication.\n\nTYPO3 ships actions for the dashboard, the page tree, file resources and records. The MCP server is also an action. Extensions add more actions.",
       "components": []
     },
     {
       "id": "typo3",
       "name": "TYPO3",
-      "tagline": "Where it happens",
+      "tagline": "Foundation",
       "items": [
         "DataHandler",
         "Permissions",
         "TcaSchema",
         "Workspaces"
       ],
-      "title": "TYPO3: the regular APIs",
-      "body": "Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.\n\nRecord schemas are derived from `TcaSchema`, so the API describes the content model of each installation.",
+      "title": "Regular TYPO3 APIs",
+      "body": "Actions use the regular TYPO3 APIs. Because actions run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply as in the backend.\n\nTYPO3 derives the record schemas from `TcaSchema`, so the schemas describe the content model of each installation.",
       "components": []
     }
   ],
   "scenarios": [
     {
       "id": "backend",
-      "label": "Backend UI loads the page tree",
+      "label": "Page tree in the backend",
       "steps": [
         {
           "layer": "clients",
           "item": "Backend UI",
-          "title": "The page tree requests its data",
-          "body": "The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/page/tree', { … }).get()\n```\n\nThe client adds a bearer token that is embedded in the backend document."
+          "title": "Request from the page tree",
+          "body": "The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/page/tree', { … }).get()\n```\n\nThe client adds a bearer token from the backend document."
         },
         {
           "layer": "protocols",
           "item": "HTTP + JSON",
-          "title": "A regular HTTP request",
-          "body": "`GET /typo3/api/page/tree` matches the backend route that was registered for this action."
+          "title": "HTTP request",
+          "body": "`GET /typo3/api/page/tree` matches the backend route that TYPO3 registered for the action."
         },
         {
           "layer": "access",
           "item": "Backend session",
-          "title": "The session identifies the editor",
-          "body": "Session cookie and bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.\n\nAll scopes the editor may hold are granted."
+          "title": "Identification of the editor",
+          "body": "The session cookie and the bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.\n\nTYPO3 grants all scopes that the editor can hold."
         },
         {
           "layer": "core",
           "item": "RequestHandler",
-          "title": "Scopes and arguments are checked",
-          "body": "The action requires `content:read`, which is granted. Query arguments are validated against the input schema."
+          "title": "Scope and argument checks",
+          "body": "The action needs `content:read`, and the editor has this scope. TYPO3 validates the query arguments against the input schema."
         },
         {
           "layer": "core",
           "item": "ActionInvoker",
-          "title": "The action is invoked",
-          "body": "Arguments are converted to PHP types and the method is called with an `ActionContext` holding user, scopes and request."
+          "title": "Invocation",
+          "body": "TYPO3 converts the arguments to PHP types and calls the method with an `ActionContext`. The `ActionContext` holds the user, the scopes and the request."
         },
         {
           "layer": "actions",
           "item": "Page tree",
-          "title": "Business logic only",
-          "body": "The page tree action builds the tree items. It knows nothing about HTTP."
+          "title": "Business logic",
+          "body": "The page tree action builds the tree items. The action knows nothing about HTTP."
         },
         {
           "layer": "typo3",
           "item": "Permissions",
-          "title": "Backend permissions apply",
-          "body": "Only pages the editor is allowed to see end up in the tree."
+          "title": "Backend permissions",
+          "body": "The tree contains only the pages that the editor can see."
         },
         {
           "layer": "clients",
           "item": "Backend UI",
-          "title": "Validated JSON comes back",
-          "body": "The result is validated against the output schema and returned as JSON. The former internal AJAX route is no longer needed."
+          "title": "Validated JSON",
+          "body": "TYPO3 validates the result against the output schema and returns the result as JSON. The former internal AJAX route is no longer necessary."
         }
       ]
     },
@@ -161,38 +161,38 @@
         {
           "layer": "clients",
           "item": "Scripts & integrations",
-          "title": "An integration calls TYPO3",
-          "body": "```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/dashboards\n```\n\nAn administrator created the token for this app in the API Hub module."
+          "title": "Call from an integration",
+          "body": "```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/dashboards\n```\n\nAn administrator created the token for the app in the API Hub module."
         },
         {
           "layer": "protocols",
           "item": "HTTP + JSON",
-          "title": "Same endpoint as the backend uses",
+          "title": "Same route as in the backend",
           "body": "The request reaches the same route as a request from the backend UI."
         },
         {
           "layer": "access",
           "item": "EXT:hub (OAuth 2.0, tokens)",
-          "title": "EXT:hub validates the token",
-          "body": "There is no backend session, so EXT:hub takes over: the app must be enabled and its secret unchanged. EXT:hub loads the backend user selected in the app record."
+          "title": "Token validation by EXT:hub",
+          "body": "There is no backend session, so EXT:hub validates the token. The app must be enabled, and the secret of the app must be unchanged. EXT:hub loads the backend user that the app record selects."
         },
         {
           "layer": "access",
           "item": "Scopes",
-          "title": "The app only gets its scopes",
-          "body": "Granted are exactly the scopes selected in the app record, for example `dashboard:read`."
+          "title": "Scopes of the app",
+          "body": "The app gets exactly the scopes that the app record selects, for example `dashboard:read`."
         },
         {
           "layer": "core",
           "item": "RequestHandler",
           "title": "Scope check",
-          "body": "`dashboard:read` is required and granted. A write action would be rejected with `403 Missing scope`."
+          "body": "The action needs `dashboard:read`, and the app has this scope. TYPO3 rejects a write action with `403 Missing scope`."
         },
         {
           "layer": "core",
           "item": "ActionInvoker",
-          "title": "Invoked as the app user",
-          "body": "The `ActionContext` carries the backend user of the app."
+          "title": "Invocation as the app user",
+          "body": "The `ActionContext` contains the backend user of the app."
         },
         {
           "layer": "actions",
@@ -215,62 +215,62 @@
         {
           "layer": "clients",
           "item": "AI agents",
-          "title": "An AI client connects",
+          "title": "Connection of an AI client",
           "body": "The MCP client discovers the authorization server at `/.well-known/oauth-authorization-server` and starts the OAuth flow."
         },
         {
           "layer": "access",
           "item": "EXT:hub (OAuth 2.0, tokens)",
-          "title": "The user grants access",
-          "body": "The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user."
+          "title": "Consent of the user",
+          "body": "The user logs in and approves the requested scopes on the consent screen. The token contains only the scopes that the app requested, that an administrator configured for the app and that the user can hold."
         },
         {
           "layer": "protocols",
           "item": "MCP over HTTP",
-          "title": "MCP is an endpoint like any other",
+          "title": "MCP endpoint",
           "body": "```text\nPOST /typo3/api/mcp\n{\"method\": \"tools/list\", …}\n```"
         },
         {
           "layer": "access",
           "item": "Scopes",
-          "title": "Token checked on every request",
-          "body": "EXT:hub validates the token and intersects its scopes with the scopes the app currently has."
+          "title": "Token check on every request",
+          "body": "EXT:hub validates the token and intersects the scopes of the token with the current scopes of the app."
         },
         {
           "layer": "core",
           "item": "RequestHandler",
-          "title": "The scope mcp is required",
-          "body": "The MCP server is an action and requires the scope `mcp`."
+          "title": "Scope mcp",
+          "body": "The MCP server is an action and needs the scope `mcp`."
         },
         {
           "layer": "actions",
           "item": "MCP server",
-          "title": "The MCP server is an action",
-          "body": "`tools/list` returns every action whose scopes are granted, with input and output schema and hints such as `readOnlyHint`."
+          "title": "Tool list",
+          "body": "The method `tools/list` returns every action with granted scopes, with the input and output schema and hints such as `readOnlyHint`."
         },
         {
           "layer": "protocols",
           "item": "MCP over HTTP",
-          "title": "The agent calls a tool",
+          "title": "Tool call",
           "body": "```json\n{\"method\": \"tools/call\",\n \"params\": {\"name\": \"fetch_dashboards\"}}\n```"
         },
         {
           "layer": "core",
           "item": "ActionInvoker",
           "title": "Nested invocation",
-          "body": "The MCP action invokes the target action through the same `ActionInvoker`, with the same user and scopes."
+          "body": "The action `mcp` calls the target action through the same `ActionInvoker`, with the same user and the same scopes."
         },
         {
           "layer": "actions",
           "item": "Dashboard",
-          "title": "Same action, third consumer",
+          "title": "Third consumer of the action",
           "body": "The dashboard action now serves the backend, integrations and AI agents."
         },
         {
           "layer": "clients",
           "item": "AI agents",
           "title": "Structured result",
-          "body": "The validated result is returned as `structuredContent` in the JSON-RPC response. The agent can render the user's dashboard."
+          "body": "TYPO3 returns the validated result as `structuredContent` in the JSON-RPC response. The agent can render the dashboard of the user."
         }
       ]
     },
@@ -281,20 +281,20 @@
         {
           "layer": "clients",
           "item": "Local coding agents",
-          "title": "A local agent starts TYPO3",
-          "body": "```shell\nvendor/bin/typo3 mcp:serve --user=editor\n```\n\nThe MCP client starts the command and talks to it via standard input and output."
+          "title": "Start of a local agent",
+          "body": "```shell\nvendor/bin/typo3 mcp:serve --user=editor\n```\n\nThe MCP client starts the command and talks to the command through standard input and output."
         },
         {
           "layer": "protocols",
           "item": "MCP over stdio",
-          "title": "No web server needed",
-          "body": "JSON-RPC messages are exchanged line by line. EXT:hub is not required."
+          "title": "No web server",
+          "body": "The client and TYPO3 exchange JSON-RPC messages line by line. EXT:hub is not necessary."
         },
         {
           "layer": "access",
           "item": "Scopes",
-          "title": "Runs as the selected user",
-          "body": "The user `editor` must exist and be enabled. All scopes allowed for this user are granted. Without `--user`, the CLI user `_cli_` is used."
+          "title": "Selected user",
+          "body": "The user `editor` must exist and be enabled. TYPO3 grants all scopes that the user `editor` can hold. Without `--user`, TYPO3 uses the CLI user `_cli_`."
         },
         {
           "layer": "actions",
@@ -306,12 +306,12 @@
           "layer": "core",
           "item": "ActionInvoker",
           "title": "Same validation",
-          "body": "Tool calls are invoked and validated exactly as over HTTP."
+          "body": "TYPO3 invokes and validates tool calls exactly as over HTTP."
         },
         {
           "layer": "typo3",
           "item": "Permissions",
-          "title": "The user’s permissions apply",
+          "title": "Permissions of the user",
           "body": "The agent can do what `editor` can do, and nothing more."
         }
       ]

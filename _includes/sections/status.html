@@ -1,7 +1,7 @@
 {%- assign patches = site.data.patches -%}
 {%- assign issues = site.data.issues -%}
 {%- assign epic = issues.issues | where: "number", issues.source.epic | first -%}
-<p>Epic: <a href="{{ epic.url }}">#{{ epic.number }} {{ epic.subject }}</a> ({{ epic.status }})</p>
+<p>Epic <a href="{{ epic.url }}">#{{ epic.number }} {{ epic.subject }}</a> ({{ epic.status }})</p>
 <div class="table-wrap">
   <table class="plain chain">
     <thead><tr><th>#</th><th>Gerrit</th><th>Change</th><th>Forge issue</th><th>Status</th></tr></thead>
@@ -22,4 +22,4 @@
     </tbody>
   </table>
 </div>
-<p class="meta">Generated from Gerrit and Forge on {{ patches.source.generated_at | date: "%Y-%m-%d" }} by <code>{{ patches.source.generated_by }}</code> and <code>{{ issues.source.generated_by }}</code>. The chain is ordered from its base to its tip.</p>
+<p class="meta">The scripts <code>{{ patches.source.generated_by }}</code> and <code>{{ issues.source.generated_by }}</code> generated the table from Gerrit and Forge on {{ patches.source.generated_at | date: "%Y-%m-%d" }}. The table starts with the base of the chain and ends with its tip.</p>

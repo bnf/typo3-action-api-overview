@@ -61,7 +61,7 @@ export class ColorSchemeToggle extends LitElement {
   render() {
     const current = this.fixed ?? this.system;
     const setting = this.fixed ?? `auto (${this.system})`;
-    const label = `Colour scheme: ${setting}. Switch to ${current === 'dark' ? 'light' : 'dark'}.`;
+    const label = `The colour scheme is ${setting}. Switch to ${current === 'dark' ? 'light' : 'dark'}.`;
     return html`
       <button type="button" aria-label=${label} title=${label} @click=${this.toggle}>
         ${icons[this.fixed ?? 'auto']}
