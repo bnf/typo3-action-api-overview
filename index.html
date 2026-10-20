@@ -21,16 +21,15 @@
 </head>
 <body>
   <header class="topbar">
-    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-controls="navigation" aria-expanded="false">☰</button>
     <a class="brand" href="#top">The TYPO3 Action API</a>
     <span class="spacer"></span>
     <color-scheme-toggle></color-scheme-toggle>
     <a class="pill-link" href="https://forge.typo3.org/issues/111053">Epic #111053</a>
   </header>
   <div class="layout" id="top">
-    <nav class="sidebar" aria-label="Contents">
-      <p class="label">Contents</p>
-      <ol></ol>
+    <nav class="sidebar" id="navigation" aria-label="Contents">
+      <page-navigation for=".content"></page-navigation>
     </nav>
     <main class="content">
       <section class="hero">
