@@ -142,14 +142,41 @@
 </code></pre></div></div>
 </code-block>
 
-  <anatomy-part ref="1" heading="Type" match="type: ActionType::fetch">The type sets the HTTP method and MCP hints such as “read-only”. <code class="language-plaintext highlighter-rouge">fetch</code> → <code class="language-plaintext highlighter-rouge">GET</code>, <code class="language-plaintext highlighter-rouge">create</code> → <code class="language-plaintext highlighter-rouge">POST</code>, <code class="language-plaintext highlighter-rouge">replace</code> → <code class="language-plaintext highlighter-rouge">PUT</code>, <code class="language-plaintext highlighter-rouge">update</code> → <code class="language-plaintext highlighter-rouge">PATCH</code>, <code class="language-plaintext highlighter-rouge">delete</code> → <code class="language-plaintext highlighter-rouge">DELETE</code>, <code class="language-plaintext highlighter-rouge">dispatch</code> → <code class="language-plaintext highlighter-rouge">POST</code>.</anatomy-part>
-  <anatomy-part ref="2" heading="Name" match="name: &#39;my-extension/page/{uid}/titles&#39;">The name is the identifier of the action and sets its route <code class="language-plaintext highlighter-rouge">/typo3/api/my-extension/page/{uid}/titles</code>. The name of the MCP tool is <code class="language-plaintext highlighter-rouge">fetch_my_extension_page_by_uid_titles</code>.</anatomy-part>
-  <anatomy-part ref="3" heading="Summary" match="summary: &#39;Fetch the titles of a page&#39;">The summary documents the action for developers in OpenAPI and for AI agents in the tool list.</anatomy-part>
-  <anatomy-part ref="4" heading="Scopes" match="scopes: [ContentReadScope::class]">The caller must have all listed scopes. Otherwise TYPO3 rejects the call.</anatomy-part>
-  <anatomy-part ref="5" heading="Parameters" match="int $uid">The parameters define the input JSON Schema. TYPO3 reads the values from the route, the query string or the JSON body, validates them and converts them to PHP types.</anatomy-part>
-  <anatomy-part ref="6" heading="ActionContext" match="ActionContext $context">TYPO3 passes the <code class="language-plaintext highlighter-rouge">ActionContext</code> automatically and keeps the <code class="language-plaintext highlighter-rouge">ActionContext</code> out of the schema. The <code class="language-plaintext highlighter-rouge">ActionContext</code> holds the TYPO3 context, the user, the translator, the request and the granted scopes.</anatomy-part>
-  <anatomy-part ref="7" heading="Return type" match="@return list&lt;string&gt;">PHPDoc types such as <code class="language-plaintext highlighter-rouge">list&lt;string&gt;</code> or array shapes define the output schema. TYPO3 validates the result before TYPO3 returns the result.</anatomy-part>
-  <anatomy-part ref="8" heading="Declared errors" match="@throws NotFoundError if the page does not exist">The action must declare every error with <code class="language-plaintext highlighter-rouge">@throws</code>. TYPO3 returns <code class="language-plaintext highlighter-rouge">NotFoundError</code> as <code class="language-plaintext highlighter-rouge">404</code> and <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> as <code class="language-plaintext highlighter-rouge">403</code>, and documents both errors in OpenAPI.</anatomy-part>
+  <anatomy-part ref="1" heading="Type" match="type: ActionType::fetch">
+    The type sets the HTTP method of the route and the hints of the MCP tool.
+    <table class="part-table">
+      <thead><tr><th>Type</th><th>HTTP method</th><th>MCP hint</th></tr></thead>
+      <tbody>
+        <tr><td><code class="language-plaintext highlighter-rouge">fetch</code></td><td><code class="language-plaintext highlighter-rouge">GET</code></td><td><code class="language-plaintext highlighter-rouge">readOnlyHint</code></td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">create</code></td><td><code class="language-plaintext highlighter-rouge">POST</code></td><td>—</td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">replace</code></td><td><code class="language-plaintext highlighter-rouge">PUT</code></td><td><code class="language-plaintext highlighter-rouge">idempotentHint</code></td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">update</code></td><td><code class="language-plaintext highlighter-rouge">PATCH</code></td><td>—</td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">delete</code></td><td><code class="language-plaintext highlighter-rouge">DELETE</code></td><td><code class="language-plaintext highlighter-rouge">destructiveHint</code></td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">dispatch</code></td><td><code class="language-plaintext highlighter-rouge">POST</code></td><td><code class="language-plaintext highlighter-rouge">destructiveHint</code></td></tr>
+      </tbody>
+    </table>
+  </anatomy-part>
+  <anatomy-part ref="2" heading="Name" match="name: &#39;my-extension/page/{uid}/titles&#39;">
+    The name is the identifier of the action and sets its route <code class="language-plaintext highlighter-rouge">/typo3/api/my-extension/page/{uid}/titles</code>. The name of the MCP tool is <code class="language-plaintext highlighter-rouge">fetch_my_extension_page_by_uid_titles</code>.
+  </anatomy-part>
+  <anatomy-part ref="3" heading="Summary" match="summary: &#39;Fetch the titles of a page&#39;">
+    The summary documents the action for developers in OpenAPI and for AI agents in the tool list.
+  </anatomy-part>
+  <anatomy-part ref="4" heading="Scopes" match="scopes: [ContentReadScope::class]">
+    The caller must have all listed scopes. Otherwise TYPO3 rejects the call.
+  </anatomy-part>
+  <anatomy-part ref="5" heading="Parameters" match="int $uid">
+    The parameters define the input JSON Schema. TYPO3 reads the values from the route, the query string or the JSON body, validates them and converts them to PHP types.
+  </anatomy-part>
+  <anatomy-part ref="6" heading="ActionContext" match="ActionContext $context">
+    TYPO3 passes the <code class="language-plaintext highlighter-rouge">ActionContext</code> automatically and keeps the <code class="language-plaintext highlighter-rouge">ActionContext</code> out of the schema. The <code class="language-plaintext highlighter-rouge">ActionContext</code> holds the TYPO3 context, the user, the translator, the request and the granted scopes.
+  </anatomy-part>
+  <anatomy-part ref="7" heading="Return type" match="@return list&lt;string&gt;">
+    PHPDoc types such as <code class="language-plaintext highlighter-rouge">list&lt;string&gt;</code> or array shapes define the output schema. TYPO3 validates the result before TYPO3 returns the result.
+  </anatomy-part>
+  <anatomy-part ref="8" heading="Declared errors" match="@throws NotFoundError if the page does not exist">
+    The action must declare every error with <code class="language-plaintext highlighter-rouge">@throws</code>. TYPO3 returns <code class="language-plaintext highlighter-rouge">NotFoundError</code> as <code class="language-plaintext highlighter-rouge">404</code> and <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> as <code class="language-plaintext highlighter-rouge">403</code>, and documents both errors in OpenAPI.
+  </anatomy-part>
 </action-anatomy>
 
 </section>
