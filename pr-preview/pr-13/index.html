@@ -121,6 +121,10 @@
 <action-anatomy>
   <code-block slot="code"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">readonly</span> <span class="kd">class</span> <span class="nc">PageTitleAction</span>
 <span class="p">{</span>
+    <span class="k">public</span> <span class="k">function</span> <span class="n">__construct</span><span class="p">(</span>
+        <span class="k">private</span> <span class="kt">PageTitleRepository</span> <span class="nv">$pageTitles</span><span class="p">,</span>
+    <span class="p">)</span> <span class="p">{}</span>
+
     <span class="cd">/**
      * @return list&lt;string&gt;
      * @throws NotFoundError if the page does not exist
@@ -135,8 +139,11 @@
         <span class="kt">int</span> <span class="nv">$uid</span><span class="p">,</span>
         <span class="kt">ActionContext</span> <span class="nv">$context</span><span class="p">,</span>
     <span class="p">):</span> <span class="kt">array</span> <span class="p">{</span>
-        <span class="c1">// …</span>
-        <span class="k">throw</span> <span class="k">new</span> <span class="nc">NotFoundError</span><span class="p">(</span><span class="s1">'Page not found'</span><span class="p">,</span> <span class="mi">1791975434</span><span class="p">);</span>
+        <span class="nv">$titles</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="n">pageTitles</span><span class="o">-&gt;</span><span class="nf">findByPage</span><span class="p">(</span><span class="nv">$uid</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$titles</span> <span class="o">===</span> <span class="p">[])</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nc">NotFoundError</span><span class="p">(</span><span class="s1">'Page not found'</span><span class="p">,</span> <span class="mi">1791975434</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nv">$titles</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
