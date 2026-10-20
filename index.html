@@ -53,22 +53,22 @@
 
     <div class="hero-arrow" aria-hidden="true">➜</div>
     <div class="channels">
-      <button class="channel" type="button" data-show-tab="js">
+      <a class="channel" href="#channel-js">
         <span class="icon">UI</span>
         <span><strong>TYPO3 backend</strong><small>JavaScript client, replaces AJAX routes</small></span>
-      </button>
-      <button class="channel" type="button" data-show-tab="http">
+      </a>
+      <a class="channel" href="#channel-http">
         <span class="icon">API</span>
         <span><strong>External applications</strong><small>HTTP + JSON, OAuth 2.0 or token</small></span>
-      </button>
-      <button class="channel" type="button" data-show-tab="openapi">
+      </a>
+      <a class="channel" href="#channel-openapi">
         <span class="icon">DOC</span>
         <span><strong>API documentation</strong><small>OpenAPI 3.1 and Swagger UI</small></span>
-      </button>
-      <button class="channel" type="button" data-show-tab="mcp">
+      </a>
+      <a class="channel" href="#channel-mcp">
         <span class="icon">AI</span>
         <span><strong>AI agents</strong><small>MCP tools, over HTTP or stdio</small></span>
-      </button>
+      </a>
     </div>
   </div>
 
@@ -157,16 +157,9 @@
 <section class="chapter" id="section-channels">
   <h2 id="channels">One action, every channel</h2>
   <p class="section-lead">The example action above, as each consumer sees it. Nothing on this list requires additional code.</p>
-  <div class="tabs" id="channel-tabs">
-  <div class="tablist" role="tablist">
-    <button role="tab" type="button" data-tab="js" aria-controls="tab-js" aria-selected="true">Backend JavaScript</button>
-    <button role="tab" type="button" data-tab="http" aria-controls="tab-http" aria-selected="false">HTTP API</button>
-    <button role="tab" type="button" data-tab="openapi" aria-controls="tab-openapi" aria-selected="false">OpenAPI</button>
-    <button role="tab" type="button" data-tab="mcp" aria-controls="tab-mcp" aria-selected="false">MCP tool</button>
-    <button role="tab" type="button" data-tab="stdio" aria-controls="tab-stdio" aria-selected="false">Local MCP (stdio)</button>
-  </div>
-  <div class="tabpanel" id="tab-js" role="tabpanel">
-    <p>Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is never enough.</p>
+  <channel-tabs>
+  <div id="channel-js" data-label="Backend JavaScript" data-icon="UI" data-summary="Backend modules call actions instead of AJAX routes">
+    <p class="channel-intro">Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is never enough.</p>
     <code-block><div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">action</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@typo3/core/action/request.js</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">action</span><span class="p">(</span><span class="dl">'</span><span class="s1">/my-extension/page/{uid}/titles</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">uid</span><span class="p">:</span> <span class="dl">'</span><span class="s1">42</span><span class="dl">'</span> <span class="p">}).</span><span class="kd">get</span><span class="p">();</span>
@@ -175,8 +168,8 @@
 </code-block>
 
   </div>
-  <div class="tabpanel" id="tab-http" role="tabpanel" hidden>
-    <p>External applications use the same endpoint with a token from EXT:hub. Declared errors arrive with their status code.</p>
+  <div id="channel-http" data-label="HTTP API" data-icon="API" data-summary="Scripts and apps send a token">
+    <p class="channel-intro">External applications use the same endpoint with a token from EXT:hub. Declared errors arrive with their status code.</p>
     <code-block><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authorization: Bearer &lt;token&gt;'</span> <span class="se">\</span>
     https://example.org/typo3/api/my-extension/page/42/titles
 
@@ -189,8 +182,8 @@
 </code-block>
 
   </div>
-  <div class="tabpanel" id="tab-openapi" role="tabpanel" hidden>
-    <p>Excerpt of the generated OpenAPI 3.1 document at <code class="language-plaintext highlighter-rouge">/typo3/api/schema</code>, shown in Swagger UI in the backend.</p>
+  <div id="channel-openapi" data-label="OpenAPI" data-icon="DOC" data-summary="Generated reference and Swagger UI">
+    <p class="channel-intro">Excerpt of the generated OpenAPI 3.1 document at <code class="language-plaintext highlighter-rouge">/typo3/api/schema</code>, shown in Swagger UI in the backend.</p>
     <code-block><div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">/my-extension/page/{uid}/titles</span><span class="err">:</span>
   <span class="na">get</span><span class="pi">:</span>
     <span class="na">summary</span><span class="pi">:</span> <span class="s">Fetch the titles of a page</span>
@@ -212,8 +205,8 @@
 </code-block>
 
   </div>
-  <div class="tabpanel" id="tab-mcp" role="tabpanel" hidden>
-    <p>The same action in the MCP tool list (<code class="language-plaintext highlighter-rouge">tools/list</code>, abridged), and a call from an AI agent.</p>
+  <div id="channel-mcp" data-label="MCP tool" data-icon="AI" data-summary="AI agents call the action as a tool">
+    <p class="channel-intro">The same action in the MCP tool list (<code class="language-plaintext highlighter-rouge">tools/list</code>, abridged), and a call from an AI agent.</p>
     <code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fetch_my_extension_page_by_uid_titles"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fetch the titles of a page"</span><span class="p">,</span><span class="w">
@@ -235,8 +228,8 @@
 </code-block>
 
   </div>
-  <div class="tabpanel" id="tab-stdio" role="tabpanel" hidden>
-    <p>Coding agents on a developer machine start TYPO3 as a local MCP server. No web server and no EXT:hub are needed; the agent acts as the given backend user.</p>
+  <div id="channel-stdio" data-label="Local MCP (stdio)" data-icon="CLI" data-summary="Coding agents start TYPO3 locally">
+    <p class="channel-intro">Coding agents on a developer machine start TYPO3 as a local MCP server. No web server and no EXT:hub are needed; the agent acts as the given backend user.</p>
     <code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nl">"typo3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -249,7 +242,7 @@
 </code-block>
 
   </div>
-</div>
+</channel-tabs>
 
 </section>
 
@@ -657,10 +650,9 @@
     </tbody>
   </table>
 </div>
-<details class="deep">
-  <summary>Optional: a scope of your own</summary>
-  <p>The scopes shipped with TYPO3 cover most cases. If an app should be able to get access to your actions separately, register a scope and reference its class in <code class="language-plaintext highlighter-rouge">scopes</code>.</p>
-  <code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nc">Symfony\Component\DependencyInjection\Attribute\AsTaggedItem</span><span class="p">;</span>
+<h3>Optional: a scope of your own</h3>
+<p>The scopes shipped with TYPO3 cover most cases. If an app should be able to get access to your actions separately, register a scope and reference its class in <code class="language-plaintext highlighter-rouge">scopes</code>.</p>
+<code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nc">Symfony\Component\DependencyInjection\Attribute\AsTaggedItem</span><span class="p">;</span>
 <span class="kn">use</span> <span class="nc">TYPO3\CMS\Core\Scope\ScopeInterface</span><span class="p">;</span>
 <span class="kn">use</span> <span class="nc">TYPO3\CMS\Core\Scope\ScopeUser</span><span class="p">;</span>
 
@@ -677,8 +669,6 @@
 </code></pre></div></div>
 </code-block>
 
-  <p></p>
-</details>
 
 </section>
 
