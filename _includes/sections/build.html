@@ -16,9 +16,6 @@
     </tbody>
   </table>
 </div>
-<details class="deep">
-  <summary>{{ extend.scope.title }}</summary>
-  <p>{% include inline.html text=extend.scope.text %}</p>
-  {% include code.html snippet=extend.scope.example %}
-  <p></p>
-</details>
+<h3>{{ extend.scope.title }}</h3>
+<p>{% include inline.html text=extend.scope.text %}</p>
+{% include code.html snippet=extend.scope.example %}

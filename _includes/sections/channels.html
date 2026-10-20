@@ -1,15 +1,10 @@
-<div class="tabs" id="channel-tabs">
-  <div class="tablist" role="tablist">
-    {%- for tab in site.data.channels %}
-    <button role="tab" type="button" data-tab="{{ tab.id }}" aria-controls="tab-{{ tab.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ tab.label }}</button>
-    {%- endfor %}
-  </div>
-  {%- for tab in site.data.channels %}
-  <div class="tabpanel" id="tab-{{ tab.id }}" role="tabpanel"{% unless forloop.first %} hidden{% endunless %}>
-    <p>{% include inline.html text=tab.intro %}</p>
-    {%- for snippet in tab.snippets %}
+<channel-tabs>
+  {%- for channel in site.data.channels %}
+  <div id="channel-{{ channel.id }}" data-label="{{ channel.label | escape }}" data-icon="{{ channel.icon | escape }}" data-summary="{{ channel.summary | escape }}">
+    <p class="channel-intro">{% include inline.html text=channel.intro %}</p>
+    {%- for snippet in channel.snippets %}
     {% include code.html snippet=snippet %}
     {%- endfor %}
   </div>
   {%- endfor %}
-</div>
+</channel-tabs>

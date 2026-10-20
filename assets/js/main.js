@@ -8,6 +8,4 @@ import './components/scope-calculator.js';
 import './components/zoom-viewer.js';
 import './components/screen-shot.js';
 import './components/mermaid-diagram.js';
-import { initTabs } from './tabs.js';
-
-initTabs(document.querySelector('.content'));
+import './components/channel-tabs.js';

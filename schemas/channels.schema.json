@@ -36,6 +36,8 @@
     "required": [
       "id",
       "label",
+      "icon",
+      "summary",
       "intro",
       "snippets"
     ],
@@ -47,6 +49,18 @@
       "label": {
         "type": "string",
         "minLength": 1
+      },
+      "icon": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 4,
+        "description": "Short badge text on the tab"
+      },
+      "summary": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 60,
+        "description": "One line on the tab that says what the channel shows"
       },
       "intro": {
         "type": "string",
