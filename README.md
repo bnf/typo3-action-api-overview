@@ -52,7 +52,7 @@ removed when it is closed. The workflow `.github/workflows/pages.yml` builds
 the site and publishes it to the `gh-pages` branch, which GitHub Pages serves
 (Settings › Pages › Deploy from a branch › `gh-pages`).
 
-Readers can comment on any text: select it on the site and click
-"Comment on GitHub". The link leads to the line in the diff of the pull
-request (in previews), to the line in the review pull request #14, or to a
-new issue. `AGENTS.md` describes how this works.
+Readers can comment on any text. They select it on the site and click
+"Comment on GitHub". In a preview, a changed line opens in the diff of the
+pull request; every other text opens a new issue with a quote and a
+permalink. `AGENTS.md` describes how this works.

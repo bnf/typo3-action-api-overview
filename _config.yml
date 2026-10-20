@@ -5,8 +5,6 @@ description: >-
 # Comments on GitHub, see assets/js/components/github-comments.js
 comments:
   repository: bnf/typo3-action-api-overview
-  review_branch: review-head
-  review_pull_request: 14
 
 markdown: kramdown
 kramdown:
