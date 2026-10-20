@@ -57,3 +57,5 @@ jobs:
           source-dir: _site
           preview-branch: gh-pages
           umbrella-dir: pr-preview
+          # The default QR code image would send every preview URL to a third party
+          qr-code: false
