@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    // Apply a fixed colour scheme before rendering, see assets/js/components/color-scheme-toggle.js
+    try {
+      const scheme = localStorage.getItem('color-scheme');
+      if (scheme === 'light' || scheme === 'dark') {
+        document.documentElement.dataset.colorScheme = scheme;
+      }
+    } catch {}
+  </script>
   <title>The TYPO3 Action API</title>
   <meta name="description" content="One typed, self-describing API for the TYPO3 backend, external integrations and AI agents.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +24,7 @@
     <button class="menu-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
     <a class="brand" href="#top">The TYPO3 Action API</a>
     <span class="spacer"></span>
+    <color-scheme-toggle></color-scheme-toggle>
     <a class="pill-link" href="https://forge.typo3.org/issues/111053">Epic #111053</a>
   </header>
   <div class="layout" id="top">
@@ -76,77 +86,32 @@
 <section class="chapter" id="section-problems">
   <h2 id="problems">Problems it solves</h2>
   <p class="section-lead">Today, every way of talking to TYPO3 is built separately. The Action API replaces these islands with one consistent model.</p>
-  <div class="versus">
-  <div class="versus-head" aria-hidden="true">
-    <span class="before">Today</span><span></span><span class="after">With the Action API</span>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>Every backend feature has its own AJAX controller</h4><p>Each controller parses arguments, validates them and formats errors in its own way.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>One generic dispatcher. Arguments and results are validated against a schema derived from the method signature.</p></div>
-    </div>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>No general-purpose API in the core</h4><p>Integrations depend on extensions that each build and maintain their own endpoints.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>Every action is an HTTP endpoint below <code class="language-plaintext highlighter-rouge">/typo3/api/</code>, provided by TYPO3 and extensions alike.</p></div>
-    </div>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>Authorization is reinvented per integration</h4><p>API keys, OAuth and fine-grained permissions are built again for every connection.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>EXT:hub offers OAuth 2.0 and static tokens. Scopes limit apps; the user’s permissions always apply.</p></div>
-    </div>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>No machine-readable description</h4><p>Endpoints are documented by hand, if at all, and the documentation drifts from the code.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI.</p></div>
-    </div>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>AI agents cannot work with TYPO3</h4><p>There is no safe, standard way for assistants to read or change content on behalf of an editor.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes.</p></div>
-    </div>
-  </div>
-  <div class="versus-row">
-    <div class="before">
-      <span class="symbol">✕</span>
-      <div><h4>The same logic is wrapped again for every consumer</h4><p>Backend UI, integrations and automation each need their own glue code.</p></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="after">
-      <span class="symbol">✓</span>
-      <div><span class="sr-label">With the Action API: </span><p>Write the feature once. Every channel is available automatically.</p></div>
-    </div>
-  </div>
-</div>
+  <problem-comparison before="Today" after="With the Action API">
+  <problem-item heading="Every backend feature has its own AJAX controller" label="With the Action API">
+    <span slot="before">Each controller parses arguments, validates them and formats errors in its own way.</span>
+    <span slot="after">One generic dispatcher. Arguments and results are validated against a schema derived from the method signature.</span>
+  </problem-item>
+  <problem-item heading="No general-purpose API in the core" label="With the Action API">
+    <span slot="before">Integrations depend on extensions that each build and maintain their own endpoints.</span>
+    <span slot="after">Every action is an HTTP endpoint below <code class="language-plaintext highlighter-rouge">/typo3/api/</code>, provided by TYPO3 and extensions alike.</span>
+  </problem-item>
+  <problem-item heading="Authorization is reinvented per integration" label="With the Action API">
+    <span slot="before">API keys, OAuth and fine-grained permissions are built again for every connection.</span>
+    <span slot="after">EXT:hub offers OAuth 2.0 and static tokens. Scopes limit apps; the user’s permissions always apply.</span>
+  </problem-item>
+  <problem-item heading="No machine-readable description" label="With the Action API">
+    <span slot="before">Endpoints are documented by hand, if at all, and the documentation drifts from the code.</span>
+    <span slot="after">An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI.</span>
+  </problem-item>
+  <problem-item heading="AI agents cannot work with TYPO3" label="With the Action API">
+    <span slot="before">There is no safe, standard way for assistants to read or change content on behalf of an editor.</span>
+    <span slot="after">A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes.</span>
+  </problem-item>
+  <problem-item heading="The same logic is wrapped again for every consumer" label="With the Action API">
+    <span slot="before">Backend UI, integrations and automation each need their own glue code.</span>
+    <span slot="after">Write the feature once. Every channel is available automatically.</span>
+  </problem-item>
+</problem-comparison>
 
 </section>
 

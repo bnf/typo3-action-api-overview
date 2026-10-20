@@ -19,10 +19,10 @@ export class ActionAnatomy extends LitElement {
       gap: 20px;
     }
     .code { min-width: 0; }
-    ::slotted(code-block) { --code-font-size: 13px; height: 100%; }
+    ::slotted(code-block) { --code-font-size: 14px; height: 100%; }
     .parts { display: grid; gap: 6px; align-content: start; }
     ::slotted(anatomy-part:not([active])) { --part-text-display: none; }
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
       .grid { grid-template-columns: minmax(0, 1fr); }
       ::slotted(code-block) { height: auto; }
       ::slotted(anatomy-part:not([active])) { --part-text-display: block; }
@@ -132,8 +132,8 @@ export class AnatomyPart extends LitElement {
       padding: 9px 14px;
       text-align: left;
       font: inherit;
-      font-size: 15px;
-      line-height: 1.5;
+      font-size: var(--font-size-text, 17px);
+      line-height: 1.55;
       color: var(--muted);
       background: var(--surface);
       border: 1px solid var(--border);
@@ -147,6 +147,7 @@ export class AnatomyPart extends LitElement {
     .badge {
       width: 24px;
       height: 24px;
+      margin-top: 1px;
       border-radius: 999px;
       background: var(--accent);
       color: #1d1f23;
@@ -156,7 +157,7 @@ export class AnatomyPart extends LitElement {
       font-weight: 700;
       line-height: 1;
     }
-    .heading { display: block; color: var(--fg); font-weight: 700; font-size: 16px; line-height: 24px; }
+    .heading { display: block; color: var(--fg); font-weight: 700; font-size: var(--font-size-base, 18px); line-height: 26px; }
     .text { display: var(--part-text-display, block); margin-top: 2px; }
   `;
 
