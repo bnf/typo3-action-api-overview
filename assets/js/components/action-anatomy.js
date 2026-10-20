@@ -3,7 +3,8 @@ import { LitElement, css, html } from 'lit';
 /**
  * The annotated example action (_includes/sections/concept.html): a
  * <code-block> and one <anatomy-part> per highlighted part, linked both ways.
- * The code stays in view while the parts are read.
+ * Side by side, only the selected part shows its explanation, so that the
+ * list and the code end at the same height.
  */
 export class ActionAnatomy extends LitElement {
   static properties = {
@@ -16,18 +17,15 @@ export class ActionAnatomy extends LitElement {
       display: grid;
       grid-template-columns: minmax(0, max-content) minmax(16rem, 1fr);
       gap: 20px;
-      align-items: start;
     }
-    .code {
-      position: sticky;
-      top: calc(var(--topbar-height, 56px) + 16px);
-      min-width: 0;
-    }
-    ::slotted(code-block) { --code-font-size: 13px; }
-    .parts { display: grid; gap: 8px; }
+    .code { min-width: 0; }
+    ::slotted(code-block) { --code-font-size: 13px; height: 100%; }
+    .parts { display: grid; gap: 6px; align-content: start; }
+    ::slotted(anatomy-part:not([active])) { --part-text-display: none; }
     @media (max-width: 1100px) {
       .grid { grid-template-columns: minmax(0, 1fr); }
-      .code { position: static; }
+      ::slotted(code-block) { height: auto; }
+      ::slotted(anatomy-part:not([active])) { --part-text-display: block; }
     }
   `;
 
@@ -56,6 +54,44 @@ export class ActionAnatomy extends LitElement {
     if (code) {
       code.marks = this.parts.map((part) => ({ ref: part.ref, match: part.match }));
     }
+    this.resizeObserver = new ResizeObserver(([entry]) => {
+      if (entry.contentRect.width !== this.measuredWidth) {
+        this.measuredWidth = entry.contentRect.width;
+        this.reserveHeight();
+      }
+    });
+    this.resizeObserver.observe(this);
+    document.fonts.ready.then(() => this.reserveHeight());
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.resizeObserver?.disconnect();
+    this.measuredWidth = undefined;
+  }
+
+  // Side by side, the list keeps the height it has with the longest explanation
+  // open, so that selecting another part does not move the rest of the page
+  async reserveHeight() {
+    const parts = this.parts;
+    await Promise.all(parts.map((part) => part.updateComplete));
+    const list = this.renderRoot.querySelector('.parts');
+    list.style.minHeight = '';
+    const columns = getComputedStyle(this.renderRoot.querySelector('.grid')).gridTemplateColumns.split(' ');
+    if (columns.length < 2) {
+      return;
+    }
+    const height = (part, display) => {
+      part.style.setProperty('--part-text-display', display);
+      const value = part.offsetHeight;
+      part.style.removeProperty('--part-text-display');
+      return value;
+    };
+    const collapsed = parts.map((part) => height(part, 'none'));
+    const opened = parts.map((part) => height(part, 'block'));
+    const gaps = parseFloat(getComputedStyle(list).rowGap) * (parts.length - 1);
+    const longest = Math.max(...opened.map((value, index) => value - collapsed[index]));
+    list.style.minHeight = `${collapsed.reduce((sum, value) => sum + value, 0) + gaps + longest}px`;
   }
 
   updated(changed) {
@@ -73,7 +109,8 @@ export class ActionAnatomy extends LitElement {
 
 /**
  * One explained part of the action. Attributes: ref, heading, match (the
- * text in the code it explains). The explanation is the element's content.
+ * text in the code it explains). The explanation is the element's content,
+ * hidden when --part-text-display is none.
  */
 export class AnatomyPart extends LitElement {
   static properties = {
@@ -89,9 +126,10 @@ export class AnatomyPart extends LitElement {
       display: grid;
       grid-template-columns: 24px minmax(0, 1fr);
       gap: 12px;
+      align-items: start;
       width: 100%;
       margin: 0;
-      padding: 12px 14px;
+      padding: 9px 14px;
       text-align: left;
       font: inherit;
       font-size: 15px;
@@ -118,7 +156,8 @@ export class AnatomyPart extends LitElement {
       font-weight: 700;
       line-height: 1;
     }
-    .heading { display: block; color: var(--fg); font-weight: 700; font-size: 16px; line-height: 1.4; }
+    .heading { display: block; color: var(--fg); font-weight: 700; font-size: 16px; line-height: 24px; }
+    .text { display: var(--part-text-display, block); margin-top: 2px; }
   `;
 
   connectedCallback() {
@@ -129,9 +168,9 @@ export class AnatomyPart extends LitElement {
   render() {
     return html`
       <button type="button" aria-pressed=${this.active ? 'true' : 'false'}
-        @click=${this.select} @mouseenter=${this.select} @focus=${this.select}>
+        @click=${this.select} @focus=${this.select}>
         <span class="badge" aria-hidden="true">${this.ref}</span>
-        <span><span class="heading">${this.heading}</span><slot></slot></span>
+        <span><span class="heading">${this.heading}</span><span class="text"><slot></slot></span></span>
       </button>
     `;
   }
