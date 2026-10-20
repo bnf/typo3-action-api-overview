@@ -19,7 +19,7 @@ code-block:not(:defined) pre {
   border-radius: 12px;
   padding: var(--code-padding, 16px 20px);
   overflow-x: auto;
-  font-size: var(--code-font-size, 14px);
+  font-size: var(--code-font-size, 15px);
   line-height: 1.6;
 }
-.panel code-block { --code-font-size: 13px; --code-padding: 10px 14px; margin: 8px 0; }
+.panel code-block { --code-font-size: 14px; --code-padding: 10px 14px; margin: 8px 0; }

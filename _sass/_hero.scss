@@ -4,7 +4,7 @@
   display: inline-flex;
   gap: 8px;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: 600;
   color: var(--accent-strong);
   background: var(--accent-soft);
@@ -31,7 +31,7 @@
   box-shadow: var(--shadow);
   padding: 24px;
 }
-.hero-diagram code-block { --code-font-size: 13px; }
+.hero-diagram code-block { --code-font-size: 14px; }
 .hero-arrow {
   height: 100%;
   display: grid;
@@ -65,10 +65,10 @@
   background: var(--accent-soft);
   color: var(--accent-strong);
   font-weight: 700;
-  font-size: 13px;
+  font-size: var(--font-size-label);
 }
 .channel strong { display: block; line-height: 1.25; }
-.channel small { color: var(--muted); font-size: 14px; }
+.channel small { color: var(--muted); font-size: var(--font-size-small); }
 
 .facts {
   display: grid;
@@ -83,4 +83,4 @@
   padding: 16px;
 }
 .fact strong { display: block; font-size: 1.05em; margin-bottom: 4px; }
-.fact span { color: var(--muted); font-size: 15px; line-height: 1.45; display: block; }
+.fact span { color: var(--muted); font-size: var(--font-size-text); line-height: 1.45; display: block; }

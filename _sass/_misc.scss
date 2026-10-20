@@ -13,19 +13,19 @@ footer {
   padding-top: 24px;
   border-top: 1px solid var(--border);
   color: var(--muted);
-  font-size: 14.5px;
+  font-size: var(--font-size-small);
 }
 .spaced { margin-top: 16px; }
 .calc-label-spaced { margin-top: 18px; }
 .muted { color: var(--muted); }
 .patch-links { display: flex; flex-wrap: wrap; gap: 6px; }
 .patch-links a {
-  font: 600 12px "Source Code Pro", monospace;
+  font: 600 var(--font-size-label) "Source Code Pro", monospace;
   text-decoration: none;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 1px 6px;
 }
 .patch-links a:hover { border-color: var(--accent); }
-table.chain small { display: block; color: var(--muted); font-size: 13px; }
+table.chain small { display: block; color: var(--muted); font-size: var(--font-size-label); }
 table.chain td.num { color: var(--muted); font-variant-numeric: tabular-nums; }
