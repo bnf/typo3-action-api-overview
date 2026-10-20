@@ -257,13 +257,9 @@
 <section class="chapter" id="section-stack">
   <h2 id="stack">The stack</h2>
   <p class="section-lead">Six layers, each with one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step.</p>
-  <div class="scenarios"></div>
-<div class="explorer">
-  <div class="stack"></div>
-  <div class="panel"></div>
-</div>
-<template id="layer-clients">
-  <p>The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.</p>
+  <stack-explorer>
+  <div data-layer-id="clients" data-name="Clients" data-tagline="Who calls" data-title="Clients: everyone talks to the same actions" data-items="[&quot;Backend UI&quot;,&quot;Scripts &amp; integrations&quot;,&quot;AI agents&quot;,&quot;Local coding agents&quot;]">
+    <p>The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.</p>
 
 <ul>
   <li>Backend JavaScript: <code class="language-plaintext highlighter-rouge">@typo3/core/action/request</code></li>
@@ -271,21 +267,21 @@
   <li>MCP clients: Claude, MCP Inspector, other AI agents</li>
 </ul>
 
-</template>
-<template id="layer-protocols">
-  <p>Every action is reachable as a JSON endpoint below <code class="language-plaintext highlighter-rouge">/typo3/api/</code>, with the HTTP method derived from its type. The same actions are offered as MCP tools, over HTTP or locally via <code class="language-plaintext highlighter-rouge">mcp:serve</code>, and described in an OpenAPI 3.1 document at <code class="language-plaintext highlighter-rouge">/typo3/api/schema</code>.</p>
+  </div>
+  <div data-layer-id="protocols" data-name="Protocols" data-tagline="How they talk" data-title="Protocols: different wire formats, one model" data-items="[&quot;HTTP + JSON&quot;,&quot;MCP over HTTP&quot;,&quot;MCP over stdio&quot;,&quot;OpenAPI&quot;]">
+    <p>Every action is reachable as a JSON endpoint below <code class="language-plaintext highlighter-rouge">/typo3/api/</code>, with the HTTP method derived from its type. The same actions are offered as MCP tools, over HTTP or locally via <code class="language-plaintext highlighter-rouge">mcp:serve</code>, and described in an OpenAPI 3.1 document at <code class="language-plaintext highlighter-rouge">/typo3/api/schema</code>.</p>
 
-  <p class="meta">Components: <code>ActionHandler</code>, <code>MCP server</code>, <code>OpenApiBuilder</code></p>
-</template>
-<template id="layer-access">
-  <p>Every call runs as a backend user. Inside the backend, the session identifies the user. External applications authenticate with a token issued by <strong>EXT:hub</strong>, via OAuth 2.0 or as a static token.</p>
+    <p class="meta">Components: <code>ActionHandler</code>, <code>MCP server</code>, <code>OpenApiBuilder</code></p>
+  </div>
+  <div data-layer-id="access" data-name="Access" data-tagline="Who is it, what may they do" data-title="Access: identify the user, limit the app" data-items="[&quot;Backend session&quot;,&quot;EXT:hub (OAuth 2.0, tokens)&quot;,&quot;Scopes&quot;]">
+    <p>Every call runs as a backend user. Inside the backend, the session identifies the user. External applications authenticate with a token issued by <strong>EXT:hub</strong>, via OAuth 2.0 or as a static token.</p>
 
 <p><strong>Scopes</strong> limit which actions an application may call on behalf of the user, for example <code class="language-plaintext highlighter-rouge">content:read</code> or <code class="language-plaintext highlighter-rouge">dashboard:write</code>.</p>
 
-  <p class="meta">Components: <code>Backend authentication</code>, <code>AppResolver</code>, <code>OAuth 2.0 server</code>, <code>ScopeRegistry</code></p>
-</template>
-<template id="layer-core">
-  <p>The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it</p>
+    <p class="meta">Components: <code>Backend authentication</code>, <code>AppResolver</code>, <code>OAuth 2.0 server</code>, <code>ScopeRegistry</code></p>
+  </div>
+  <div data-layer-id="core" data-name="Action core" data-tagline="Check, validate, invoke" data-title="Action core: one place for the hard parts" data-items="[&quot;ActionRegistry&quot;,&quot;RequestHandler&quot;,&quot;ActionInvoker&quot;,&quot;JSON Schema&quot;]">
+    <p>The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it</p>
 
 <ul>
   <li>checks the required scopes,</li>
@@ -295,102 +291,167 @@
   <li>maps declared errors to status codes.</li>
 </ul>
 
-  <p class="meta">Components: <code>ActionRegistry</code>, <code>RequestHandler</code>, <code>ActionInvoker</code>, <code>Schema builder and hydrator</code></p>
-</template>
-<template id="layer-actions">
-  <p>Actions are methods of regular services, marked with the <code class="language-plaintext highlighter-rouge">#[AsAction]</code> attribute. They contain only the business logic: no request parsing, no serialization, no authentication.</p>
+    <p class="meta">Components: <code>ActionRegistry</code>, <code>RequestHandler</code>, <code>ActionInvoker</code>, <code>Schema builder and hydrator</code></p>
+  </div>
+  <div data-layer-id="actions" data-name="Actions" data-tagline="What can be done" data-title="Actions: plain PHP methods with #[AsAction]" data-items="[&quot;Dashboard&quot;,&quot;Page tree&quot;,&quot;Records&quot;,&quot;MCP server&quot;,&quot;Your extension&quot;]">
+    <p>Actions are methods of regular services, marked with the <code class="language-plaintext highlighter-rouge">#[AsAction]</code> attribute. They contain only the business logic: no request parsing, no serialization, no authentication.</p>
 
 <p>TYPO3 provides actions for the dashboard, the page tree, file resources and records. Even the MCP server is an action. Extensions add their own.</p>
 
-</template>
-<template id="layer-typo3">
-  <p>Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.</p>
+  </div>
+  <div data-layer-id="typo3" data-name="TYPO3" data-tagline="Where it happens" data-title="TYPO3: the familiar foundation" data-items="[&quot;DataHandler&quot;,&quot;Permissions&quot;,&quot;TcaSchema&quot;,&quot;Workspaces&quot;]">
+    <p>Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.</p>
 
 <p>Record schemas are derived from <code class="language-plaintext highlighter-rouge">TcaSchema</code>, so the API describes the content model of each installation.</p>
 
-</template>
-<template id="step-backend-0"><p>The page tree component calls the action with the JavaScript client:</p>
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="clients" data-item="Backend UI" data-title="The page tree requests its data">
+    <p>The page tree component calls the action with the JavaScript client:</p>
 
 <div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">action</span><span class="p">(</span><span class="dl">'</span><span class="s1">/page/tree</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="err">…</span> <span class="p">}).</span><span class="kd">get</span><span class="p">()</span>
 </code></pre></div></div>
 
 <p>The client adds a bearer token that is embedded in the backend document.</p>
-</template>
-<template id="step-backend-1"><p><code class="language-plaintext highlighter-rouge">GET /typo3/api/page/tree</code> matches the backend route that was registered for this action.</p>
-</template>
-<template id="step-backend-2"><p>Session cookie and bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="protocols" data-item="HTTP + JSON" data-title="A regular HTTP request">
+    <p><code class="language-plaintext highlighter-rouge">GET /typo3/api/page/tree</code> matches the backend route that was registered for this action.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="access" data-item="Backend session" data-title="The session identifies the editor">
+    <p>Session cookie and bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.</p>
 
 <p>All scopes the editor may hold are granted.</p>
-</template>
-<template id="step-backend-3"><p>The action requires <code class="language-plaintext highlighter-rouge">content:read</code>, which is granted. Query arguments are validated against the input schema.</p>
-</template>
-<template id="step-backend-4"><p>Arguments are converted to PHP types and the method is called with an <code class="language-plaintext highlighter-rouge">ActionContext</code> holding user, scopes and request.</p>
-</template>
-<template id="step-backend-5"><p>The page tree action builds the tree items. It knows nothing about HTTP.</p>
-</template>
-<template id="step-backend-6"><p>Only pages the editor is allowed to see end up in the tree.</p>
-</template>
-<template id="step-backend-7"><p>The result is validated against the output schema and returned as JSON. The former internal AJAX route is no longer needed.</p>
-</template>
-<template id="step-integration-0"><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authorization: Bearer &lt;token&gt;'</span> <span class="se">\</span>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="core" data-item="RequestHandler" data-title="Scopes and arguments are checked">
+    <p>The action requires <code class="language-plaintext highlighter-rouge">content:read</code>, which is granted. Query arguments are validated against the input schema.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="core" data-item="ActionInvoker" data-title="The action is invoked">
+    <p>Arguments are converted to PHP types and the method is called with an <code class="language-plaintext highlighter-rouge">ActionContext</code> holding user, scopes and request.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="actions" data-item="Page tree" data-title="Business logic only">
+    <p>The page tree action builds the tree items. It knows nothing about HTTP.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="typo3" data-item="Permissions" data-title="Backend permissions apply">
+    <p>Only pages the editor is allowed to see end up in the tree.</p>
+
+  </div>
+  <div data-scenario="backend" data-scenario-label="Backend UI loads the page tree" data-layer="clients" data-item="Backend UI" data-title="Validated JSON comes back">
+    <p>The result is validated against the output schema and returned as JSON. The former internal AJAX route is no longer needed.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="clients" data-item="Scripts &amp; integrations" data-title="An integration calls TYPO3">
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authorization: Bearer &lt;token&gt;'</span> <span class="se">\</span>
   https://example.org/typo3/api/dashboards
 </code></pre></div></div>
 
 <p>An administrator created the token for this app in the API Hub module.</p>
-</template>
-<template id="step-integration-1"><p>The request reaches the same route as a request from the backend UI.</p>
-</template>
-<template id="step-integration-2"><p>There is no backend session, so EXT:hub takes over: the app must be enabled and its secret unchanged. EXT:hub loads the backend user selected in the app record.</p>
-</template>
-<template id="step-integration-3"><p>Granted are exactly the scopes selected in the app record, for example <code class="language-plaintext highlighter-rouge">dashboard:read</code>.</p>
-</template>
-<template id="step-integration-4"><p><code class="language-plaintext highlighter-rouge">dashboard:read</code> is required and granted. A write action would be rejected with <code class="language-plaintext highlighter-rouge">403 Missing scope</code>.</p>
-</template>
-<template id="step-integration-5"><p>The <code class="language-plaintext highlighter-rouge">ActionContext</code> carries the backend user of the app.</p>
-</template>
-<template id="step-integration-6"><p>The dashboard action that serves the backend UI also serves the integration.</p>
-</template>
-<template id="step-integration-7"><p>The integration receives the validated JSON result.</p>
-</template>
-<template id="step-mcp-0"><p>The MCP client discovers the authorization server at <code class="language-plaintext highlighter-rouge">/.well-known/oauth-authorization-server</code> and starts the OAuth flow.</p>
-</template>
-<template id="step-mcp-1"><p>The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user.</p>
-</template>
-<template id="step-mcp-2"><div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /typo3/api/mcp
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="protocols" data-item="HTTP + JSON" data-title="Same endpoint as the backend uses">
+    <p>The request reaches the same route as a request from the backend UI.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="access" data-item="EXT:hub (OAuth 2.0, tokens)" data-title="EXT:hub validates the token">
+    <p>There is no backend session, so EXT:hub takes over: the app must be enabled and its secret unchanged. EXT:hub loads the backend user selected in the app record.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="access" data-item="Scopes" data-title="The app only gets its scopes">
+    <p>Granted are exactly the scopes selected in the app record, for example <code class="language-plaintext highlighter-rouge">dashboard:read</code>.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="core" data-item="RequestHandler" data-title="Scope check">
+    <p><code class="language-plaintext highlighter-rouge">dashboard:read</code> is required and granted. A write action would be rejected with <code class="language-plaintext highlighter-rouge">403 Missing scope</code>.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="core" data-item="ActionInvoker" data-title="Invoked as the app user">
+    <p>The <code class="language-plaintext highlighter-rouge">ActionContext</code> carries the backend user of the app.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="actions" data-item="Dashboard" data-title="Same code as in the backend">
+    <p>The dashboard action that serves the backend UI also serves the integration.</p>
+
+  </div>
+  <div data-scenario="integration" data-scenario-label="Script with a static token" data-layer="clients" data-item="Scripts &amp; integrations" data-title="JSON response">
+    <p>The integration receives the validated JSON result.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="clients" data-item="AI agents" data-title="An AI client connects">
+    <p>The MCP client discovers the authorization server at <code class="language-plaintext highlighter-rouge">/.well-known/oauth-authorization-server</code> and starts the OAuth flow.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="access" data-item="EXT:hub (OAuth 2.0, tokens)" data-title="The user grants access">
+    <p>The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="protocols" data-item="MCP over HTTP" data-title="MCP is just another endpoint">
+    <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>POST /typo3/api/mcp
 {"method": "tools/list", …}
 </code></pre></div></div>
-</template>
-<template id="step-mcp-3"><p>EXT:hub validates the token and intersects its scopes with the scopes the app currently has.</p>
-</template>
-<template id="step-mcp-4"><p>The MCP server is an action and requires the scope <code class="language-plaintext highlighter-rouge">mcp</code>.</p>
-</template>
-<template id="step-mcp-5"><p><code class="language-plaintext highlighter-rouge">tools/list</code> returns every action whose scopes are granted, with input and output schema and hints such as <code class="language-plaintext highlighter-rouge">readOnlyHint</code>.</p>
-</template>
-<template id="step-mcp-6"><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tools/call"</span><span class="p">,</span><span class="w">
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="access" data-item="Scopes" data-title="Token checked on every request">
+    <p>EXT:hub validates the token and intersects its scopes with the scopes the app currently has.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="core" data-item="RequestHandler" data-title="The scope mcp is required">
+    <p>The MCP server is an action and requires the scope <code class="language-plaintext highlighter-rouge">mcp</code>.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="actions" data-item="MCP server" data-title="The MCP server is an action">
+    <p><code class="language-plaintext highlighter-rouge">tools/list</code> returns every action whose scopes are granted, with input and output schema and hints such as <code class="language-plaintext highlighter-rouge">readOnlyHint</code>.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="protocols" data-item="MCP over HTTP" data-title="The agent calls a tool">
+    <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tools/call"</span><span class="p">,</span><span class="w">
  </span><span class="nl">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fetch_dashboards"</span><span class="p">}}</span><span class="w">
 </span></code></pre></div></div>
-</template>
-<template id="step-mcp-7"><p>The MCP action invokes the target action through the same <code class="language-plaintext highlighter-rouge">ActionInvoker</code>, with the same user and scopes.</p>
-</template>
-<template id="step-mcp-8"><p>The dashboard action now serves the backend, integrations and AI agents.</p>
-</template>
-<template id="step-mcp-9"><p>The validated result is returned as <code class="language-plaintext highlighter-rouge">structuredContent</code> in the JSON-RPC response. The agent can render the user’s dashboard.</p>
-</template>
-<template id="step-stdio-0"><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vendor/bin/typo3 mcp:serve <span class="nt">--user</span><span class="o">=</span>editor
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="core" data-item="ActionInvoker" data-title="Nested invocation">
+    <p>The MCP action invokes the target action through the same <code class="language-plaintext highlighter-rouge">ActionInvoker</code>, with the same user and scopes.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="actions" data-item="Dashboard" data-title="Same action, third consumer">
+    <p>The dashboard action now serves the backend, integrations and AI agents.</p>
+
+  </div>
+  <div data-scenario="mcp" data-scenario-label="AI agent via MCP" data-layer="clients" data-item="AI agents" data-title="Structured result">
+    <p>The validated result is returned as <code class="language-plaintext highlighter-rouge">structuredContent</code> in the JSON-RPC response. The agent can render the user’s dashboard.</p>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="clients" data-item="Local coding agents" data-title="A local agent starts TYPO3">
+    <div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vendor/bin/typo3 mcp:serve <span class="nt">--user</span><span class="o">=</span>editor
 </code></pre></div></div>
 
 <p>The MCP client starts the command and talks to it via standard input and output.</p>
-</template>
-<template id="step-stdio-1"><p>JSON-RPC messages are exchanged line by line. EXT:hub is not required.</p>
-</template>
-<template id="step-stdio-2"><p>The user <code class="language-plaintext highlighter-rouge">editor</code> must exist and be enabled. All scopes allowed for this user are granted. Without <code class="language-plaintext highlighter-rouge">--user</code>, the CLI user <code class="language-plaintext highlighter-rouge">_cli_</code> is used.</p>
-</template>
-<template id="step-stdio-3"><p>The same MCP action handles <code class="language-plaintext highlighter-rouge">initialize</code>, <code class="language-plaintext highlighter-rouge">tools/list</code> and <code class="language-plaintext highlighter-rouge">tools/call</code>.</p>
-</template>
-<template id="step-stdio-4"><p>Tool calls are invoked and validated exactly as over HTTP.</p>
-</template>
-<template id="step-stdio-5"><p>The agent can do what <code class="language-plaintext highlighter-rouge">editor</code> can do, and nothing more.</p>
-</template>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="protocols" data-item="MCP over stdio" data-title="No web server needed">
+    <p>JSON-RPC messages are exchanged line by line. EXT:hub is not required.</p>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="access" data-item="Scopes" data-title="Runs as the selected user">
+    <p>The user <code class="language-plaintext highlighter-rouge">editor</code> must exist and be enabled. All scopes allowed for this user are granted. Without <code class="language-plaintext highlighter-rouge">--user</code>, the CLI user <code class="language-plaintext highlighter-rouge">_cli_</code> is used.</p>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="actions" data-item="MCP server" data-title="Same MCP implementation">
+    <p>The same MCP action handles <code class="language-plaintext highlighter-rouge">initialize</code>, <code class="language-plaintext highlighter-rouge">tools/list</code> and <code class="language-plaintext highlighter-rouge">tools/call</code>.</p>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="core" data-item="ActionInvoker" data-title="Same validation">
+    <p>Tool calls are invoked and validated exactly as over HTTP.</p>
+
+  </div>
+  <div data-scenario="stdio" data-scenario-label="Coding agent via stdio" data-layer="typo3" data-item="Permissions" data-title="The user’s permissions apply">
+    <p>The agent can do what <code class="language-plaintext highlighter-rouge">editor</code> can do, and nothing more.</p>
+
+  </div>
+</stack-explorer>
 
 </section>
 
@@ -404,23 +465,10 @@
 
 <h3 id="scope-calculator">Try it: which scopes does an OAuth app get?</h3>
 <p>The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.</p>
-<div class="calc">
-  <div class="calc-label">Backend user who grants access</div>
-  <div class="users"></div>
-  <div class="matrix-wrap">
-    <table class="matrix">
-      <thead>
-        <tr>
-          <th>Scope</th><th>Requested<br>by the app</th><th></th><th>Configured<br>for the app</th><th></th><th>Allowed<br>for the user</th><th></th><th>Token</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <div class="calc-label calc-label-spaced">What the app can call</div>
-  <div class="actions-list"></div>
-  <p class="calc-note">Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.</p>
-</div>
+<scope-calculator>
+  <script type="application/json">{"title":"Try it: which scopes does an OAuth app get?","intro":"The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.","note":"Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/page/tree","scopes":["content:read"]},{"method":"PATCH","name":"Update a record","path":"/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/token/generate","scopes":["token:generate"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"]}]}</script>
+  <span slot="note">Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.</span>
+</scope-calculator>
 
 <h3 id="apps">Apps, tokens and consent</h3>
 <div class="table-wrap">
@@ -824,13 +872,6 @@
 
 </section>
 
-
-<script type="application/json" id="page-data">
-{
-  "stack": {"layers":[{"id":"clients","name":"Clients","tagline":"Who calls","items":["Backend UI","Scripts & integrations","AI agents","Local coding agents"],"title":"Clients: everyone talks to the same actions","body":"The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.\n\n- Backend JavaScript: `@typo3/core/action/request`\n- Any HTTP client: `curl`, generated OpenAPI clients, automation tools\n- MCP clients: Claude, MCP Inspector, other AI agents","components":[]},{"id":"protocols","name":"Protocols","tagline":"How they talk","items":["HTTP + JSON","MCP over HTTP","MCP over stdio","OpenAPI"],"title":"Protocols: different wire formats, one model","body":"Every action is reachable as a JSON endpoint below `/typo3/api/`, with the HTTP method derived from its type. The same actions are offered as MCP tools, over HTTP or locally via `mcp:serve`, and described in an OpenAPI 3.1 document at `/typo3/api/schema`.","components":["ActionHandler","MCP server","OpenApiBuilder"]},{"id":"access","name":"Access","tagline":"Who is it, what may they do","items":["Backend session","EXT:hub (OAuth 2.0, tokens)","Scopes"],"title":"Access: identify the user, limit the app","body":"Every call runs as a backend user. Inside the backend, the session identifies the user. External applications authenticate with a token issued by **EXT:hub**, via OAuth 2.0 or as a static token.\n\n**Scopes** limit which actions an application may call on behalf of the user, for example `content:read` or `dashboard:write`.","components":["Backend authentication","AppResolver","OAuth 2.0 server","ScopeRegistry"]},{"id":"core","name":"Action core","tagline":"Check, validate, invoke","items":["ActionRegistry","RequestHandler","ActionInvoker","JSON Schema"],"title":"Action core: one place for the hard parts","body":"The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it\n\n- checks the required scopes,\n- validates arguments and converts them to PHP types,\n- calls the action method with an `ActionContext`,\n- validates the result against the output schema,\n- maps declared errors to status codes.","components":["ActionRegistry","RequestHandler","ActionInvoker","Schema builder and hydrator"]},{"id":"actions","name":"Actions","tagline":"What can be done","items":["Dashboard","Page tree","Records","MCP server","Your extension"],"title":"Actions: plain PHP methods with #[AsAction]","body":"Actions are methods of regular services, marked with the `#[AsAction]` attribute. They contain only the business logic: no request parsing, no serialization, no authentication.\n\nTYPO3 provides actions for the dashboard, the page tree, file resources and records. Even the MCP server is an action. Extensions add their own.","components":[]},{"id":"typo3","name":"TYPO3","tagline":"Where it happens","items":["DataHandler","Permissions","TcaSchema","Workspaces"],"title":"TYPO3: the familiar foundation","body":"Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.\n\nRecord schemas are derived from `TcaSchema`, so the API describes the content model of each installation.","components":[]}],"scenarios":[{"id":"backend","label":"Backend UI loads the page tree","steps":[{"layer":"clients","item":"Backend UI","title":"The page tree requests its data","body":"The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/page/tree', { … }).get()\n```\n\nThe client adds a bearer token that is embedded in the backend document."},{"layer":"protocols","item":"HTTP + JSON","title":"A regular HTTP request","body":"`GET /typo3/api/page/tree` matches the backend route that was registered for this action."},{"layer":"access","item":"Backend session","title":"The session identifies the editor","body":"Session cookie and bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.\n\nAll scopes the editor may hold are granted."},{"layer":"core","item":"RequestHandler","title":"Scopes and arguments are checked","body":"The action requires `content:read`, which is granted. Query arguments are validated against the input schema."},{"layer":"core","item":"ActionInvoker","title":"The action is invoked","body":"Arguments are converted to PHP types and the method is called with an `ActionContext` holding user, scopes and request."},{"layer":"actions","item":"Page tree","title":"Business logic only","body":"The page tree action builds the tree items. It knows nothing about HTTP."},{"layer":"typo3","item":"Permissions","title":"Backend permissions apply","body":"Only pages the editor is allowed to see end up in the tree."},{"layer":"clients","item":"Backend UI","title":"Validated JSON comes back","body":"The result is validated against the output schema and returned as JSON. The former internal AJAX route is no longer needed."}]},{"id":"integration","label":"Script with a static token","steps":[{"layer":"clients","item":"Scripts & integrations","title":"An integration calls TYPO3","body":"```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/dashboards\n```\n\nAn administrator created the token for this app in the API Hub module."},{"layer":"protocols","item":"HTTP + JSON","title":"Same endpoint as the backend uses","body":"The request reaches the same route as a request from the backend UI."},{"layer":"access","item":"EXT:hub (OAuth 2.0, tokens)","title":"EXT:hub validates the token","body":"There is no backend session, so EXT:hub takes over: the app must be enabled and its secret unchanged. EXT:hub loads the backend user selected in the app record."},{"layer":"access","item":"Scopes","title":"The app only gets its scopes","body":"Granted are exactly the scopes selected in the app record, for example `dashboard:read`."},{"layer":"core","item":"RequestHandler","title":"Scope check","body":"`dashboard:read` is required and granted. A write action would be rejected with `403 Missing scope`."},{"layer":"core","item":"ActionInvoker","title":"Invoked as the app user","body":"The `ActionContext` carries the backend user of the app."},{"layer":"actions","item":"Dashboard","title":"Same code as in the backend","body":"The dashboard action that serves the backend UI also serves the integration."},{"layer":"clients","item":"Scripts & integrations","title":"JSON response","body":"The integration receives the validated JSON result."}]},{"id":"mcp","label":"AI agent via MCP","steps":[{"layer":"clients","item":"AI agents","title":"An AI client connects","body":"The MCP client discovers the authorization server at `/.well-known/oauth-authorization-server` and starts the OAuth flow."},{"layer":"access","item":"EXT:hub (OAuth 2.0, tokens)","title":"The user grants access","body":"The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user."},{"layer":"protocols","item":"MCP over HTTP","title":"MCP is just another endpoint","body":"```text\nPOST /typo3/api/mcp\n{\"method\": \"tools/list\", …}\n```"},{"layer":"access","item":"Scopes","title":"Token checked on every request","body":"EXT:hub validates the token and intersects its scopes with the scopes the app currently has."},{"layer":"core","item":"RequestHandler","title":"The scope mcp is required","body":"The MCP server is an action and requires the scope `mcp`."},{"layer":"actions","item":"MCP server","title":"The MCP server is an action","body":"`tools/list` returns every action whose scopes are granted, with input and output schema and hints such as `readOnlyHint`."},{"layer":"protocols","item":"MCP over HTTP","title":"The agent calls a tool","body":"```json\n{\"method\": \"tools/call\",\n \"params\": {\"name\": \"fetch_dashboards\"}}\n```"},{"layer":"core","item":"ActionInvoker","title":"Nested invocation","body":"The MCP action invokes the target action through the same `ActionInvoker`, with the same user and scopes."},{"layer":"actions","item":"Dashboard","title":"Same action, third consumer","body":"The dashboard action now serves the backend, integrations and AI agents."},{"layer":"clients","item":"AI agents","title":"Structured result","body":"The validated result is returned as `structuredContent` in the JSON-RPC response. The agent can render the user's dashboard."}]},{"id":"stdio","label":"Coding agent via stdio","steps":[{"layer":"clients","item":"Local coding agents","title":"A local agent starts TYPO3","body":"```shell\nvendor/bin/typo3 mcp:serve --user=editor\n```\n\nThe MCP client starts the command and talks to it via standard input and output."},{"layer":"protocols","item":"MCP over stdio","title":"No web server needed","body":"JSON-RPC messages are exchanged line by line. EXT:hub is not required."},{"layer":"access","item":"Scopes","title":"Runs as the selected user","body":"The user `editor` must exist and be enabled. All scopes allowed for this user are granted. Without `--user`, the CLI user `_cli_` is used."},{"layer":"actions","item":"MCP server","title":"Same MCP implementation","body":"The same MCP action handles `initialize`, `tools/list` and `tools/call`."},{"layer":"core","item":"ActionInvoker","title":"Same validation","body":"Tool calls are invoked and validated exactly as over HTTP."},{"layer":"typo3","item":"Permissions","title":"The user’s permissions apply","body":"The agent can do what `editor` can do, and nothing more."}]}]},
-  "calculator": {"title":"Try it: which scopes does an OAuth app get?","intro":"The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.","note":"Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/page/tree","scopes":["content:read"]},{"method":"PATCH","name":"Update a record","path":"/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/token/generate","scopes":["token:generate"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"]}]}
-}
-</script>
 
       <footer>
         TYPO3 Action API · Epic <a href="https://forge.typo3.org/issues/111053">#111053</a> on forge.typo3.org · Content from <code>_data/</code>
