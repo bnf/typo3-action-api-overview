@@ -1,5 +1,6 @@
 {%- assign deep = site.data.deep_dive -%}
 {%- for diagram in deep.diagrams %}
+<div data-comment="{{ diagram.id }}">
 <h3 id="{{ diagram.id }}">{{ diagram.title }}</h3>
 {%- if diagram.intro %}<p>{% include inline.html text=diagram.intro %}</p>{% endif %}
 <mermaid-diagram caption="{{ diagram.caption | escape }}"><pre>{{ diagram.source | escape }}</pre></mermaid-diagram>
@@ -26,4 +27,5 @@
   </table>
 </div>
 {%- endif %}
+</div>
 {%- endfor %}

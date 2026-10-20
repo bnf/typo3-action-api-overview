@@ -270,7 +270,8 @@ Readers comment on the site with "Comment on GitHub"
 touch screens, where the browser shows its own menu at the selection and its
 own bars at the bottom), or they
 switch on the comment mode with the round button at the bottom right and
-click or tap a block (card, paragraph, table, component). The component
+click or tap a group. The comment mode shows every group with a dashed
+outline and switches off the text selection. The component
 finds the line in `_data/` that the text comes from and opens
 
 - in a preview, the line in the diff of the pull request, if the pull
@@ -279,12 +280,22 @@ finds the line in `_data/` that the text comes from and opens
   page (text fragment, with the section as fallback) and a permalink to the
   line, which GitHub embeds as a code snippet.
 
-The issue shows an image of the block. `pages.yml` renders every outermost
-block of the built site with Playwright (`scripts/render-screenshots.mjs`)
+A group is an element with a `data-comment` attribute in a template: a
+section intro, a card, a paragraph, a table, a component. The value is the id
+of the group in the issue and must be unique on the page; groups can be
+nested (`concept-example` holds `concept-part-1`, …), and a text selection
+belongs to the innermost group around it. A new block of content needs a
+`data-comment` id. `_includes/screenshot.html` takes a `context` parameter
+for the id, so that the same screenshot can appear in two places.
+
+The issue shows an image of the group. `pages.yml` renders every visible
+group of the built site with Playwright (`scripts/render-screenshots.mjs`)
 into `screenshots/<hash>.png`, with `screenshots/<commit>.json` as the map
-from block to image; the deployment of `main` keeps older images, so that
-older issues still show the block as it was. Images of a preview disappear
-with the preview. With a mouse, a screenshot of the block around the
+from group to image; the script fails when two groups have the same id. For
+a group in a hidden tab, the issue shows the image of the next group around
+it. The deployment of `main` keeps older images, so that
+older issues still show the group as it was. Images of a preview disappear
+with the preview. With a mouse, a screenshot of the group around the
 selection, with the selection highlighted, also goes to the clipboard, so
 that the reader can paste it into the comment. SnapDOM renders it; it is vendored as
 `assets/vendor/snapdom.mjs` (3.3.0, `dist/snapdom.mjs` of the npm package

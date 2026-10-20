@@ -1,9 +1,9 @@
 {%- assign concept = site.data.concept -%}
 <p class="meta">{{ concept.hint }}</p>
-<action-anatomy>
+<action-anatomy data-comment="concept-example">
   {% include code.html snippet=concept.code slot="code" %}
   {%- for part in concept.parts %}
-  <anatomy-part ref="{{ part.ref }}" heading="{{ part.title | escape }}" match="{{ part.match | escape }}">
+  <anatomy-part data-comment="concept-part-{{ part.ref }}" ref="{{ part.ref }}" heading="{{ part.title | escape }}" match="{{ part.match | escape }}">
     {% include inline.html text=part.text %}
     {%- if part.table %}
     <table class="part-table">

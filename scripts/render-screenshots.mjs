@@ -58,6 +58,10 @@ await page.waitForFunction(() => [...document.querySelectorAll('mermaid-diagram'
 const output = join(site, 'screenshots');
 mkdirSync(output, { recursive: true });
 const ids = await page.evaluate(() => document.querySelector('github-comments').screenshotTargets().map((target) => target.id));
+const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
+if (duplicates.length > 0) {
+  throw new Error(`Comment groups with the same data-comment id: ${[...new Set(duplicates)].join(', ')}`);
+}
 const manifest = {};
 for (const id of ids) {
   const element = await page.evaluateHandle((wanted) => document.querySelector('github-comments').screenshotTargets().find((target) => target.id === wanted).element, id);

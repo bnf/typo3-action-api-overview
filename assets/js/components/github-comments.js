@@ -3,12 +3,9 @@ import { LitElement, css, html, nothing } from 'lit';
 const snapdomUrl = new URL('../../vendor/snapdom.mjs', import.meta.url).href;
 let snapdomLoader = null;
 
-// Blocks that readers can comment on as a whole, and that a screenshot of a selection shows
-const blocks = 'problem-item, anatomy-part, channel-tabs, stack-explorer, scope-calculator, screen-shot, mermaid-diagram, '
-  + 'code-block, .card, .fact, .channel, table, figure, p, li, h2, h3';
-
-// Blocks that the build renders as images (scripts/render-screenshots.mjs): only the outermost ones
-const outerBlocks = `${blocks}, action-anatomy`;
+// Blocks that readers can comment on as a whole: groups that the templates mark
+// with data-comment="<id>"; the build renders each one as an image
+const blocks = '[data-comment]';
 
 // Touch screens show their own menu at a selection, so the controls move to the bottom
 const touch = window.matchMedia('(pointer: coarse)');
@@ -38,8 +35,9 @@ const commentIcon = html`<svg viewBox="0 0 16 16" fill="currentColor" aria-hidde
  * - Select text: on screens with a mouse, a button appears at the selection;
  *   on touch screens, a bar below the top bar, because the browser shows its
  *   own menu at the selection and its own bars at the bottom.
- * - Comment mode (round button at the bottom right): click or tap a block
- *   (card, paragraph, table, component) to comment on the whole block.
+ * - Comment mode (round button at the bottom right): the groups that the
+ *   templates mark with data-comment="<id>" get a dashed outline, text cannot
+ *   be selected, and a click or tap selects a whole group.
  *
  * The comment opens, in a preview, the line in the diff of the pull request
  * if the pull request changed the line, and otherwise a new issue with the
@@ -69,6 +67,7 @@ export class GithubComments extends LitElement {
     current: { state: true },
     mode: { state: true },
     hoverBox: { state: true },
+    candidates: { state: true },
     busy: { state: true },
     notice: { state: true },
   };
@@ -105,6 +104,7 @@ export class GithubComments extends LitElement {
       transition: top .1s, left .1s, width .1s, height .1s;
     }
     .outline.hover { outline-style: dashed; background: none; }
+    .outline.candidate { outline: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent); background: none; transition: none; }
 
     .toggle {
       position: fixed;
@@ -177,11 +177,6 @@ export class GithubComments extends LitElement {
     }
     .primary:focus-visible, .close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .primary:disabled, .at-selection:disabled { opacity: .7; cursor: progress; }
-    /* On touch screens, the browser shows its own bars at the bottom during a selection (Google Lens) */
-    @media (pointer: coarse) {
-      .bar { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
-      .notice { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
-    }
     @media (max-width: 560px) {
       .bar { flex-wrap: wrap; padding: 12px; }
       .quote { flex-basis: 100%; }
@@ -202,6 +197,11 @@ export class GithubComments extends LitElement {
       font-weight: 600;
       box-shadow: var(--shadow-lg);
       text-align: center;
+    }
+    /* On touch screens, the browser shows its own bars at the bottom during a selection (Google Lens) */
+    @media (pointer: coarse) {
+      .bar { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
+      .notice { bottom: auto; top: calc(var(--topbar-height, 56px) + 12px); }
     }
   `;
 
@@ -239,6 +239,9 @@ export class GithubComments extends LitElement {
       if (this.current?.block) {
         this.current = { ...this.current, box: this.box(this.current.block) };
       }
+      if (this.mode) {
+        this.candidates = this.groupBoxes();
+      }
     };
   }
 
@@ -266,6 +269,7 @@ export class GithubComments extends LitElement {
           ${commentIcon} ${this.label('Opening GitHub…')}
         </button>
       ` : nothing}
+      ${this.mode ? (this.candidates ?? []).map((box) => html`<div class="outline candidate" style=${this.boxStyle(box)}></div>`) : nothing}
       ${this.hoverBox ? html`<div class="outline hover" style=${this.boxStyle(this.hoverBox)}></div>` : nothing}
       ${this.current?.box ? html`<div class="outline" style=${this.boxStyle(this.current.box)}></div>` : nothing}
       ${bar ? this.renderBar() : html`
@@ -310,9 +314,27 @@ export class GithubComments extends LitElement {
     return { top: rect.top + scrollY, left: rect.left + scrollX, width: rect.width, height: rect.height };
   }
 
+  // Positions of all groups, shown as dashed outlines in the comment mode
+  groupBoxes() {
+    return this.screenshotTargets().map((target) => this.box(target.element));
+  }
+
   setMode(on) {
     this.mode = on;
     const content = document.querySelector('.content');
+    // In the comment mode a tap selects a group, not text
+    if (content) {
+      content.style.userSelect = on ? 'none' : '';
+      content.style.webkitUserSelect = on ? 'none' : '';
+    }
+    this.candidates = on ? this.groupBoxes() : null;
+    // Images and diagrams that load later move the groups below them
+    this.layoutObserver ??= new ResizeObserver(() => this.onResize());
+    if (on && content) {
+      this.layoutObserver.observe(content);
+    } else {
+      this.layoutObserver.disconnect();
+    }
     for (const [type, handler] of [['click', this.onClick], ['pointermove', this.onPointerMove]]) {
       if (on) {
         content?.addEventListener(type, handler, true);
@@ -360,7 +382,7 @@ export class GithubComments extends LitElement {
     const marks = [...range.getClientRects()];
     // A selection across several blocks shows the section around it, cut to the selection
     const block = anchor.closest(blocks) ?? anchor.closest('section.chapter, .hero');
-    this.prepare({ text, anchor }, block, marks);
+    this.prepare({ text, anchor, group: anchor.closest(blocks)?.dataset.comment }, block, marks);
   }
 
   selectBlock(block) {
@@ -370,7 +392,7 @@ export class GithubComments extends LitElement {
     const parts = [heading, ...[...block.children].map((child) => clean(child.innerText))].filter((part) => part.length >= 3);
     const text = clean([heading, block.innerText].join(' '));
     this.hoverBox = null;
-    this.prepare({ text, parts, anchor: block, block, box: this.box(block) }, block, []);
+    this.prepare({ text, parts, anchor: block, block, group: block.dataset.comment, box: this.box(block) }, block, []);
   }
 
   // Renders the screenshot before the click: the click must copy it without waiting
@@ -390,37 +412,30 @@ export class GithubComments extends LitElement {
     });
   }
 
-  // The outermost blocks of the content in document order, with an id from the
-  // section and the position; the build renders each one as an image
+  // The groups of the content that are visible, with their ids; the build renders each one as an image
   screenshotTargets() {
-    const content = document.querySelector('.content');
-    const counters = new Map();
-    return [...content.querySelectorAll(outerBlocks)]
-      .filter((element) => !element.parentElement.closest(outerBlocks) && element.getClientRects().length > 0)
-      .map((element) => {
-        const section = element.closest('section.chapter')?.id || 'hero';
-        const index = (counters.get(section) ?? 0) + 1;
-        counters.set(section, index);
-        return { id: `${section}-${index}`, element };
-      });
+    return [...document.querySelectorAll(`.content ${blocks}`)]
+      .filter((element) => element.getClientRects().length > 0)
+      .map((element) => ({ id: element.dataset.comment, element }));
   }
 
-  // The URL of the rendered image of the block around an element, if the build rendered one
+  // The URL of the rendered image of the group around an element; a group that
+  // was hidden during the build (an inactive tab) falls back to the group around it
   async renderedScreenshot(element) {
-    let outer = element?.closest(outerBlocks);
-    while (outer?.parentElement?.closest(outerBlocks)) {
-      outer = outer.parentElement.closest(outerBlocks);
-    }
-    const target = outer && this.screenshotTargets().find((entry) => entry.element === outer);
-    if (!target || !this.screenshots) {
+    if (!this.screenshots) {
       return null;
     }
     const base = new URL(this.screenshots, location.href);
     this.manifest ??= fetch(new URL(`${this.revision || 'local'}.json`, base))
       .then((response) => (response.ok ? response.json() : {}))
       .catch(() => ({}));
-    const file = (await this.manifest)[target.id];
-    return file ? new URL(file, base).href : null;
+    const manifest = await this.manifest;
+    for (let group = element?.closest(blocks); group; group = group.parentElement?.closest(blocks)) {
+      if (manifest[group.dataset.comment]) {
+        return new URL(manifest[group.dataset.comment], base).href;
+      }
+    }
+    return null;
   }
 
   // Renders a block and highlights the given client rects of a selection in it
@@ -562,7 +577,7 @@ export class GithubComments extends LitElement {
   }
 
   issueUrl(current, source) {
-    const { text, anchor, copied, rendered } = current;
+    const { text, anchor, copied, rendered, group } = current;
     const revision = this.revision || 'main';
     const page = location.href.split('#')[0];
     const heading = anchor?.closest('section.chapter')?.querySelector('h2[id]');
@@ -582,7 +597,8 @@ export class GithubComments extends LitElement {
       `> ${quote}`,
       '',
       `[Show the text on the page](${page}#${section?.id ?? ''}:~:text=${fragment})`
-        + (section ? ` in the section [${section.title}](${page}#${section.id})` : ''),
+        + (section ? ` in the section [${section.title}](${page}#${section.id})` : '')
+        + (group ? ` (block \`${group}\`)` : ''),
       '',
       ...(source ? ['Source of the text in the repository:', '', `https://github.com/${this.repository}/blob/${revision}/${source.file}#L${source.line}`, ''] : []),
       ...(rendered || copied ? ['### Screenshot', ''] : []),

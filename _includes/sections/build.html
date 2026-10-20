@@ -1,21 +1,25 @@
 {%- assign extend = site.data.extend -%}
-<p>{% include inline.html text=extend.intro %}</p>
+<p data-comment="build-overview">{% include inline.html text=extend.intro %}</p>
 <div class="grid-3">
   {%- for step in extend.steps %}
-  <div class="card"><h4>{{ forloop.index }} · {{ step.title }}</h4><p>{% include inline.html text=step.text %}</p></div>
+  <div class="card" data-comment="build-step-{{ forloop.index }}"><h4>{{ forloop.index }} · {{ step.title }}</h4><p>{% include inline.html text=step.text %}</p></div>
   {%- endfor %}
 </div>
-<div class="spaced">{% include code.html snippet=extend.action_example %}</div>
-<p class="spaced">{{ extend.results_intro }}</p>
-<div class="table-wrap">
-  <table class="plain">
-    <tbody>
-      {%- for result in extend.results %}
-      <tr><td><strong>{{ result.channel }}</strong></td><td>{% include inline.html text=result.value %}</td></tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+<div class="spaced" data-comment="build-example">{% include code.html snippet=extend.action_example %}</div>
+<div data-comment="build-results">
+  <p class="spaced">{{ extend.results_intro }}</p>
+  <div class="table-wrap">
+    <table class="plain">
+      <tbody>
+        {%- for result in extend.results %}
+        <tr><td><strong>{{ result.channel }}</strong></td><td>{% include inline.html text=result.value %}</td></tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
-<h3>{{ extend.scope.title }}</h3>
-<p>{% include inline.html text=extend.scope.text %}</p>
-{% include code.html snippet=extend.scope.example %}
+<div data-comment="build-scope">
+  <h3>{{ extend.scope.title }}</h3>
+  <p>{% include inline.html text=extend.scope.text %}</p>
+  {% include code.html snippet=extend.scope.example %}
+</div>
