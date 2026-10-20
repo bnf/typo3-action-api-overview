@@ -4,7 +4,7 @@
     "label": "Backend JavaScript",
     "icon": "UI",
     "summary": "Backend modules call actions instead of AJAX routes",
-    "intro": "Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is not sufficient.",
+    "intro": "Backend modules call actions through a small client. The client adds the bearer token of the logged-in user, so a session cookie alone is not sufficient.",
     "snippets": [
       {
         "language": "javascript",
@@ -17,7 +17,7 @@
     "label": "HTTP API",
     "icon": "API",
     "summary": "Scripts and apps send a token",
-    "intro": "External applications use the same endpoint with a token from EXT:hub. Declared errors arrive with their status code.",
+    "intro": "External applications call the same route with a token from EXT:hub. A declared error comes back with its status code.",
     "snippets": [
       {
         "language": "shell",
@@ -30,7 +30,7 @@
     "label": "OpenAPI",
     "icon": "DOC",
     "summary": "Generated reference and Swagger UI",
-    "intro": "Excerpt of the generated OpenAPI 3.1 document at `/typo3/api/schema`, shown in Swagger UI in the backend.",
+    "intro": "The code shows an excerpt of the OpenAPI 3.1 document that TYPO3 generates at `/typo3/api/schema`. Swagger UI in the backend shows the same document.",
     "snippets": [
       {
         "language": "yaml",
@@ -43,7 +43,7 @@
     "label": "MCP tool",
     "icon": "AI",
     "summary": "AI agents call the action as a tool",
-    "intro": "The same action in the MCP tool list (`tools/list`, abridged), and a call from an AI agent.",
+    "intro": "The first code block shows the action in the MCP tool list (`tools/list`, shortened). The second code block shows a call from an AI agent.",
     "snippets": [
       {
         "language": "json",
@@ -60,7 +60,7 @@
     "label": "Local MCP (stdio)",
     "icon": "CLI",
     "summary": "Coding agents start TYPO3 locally",
-    "intro": "Coding agents on a developer machine start TYPO3 as a local MCP server. No web server and no EXT:hub are needed; the agent acts as the given backend user.",
+    "intro": "Coding agents on a developer machine start TYPO3 as a local MCP server. The local MCP server needs no web server and no EXT:hub. The agent acts as the backend user that the command names.",
     "snippets": [
       {
         "language": "json",

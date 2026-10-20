@@ -1,6 +1,6 @@
 [
   {
-    "title": "AI assistants work with TYPO3",
+    "title": "AI assistants",
     "channel": "MCP · OAuth",
     "text": "Editors connect Claude or another MCP client to their site and ask questions about content, dashboards or pages, with their own permissions.",
     "example": "“Show my TYPO3 dashboard”",
@@ -22,7 +22,7 @@
   {
     "title": "Integrations and automation",
     "channel": "HTTP · static token",
-    "text": "Chat bots, monitoring or workflow tools call TYPO3 with a token limited to the scopes they need.",
+    "text": "Chat bots, monitoring tools or workflow tools call TYPO3 with a token that has only the scopes they need.",
     "example": "`GET /typo3/api/dashboards`",
     "patches": [
       91486,
@@ -32,7 +32,7 @@
   {
     "title": "Imports, migrations and headless clients",
     "channel": "HTTP · OpenAPI",
-    "text": "Record actions read and write any record type. Their schema is derived from TCA, so clients can be generated for each installation.",
+    "text": "Record actions read and write all record types. TYPO3 derives the schema from TCA, so developers can generate clients for each installation.",
     "example": "`PATCH /typo3/api/records/tt_content/42`",
     "patches": [
       92196,
@@ -43,7 +43,7 @@
   {
     "title": "A consistent backend",
     "channel": "Backend UI",
-    "text": "The dashboard, the page tree and file list operations move from internal AJAX routes to actions, with the same validation everywhere.",
+    "text": "The dashboard, the page tree and the file list operations move from internal AJAX routes to actions, with the same validation for all operations.",
     "example": "`action('/page/tree').get()`",
     "patches": [
       92322,
@@ -54,7 +54,7 @@
   {
     "title": "An API for extensions",
     "channel": "Extensions",
-    "text": "An extension that adds `#[AsAction]` to a method gets an endpoint, documentation and an AI tool, and benefits from EXT:hub authorization.",
+    "text": "An extension that adds `#[AsAction]` to a method gets an endpoint, documentation and an MCP tool, and EXT:hub handles the authorization.",
     "example": "`#[AsAction(name: 'news/latest')]`",
     "patches": [
       91563

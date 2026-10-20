@@ -1,53 +1,53 @@
 [
   {
     "id": "problems",
-    "title": "Problems it solves",
-    "lead": "Today, each way of talking to TYPO3 is built separately. The Action API puts them on one common model."
+    "title": "Problems and solutions",
+    "lead": "Today, each way to talk to TYPO3 has a separate implementation. With actions, all ways use one common model."
   },
   {
     "id": "concept",
-    "title": "The concept: actions",
-    "lead": "An action is a public method of a service, marked with the `#[AsAction]` attribute. Its signature is the contract: TYPO3 derives everything else from it, once, when the dependency injection container is compiled."
+    "title": "Actions",
+    "lead": "An action is a public method of a service with the attribute `#[AsAction]`. The signature is the contract, and TYPO3 derives everything else from the signature once, when TYPO3 compiles the dependency injection container."
   },
   {
     "id": "channels",
-    "title": "One action, every channel",
-    "lead": "The example action above, as each consumer sees it. None of this requires additional code."
+    "title": "Channels",
+    "lead": "Each channel shows the example action as its consumer sees the action. No channel needs additional code."
   },
   {
     "id": "stack",
-    "title": "The stack",
-    "lead": "Six layers, each with one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step."
+    "title": "Stack",
+    "lead": "Each layer of the stack has one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step."
   },
   {
     "id": "security",
     "title": "Security model",
-    "lead": "An application is never more powerful than the user it acts for, and never more powerful than the administrator configured it to be."
+    "lead": "An app can never do more than the user that the app acts for, and never more than an administrator configured for the app."
   },
   {
     "id": "use-cases",
     "title": "Use cases",
-    "lead": "What actions can be used for."
+    "lead": "AI assistants, coding agents, integrations, imports, the backend and extensions use the same actions."
   },
   {
     "id": "in-action",
-    "title": "See it in action",
-    "lead": "Screenshots from a development installation. Click to enlarge.",
-    "note": "Swagger UI is available in two places: in **System › Configuration** (button “API Documentation”) in every installation, because the backend itself uses actions, and in the **API Hub** module when EXT:hub is installed."
+    "title": "Screenshots",
+    "lead": "The screenshots come from a development installation. Click a screenshot to enlarge it.",
+    "note": "Swagger UI is available in **System › Configuration** (button “API Documentation”) in every installation, because the backend itself uses actions. When EXT:hub is installed, the **API Hub** module also shows Swagger UI."
   },
   {
     "id": "build",
-    "title": "Build your own action",
+    "title": "Actions in extensions",
     "lead": "A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool."
   },
   {
     "id": "deep-dive",
-    "title": "Deep dive",
-    "lead": "Request lifecycle and error handling in detail. Click a diagram to zoom."
+    "title": "Technical details",
+    "lead": "The diagrams show the request lifecycle and the error handling in detail. Click a diagram to enlarge it."
   },
   {
     "id": "status",
     "title": "Status and roadmap",
-    "lead": "The changes are split into reviewable patches on Gerrit, grouped in an epic on Forge. This list is generated from both."
+    "lead": "The work consists of patches for review on Gerrit, grouped in an epic on Forge. Scripts generate the table of changes from Gerrit and Forge."
   }
 ]

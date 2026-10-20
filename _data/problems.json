@@ -1,32 +1,32 @@
 [
   {
-    "title": "Every backend feature has its own AJAX controller",
-    "today": "Each controller parses arguments, validates them and formats errors in its own way.",
-    "solution": "One generic dispatcher. Arguments and results are validated against a schema derived from the method signature."
+    "title": "A separate AJAX controller for every backend feature",
+    "today": "Each controller parses arguments, validates them and formats errors in a different way.",
+    "solution": "A generic dispatcher handles all actions. TYPO3 validates arguments and results against a schema from the method signature."
   },
   {
     "title": "No general-purpose API in the core",
-    "today": "Integrations depend on extensions that each build and maintain their own endpoints.",
-    "solution": "Every action is an HTTP endpoint below `/typo3/api/`, provided by TYPO3 and extensions alike."
+    "today": "Integrations depend on extensions, and each extension builds and maintains separate endpoints.",
+    "solution": "Every action of TYPO3 or of an extension has an HTTP endpoint below `/typo3/api/`."
   },
   {
-    "title": "Authorization is reinvented per integration",
-    "today": "API keys, OAuth and fine-grained permissions are built again for every connection.",
-    "solution": "EXT:hub offers OAuth 2.0 and static tokens. Scopes limit apps; the user's permissions always apply."
+    "title": "Separate authorization for every integration",
+    "today": "Each integration builds API keys, OAuth and fine-grained permissions again.",
+    "solution": "EXT:hub offers OAuth 2.0 and static tokens. Scopes limit apps, and the permissions of the user always apply."
   },
   {
     "title": "No machine-readable description",
-    "today": "Endpoints are documented by hand, if at all, and the documentation drifts from the code.",
-    "solution": "An OpenAPI 3.1 document is generated from the code and browsable in Swagger UI."
+    "today": "Developers document endpoints by hand, if at all, and over time the documentation and the code differ.",
+    "solution": "TYPO3 generates an OpenAPI 3.1 document from the code. Swagger UI shows the document."
   },
   {
     "title": "No standard interface for AI agents",
-    "today": "There is no safe, standard way for assistants to read or change content on behalf of an editor.",
-    "solution": "A built-in MCP server offers actions as tools. Agents act as the user, limited by the granted scopes."
+    "today": "Assistants have no safe, standard way to read or change content for an editor.",
+    "solution": "The built-in MCP server offers actions as tools. Agents act as the user, and the granted scopes limit the agents."
   },
   {
-    "title": "The same logic is wrapped again for every consumer",
-    "today": "Backend UI, integrations and automation each need their own glue code.",
-    "solution": "The feature is implemented once, as an action, and is available in every channel."
+    "title": "Glue code for every consumer",
+    "today": "The backend UI, integrations and automation each need separate glue code.",
+    "solution": "Developers implement a feature once, as an action, and every channel can use the action."
   }
 ]

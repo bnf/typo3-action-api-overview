@@ -3,9 +3,9 @@
     "id": "claude-dashboard-example",
     "file": "images/claude-dashboard-example.png",
     "window": "Claude",
-    "title": "An AI assistant renders the user’s dashboard",
+    "title": "Dashboard in an AI assistant",
     "caption": "Claude uses the dashboard actions as MCP tools. EXT:dashboard contains no MCP-specific code.",
-    "alt": "Claude showing the user's TYPO3 dashboard via MCP tools",
+    "alt": "Claude shows the TYPO3 dashboard of the user through MCP tools",
     "featured": true
   },
   {
@@ -13,7 +13,7 @@
     "file": "images/claude-mcp-tools.png",
     "window": "Claude · Connectors",
     "title": "Actions as MCP tools",
-    "caption": "Grouped as read-only tools thanks to the hints derived from the action type.",
+    "caption": "Claude groups the tools as read-only, because of the hints that TYPO3 derives from the action type.",
     "alt": "MCP tools of a TYPO3 instance in Claude",
     "featured": false
   },
@@ -22,7 +22,7 @@
     "file": "images/oauth-consent.png",
     "window": "TYPO3 · Authorize app",
     "title": "OAuth consent",
-    "caption": "The user sees which app asks for which scopes and decides. After the login, the route option `redirect.standalone` leads straight back here.",
+    "caption": "The consent screen shows which app asks for which scopes, and the user decides. After the login, the route option `redirect.standalone` leads back to the consent screen.",
     "alt": "OAuth consent screen of an MCP client",
     "featured": false
   },
@@ -31,7 +31,7 @@
     "file": "images/hub-app-list.png",
     "window": "TYPO3 · API Hub",
     "title": "API Hub",
-    "caption": "All apps with access to the installation at a glance.",
+    "caption": "The API Hub module lists all apps with access to the installation.",
     "alt": "API Hub list of apps",
     "featured": false
   },
@@ -49,8 +49,8 @@
     "file": "images/swagger-routes.png",
     "window": "TYPO3 · API documentation",
     "title": "Swagger UI",
-    "caption": "Every action, generated from the code, with “try it out”.",
-    "alt": "Swagger UI listing the Action API routes",
+    "caption": "Swagger UI lists every action from the generated document, with “try it out”.",
+    "alt": "Swagger UI with the routes of all actions",
     "featured": false
   },
   {
@@ -58,7 +58,7 @@
     "file": "images/swagger-tca-json-schema.png",
     "window": "TYPO3 · API documentation",
     "title": "Schema from TCA",
-    "caption": "One variant per content type of `tt_content`.",
+    "caption": "The schema has a variant for each content type of `tt_content`.",
     "alt": "JSON Schema of tt_content derived from TcaSchema",
     "featured": false
   }
