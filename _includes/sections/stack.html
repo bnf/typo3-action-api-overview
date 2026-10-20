@@ -7,7 +7,7 @@
   <div data-layer-id="{{ layer.id }}" data-name="{{ layer.name | escape }}" data-tagline="{{ layer.tagline | escape }}" data-title="{{ layer.title | escape }}" data-items="{{ layer.items | jsonify | escape }}">
     {{ layer.body | markdownify }}
     {%- if layer.components.size > 0 %}
-    <p class="meta">Components: {% for component in layer.components %}<code>{{ component }}</code>{% unless forloop.last %}, {% endunless %}{% endfor %}</p>
+    <p class="meta">Components of the layer are {% for component in layer.components %}<code>{{ component }}</code>{% unless forloop.last %}, {% endunless %}{% endfor %}.</p>
     {%- endif %}
   </div>
   {%- endfor %}

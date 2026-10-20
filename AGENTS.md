@@ -105,6 +105,100 @@ lists every `h2` and `h3` with an id automatically.
 - Content is English. Write for developers and decision makers: start with
   what something is and does, not with a justification.
 
+## Writing rules
+
+Every text follows ASD-STE100 Simplified Technical English: every string in
+`_data/`, the labels in templates and components, the captions and the alt
+texts. Adapted from the writing rules of
+[TYPO3GmbH/concept-visual-editing](https://github.com/TYPO3GmbH/concept-visual-editing/blob/main/AGENTS.md#2-writing-rules-the-most-important-rules-of-this-repository).
+No script checks these rules: read every changed text against them before you
+commit.
+
+1. **Write from the content.** Before you write a sentence, know what the
+   section says. Say it in one sentence in plain words first, then write it to
+   the rules. A lead or a summary says what its section says, with its subject:
+   when the section is about how the core checks scopes, the core is the
+   subject, not the app.
+2. **Sentences and paragraphs.** Short sentences, one thing per sentence; one
+   topic per paragraph. A list of three or more items becomes a list or a
+   table. What a sentence says counts, not its words: never cut a sentence to
+   fit a length.
+3. **Active voice.** Name who does what: "The action core validates the
+   arguments", not "the arguments are validated".
+4. **Verb forms.** Infinitive, imperative, simple present, simple past, future.
+   No -ing form except in technical names ("routing", "settings"). No perfect
+   tense: "the team decided", not "has decided".
+5. **One word, one meaning.** Use the same term for the same thing and no
+   synonym: "action" (not "endpoint" or "feature" for an action), "scope",
+   "app" (an app record in EXT:hub), "channel", "MCP tool", "backend user".
+6. **Approved words.** but (not however), make sure (not ensure), do (not
+   perform), let (not allow), need (not require), must (not should), can (not
+   may, might), when or during (not while), because (not since), if (not
+   whether), also (not additionally), for example (not e.g.), that is (not
+   i.e.), no "etc.".
+   Never "give" or "provide": the verb says nothing about the action. Name the
+   action. Bad: "TYPO3 provides actions for the dashboard". Good: "TYPO3 ships
+   actions for the dashboard". The same for "own": only a person or a group
+   owns something. A thing never owns. Bad: "every feature has its own AJAX
+   controller". Good: "every feature has a separate AJAX controller".
+7. **Noun clusters.** Three nouns at most in a row: "the output schema of the
+   action", not "action output schema validation".
+8. **Articles.** Write "the" and "a"; do not drop them.
+9. **Short and precise.** No filler ("in order to", "it is important to
+   note"), no marketing, no slogans, no hedging. Delete a sentence that says
+   nothing new.
+10. **Name the content.** Every text says what it means by itself.
+    a. **Labels are nouns that name their content**: section titles, table
+       heads, column heads, card titles, tab labels. No pronoun, no question
+       word. Bad: "What the app can call", "Who calls". Good: "Callable
+       actions", "Callers".
+    b. **No empty phrase.** Name the thing instead of pointing at it. Bad:
+       "the rest", "the others", "see below", "That is all." Good: "the other
+       four channels".
+    c. **A pronoun only for a noun in the same sentence.** A cell, a line, a
+       lead and a paragraph start with their subject named, never with "It",
+       "This" or "They" for something before them.
+    d. **Every line stands alone.** A table cell, a list line, a card and a
+       lead are clear without the line before them.
+    e. **No colon in running text**, in a label or in a table cell. Bad:
+       "Identifier and route: `/typo3/api/…`". Good: "The name is also the
+       identifier and the route `/typo3/api/…`." A colon may only end a
+       paragraph that a list or a code block follows.
+    f. **No sentence starts with a number, a count or a number word.** Bad:
+       "Six layers, each with one responsibility." Good: "The stack has six
+       layers, each with one responsibility."
+    g. **Name what you refer to.** A lead and a summary name the things they
+       compare, so that a reader who reads only this part can check them.
+    h. **No word that repeats the frame.** The page is about the TYPO3 Action
+       API, so "TYPO3", "Action API" or "API" as a qualifier add nothing where
+       the frame is clear. Keep the word where it separates two things ("an
+       action of TYPO3" against "an action of an extension").
+    i. **Say what happens, with its direct term.** Name the actor and the
+       plain action (validate, check, call, return), not a picture of it. Bad:
+       "never reaches the action", "the hard parts". Good: "the action core
+       rejects the call", "scope checks, validation and invocation". Test:
+       would a developer say the sentence to a colleague like that?
+11. **Meaning before numbers.** A lead or a summary says what the numbers
+    mean, in words, and the consequence for the reader. A count without its
+    consequence is no finding. No count that only describes the structure
+    ("in six groups"): name the groups or leave the count out. At most one
+    number in a lead, never at its start.
+12. **No typed numbers.** A count that comes from data (changes on Gerrit,
+    issues, patch sets) is rendered by the template from `_data/`, never
+    typed into a text.
+13. **People and software.** "Editor" is only a person of the user group
+    Editor, who changes content. All people who work with TYPO3 are **users**
+    or **backend users**; name the group where only one is meant
+    (administrators, integrators, developers). An app acts **for** a user; the
+    software is **the backend** and its modules ("the page tree", "the API Hub
+    module"). Another tool keeps its name ("Claude", "MCP Inspector", "Swagger
+    UI").
+14. **Headings and leads.** A section heading names the topic in a short,
+    plain noun phrase ("Security model", "Stack"). No sentence, no claim, no
+    metaphor, no pun. The lead below it says the finding in one sentence (rule
+    11 for numbers); a lead that only retells the cards, the table or the
+    figure below it is no finding, so leave it out.
+
 ## Checks
 
 ```bash

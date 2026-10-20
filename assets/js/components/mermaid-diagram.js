@@ -158,7 +158,7 @@ export class MermaidDiagram extends LitElement {
   render() {
     return html`
       <figure>
-        <button type="button" class="frame" aria-label="Enlarge diagram: ${this.caption}" @click=${this.zoom}>
+        <button type="button" class="frame" aria-label="Enlarge the diagram ${this.caption}" @click=${this.zoom}>
           <div class="svg"></div>
           ${this.failed ? html`<span class="error">The diagram could not be loaded.</span>` : ''}
         </button>

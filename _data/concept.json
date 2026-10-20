@@ -1,57 +1,96 @@
 {
-  "hint": "Hover or tap the highlighted parts to see what each one becomes.",
+  "hint": "Hover over or tap a highlighted part to see what TYPO3 derives from the part.",
   "code": {
     "language": "php",
-    "code": "final readonly class PageTitleAction\n{\n    /**\n     * @return list<string>\n     * @throws NotFoundError if the page does not exist\n     */\n    #[AsAction(\n        type: ActionType::fetch,\n        name: 'my-extension/page/{uid}/titles',\n        summary: 'Fetch the titles of a page',\n        scopes: [ContentReadScope::class],\n    )]\n    public function titles(\n        int $uid,\n        ActionContext $context,\n    ): array {\n        // …\n        throw new NotFoundError('Page not found', 1791975434);\n    }\n}"
+    "code": "final readonly class PageTitleAction\n{\n    public function __construct(\n        private PageTitleRepository $pageTitles,\n    ) {}\n\n    /**\n     * @return list<string>\n     * @throws NotFoundError if the page does not exist\n     */\n    #[AsAction(\n        type: ActionType::fetch,\n        name: 'my-extension/page/{uid}/titles',\n        summary: 'Fetch the titles of a page',\n        scopes: [ContentReadScope::class],\n    )]\n    public function titles(\n        int $uid,\n        ActionContext $context,\n    ): array {\n        $titles = $this->pageTitles->findByPage($uid);\n        if ($titles === []) {\n            throw new NotFoundError('Page not found', 1791975434);\n        }\n        return $titles;\n    }\n}"
   },
   "parts": [
     {
       "ref": 1,
       "match": "type: ActionType::fetch",
       "title": "Type",
-      "text": "`fetch` → `GET`, `create` → `POST`, `replace` → `PUT`, `update` → `PATCH`, `delete` → `DELETE`, `dispatch` → `POST`. Also sets MCP hints such as “read-only”."
+      "text": "The type sets the HTTP method of the route and the hints of the MCP tool.",
+      "table": {
+        "columns": [
+          "Type",
+          "HTTP method",
+          "MCP hint"
+        ],
+        "rows": [
+          [
+            "`fetch`",
+            "`GET`",
+            "`readOnlyHint`"
+          ],
+          [
+            "`create`",
+            "`POST`",
+            "—"
+          ],
+          [
+            "`replace`",
+            "`PUT`",
+            "`idempotentHint`"
+          ],
+          [
+            "`update`",
+            "`PATCH`",
+            "—"
+          ],
+          [
+            "`delete`",
+            "`DELETE`",
+            "`destructiveHint`"
+          ],
+          [
+            "`dispatch`",
+            "`POST`",
+            "`destructiveHint`"
+          ]
+        ]
+      }
     },
     {
       "ref": 2,
       "match": "name: 'my-extension/page/{uid}/titles'",
       "title": "Name",
-      "text": "Identifier and route: `/typo3/api/my-extension/page/{uid}/titles`. Becomes the MCP tool `fetch_my_extension_page_by_uid_titles`."
+      "text": "The name is the identifier of the action and sets its route `/typo3/api/my-extension/page/{uid}/titles`. The name of the MCP tool is `fetch_my_extension_page_by_uid_titles`."
     },
     {
       "ref": 3,
       "match": "summary: 'Fetch the titles of a page'",
       "title": "Summary",
-      "text": "Documentation for developers in OpenAPI and for AI agents in the tool list."
+      "text": "The summary documents the action for developers in OpenAPI and for AI agents in the tool list."
     },
     {
       "ref": 4,
       "match": "scopes: [ContentReadScope::class]",
       "title": "Scopes",
-      "text": "The caller must be granted all listed scopes, otherwise the call is rejected."
+      "text": "The caller must have all listed scopes. Otherwise TYPO3 rejects the call."
     },
     {
       "ref": 5,
       "match": "int $uid",
       "title": "Parameters",
-      "text": "Become the input JSON Schema. Values come from the route, the query string or the JSON body, and are validated and converted to PHP types."
+      "text": "The parameters define the input JSON Schema. TYPO3 reads the values from the route, the query string or the JSON body, validates them and converts them to PHP types."
     },
     {
       "ref": 6,
       "match": "ActionContext $context",
       "title": "ActionContext",
-      "text": "Not part of the schema. Passed in automatically: TYPO3 context, user, translator, request and granted scopes."
+      "text": "TYPO3 passes the `ActionContext` automatically and keeps the `ActionContext` out of the schema. The `ActionContext` holds the TYPO3 context, the user, the translator, the request and the granted scopes."
     },
     {
       "ref": 7,
       "match": "@return list<string>",
       "title": "Return type",
-      "text": "PHPDoc types like `list<string>` or array shapes become the output schema. The result is validated before it is returned."
+      "text": "PHPDoc types such as `list<string>` or array shapes define the output schema. TYPO3 validates the result before TYPO3 returns the result."
     },
     {
       "ref": 8,
       "match": "@throws NotFoundError if the page does not exist",
       "title": "Declared errors",
-      "text": "Errors must be declared with `@throws`. `NotFoundError` becomes a documented `404`, `PermissionDeniedError` a `403`."
+      "text": "The action must declare every error with `@throws`. TYPO3 returns `NotFoundError` as `404` and `PermissionDeniedError` as `403`, and documents both errors in OpenAPI."
     }
   ]
 }
