@@ -7,6 +7,9 @@ let snapdomLoader = null;
 const blocks = 'problem-item, anatomy-part, channel-tabs, stack-explorer, scope-calculator, screen-shot, mermaid-diagram, '
   + 'code-block, .card, .fact, .channel, table, figure, p, li, h2, h3';
 
+// Blocks that the build renders as images (scripts/render-screenshots.mjs): only the outermost ones
+const outerBlocks = `${blocks}, action-anatomy`;
+
 // Touch screens show their own menu at a selection, so the controls move to the bottom
 const touch = window.matchMedia('(pointer: coarse)');
 
@@ -46,15 +49,21 @@ const commentIcon = html`<svg viewBox="0 0 16 16" fill="currentColor" aria-hidde
  * the clipboard, so that the reader can paste it into the comment. SnapDOM
  * (assets/vendor/snapdom.mjs) renders it and is loaded on first use.
  *
+ * The build also renders every block as an image
+ * (scripts/render-screenshots.mjs); the issue shows the image of the block,
+ * on every device and without the clipboard. The clipboard copy is offered
+ * with a mouse only, because touch screens rarely paste images.
+ *
  * Attributes: repository (owner/name), revision (commit of the build),
  * pull-request (number, in previews), files (data files as a comma-separated
- * list).
+ * list), screenshots (URL path of the rendered images).
  */
 export class GithubComments extends LitElement {
   static properties = {
     repository: {},
     revision: {},
     pullRequest: { attribute: 'pull-request' },
+    screenshots: {},
     files: {},
     position: { state: true },
     current: { state: true },
@@ -367,8 +376,10 @@ export class GithubComments extends LitElement {
   // Renders the screenshot before the click: the click must copy it without waiting
   prepare(current, block, marks) {
     const token = Symbol('selection');
-    this.current = { ...current, token, ready: !block, image: null };
-    if (!block) {
+    // Touch screens get the rendered image of the block only
+    const copy = block && !touch.matches;
+    this.current = { ...current, token, ready: !copy, image: null };
+    if (!copy) {
       return;
     }
     this.capture(block, marks).catch(() => null).then((image) => {
@@ -377,6 +388,39 @@ export class GithubComments extends LitElement {
         this.current = { ...this.current, ready: true, image };
       }
     });
+  }
+
+  // The outermost blocks of the content in document order, with an id from the
+  // section and the position; the build renders each one as an image
+  screenshotTargets() {
+    const content = document.querySelector('.content');
+    const counters = new Map();
+    return [...content.querySelectorAll(outerBlocks)]
+      .filter((element) => !element.parentElement.closest(outerBlocks) && element.getClientRects().length > 0)
+      .map((element) => {
+        const section = element.closest('section.chapter')?.id || 'hero';
+        const index = (counters.get(section) ?? 0) + 1;
+        counters.set(section, index);
+        return { id: `${section}-${index}`, element };
+      });
+  }
+
+  // The URL of the rendered image of the block around an element, if the build rendered one
+  async renderedScreenshot(element) {
+    let outer = element?.closest(outerBlocks);
+    while (outer?.parentElement?.closest(outerBlocks)) {
+      outer = outer.parentElement.closest(outerBlocks);
+    }
+    const target = outer && this.screenshotTargets().find((entry) => entry.element === outer);
+    if (!target || !this.screenshots) {
+      return null;
+    }
+    const base = new URL(this.screenshots, location.href);
+    this.manifest ??= fetch(new URL(`${this.revision || 'local'}.json`, base))
+      .then((response) => (response.ok ? response.json() : {}))
+      .catch(() => ({}));
+    const file = (await this.manifest)[target.id];
+    return file ? new URL(file, base).href : null;
   }
 
   // Renders a block and highlights the given client rects of a selection in it
@@ -481,6 +525,7 @@ export class GithubComments extends LitElement {
     }
     const copy = await copied;
     current.copied = copy === 'copied';
+    current.rendered = await this.renderedScreenshot(current.anchor).catch(() => null);
     let url;
     try {
       url = await this.targetUrl(current);
@@ -517,7 +562,7 @@ export class GithubComments extends LitElement {
   }
 
   issueUrl(current, source) {
-    const { text, anchor, copied } = current;
+    const { text, anchor, copied, rendered } = current;
     const revision = this.revision || 'main';
     const page = location.href.split('#')[0];
     const heading = anchor?.closest('section.chapter')?.querySelector('h2[id]');
@@ -540,7 +585,9 @@ export class GithubComments extends LitElement {
         + (section ? ` in the section [${section.title}](${page}#${section.id})` : ''),
       '',
       ...(source ? ['Source of the text in the repository:', '', `https://github.com/${this.repository}/blob/${revision}/${source.file}#L${source.line}`, ''] : []),
-      ...(copied ? ['### Screenshot', '', '_The screenshot of the text is in the clipboard. Paste it here with Ctrl+V or ⌘V._', ''] : []),
+      ...(rendered || copied ? ['### Screenshot', ''] : []),
+      ...(rendered ? [`![Screenshot of the block on the page](${rendered})`, ''] : []),
+      ...(copied ? ['_A screenshot with the selection highlighted is in the clipboard. Paste it here with Ctrl+V or ⌘V to add it._', ''] : []),
     ].join('\n');
     const short = quote.length > 50 ? `${quote.slice(0, 50).trim()}…` : quote;
     const title = section ? `${section.title}: “${short}”` : `“${short}”`;

@@ -18,3 +18,4 @@ table.plain th { background: var(--surface-2); }
 anatomy-part .part-table { width: 100%; margin: 8px 0 2px; border-collapse: collapse; font-size: var(--font-size-small); }
 anatomy-part .part-table th { text-align: left; font-size: var(--font-size-label); font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); padding: 0 8px 4px 0; }
 anatomy-part .part-table td { padding: 3px 8px 3px 0; border-top: 1px solid var(--border); color: var(--fg); }
+anatomy-part .part-table code { white-space: nowrap; overflow-wrap: normal; }

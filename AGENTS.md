@@ -279,9 +279,14 @@ finds the line in `_data/` that the text comes from and opens
   page (text fragment, with the section as fallback) and a permalink to the
   line, which GitHub embeds as a code snippet.
 
-In both cases, a screenshot of the block around the selection, with the
-selection highlighted, goes to the clipboard, so that the reader can paste it
-into the comment. SnapDOM renders it; it is vendored as
+The issue shows an image of the block. `pages.yml` renders every outermost
+block of the built site with Playwright (`scripts/render-screenshots.mjs`)
+into `screenshots/<hash>.png`, with `screenshots/<commit>.json` as the map
+from block to image; the deployment of `main` keeps older images, so that
+older issues still show the block as it was. Images of a preview disappear
+with the preview. With a mouse, a screenshot of the block around the
+selection, with the selection highlighted, also goes to the clipboard, so
+that the reader can paste it into the comment. SnapDOM renders it; it is vendored as
 `assets/vendor/snapdom.mjs` (3.3.0, `dist/snapdom.mjs` of the npm package
 `@zumer/snapdom`, MIT) and loaded on the first selection.
 

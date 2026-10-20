@@ -49,6 +49,20 @@ jobs:
       - name: Build preview
         if: github.event_name == 'pull_request' && github.event.action != 'closed'
         run: bundle exec jekyll build --config _config.yml,_build.yml --baseurl "/${{ github.event.repository.name }}/${PREVIEW_PATH}"
+      # An image of every block for the comments on GitHub, see scripts/render-screenshots.mjs
+      - uses: actions/setup-node@v4
+        if: github.event.action != 'closed'
+        with:
+          node-version: '22'
+      - name: Render screenshots of the blocks
+        if: github.event.action != 'closed'
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+          node scripts/render-screenshots.mjs _site "$BASE_PATH/" "$REVISION"
+        env:
+          BASE_PATH: /${{ github.event.repository.name }}${{ github.event_name == 'pull_request' && format('/{0}', env.PREVIEW_PATH) || '' }}
+          REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
       # The branch holds the built site, GitHub Pages must not run Jekyll again
       - run: touch _site/.nojekyll
         if: github.event.action != 'closed'
@@ -59,7 +73,10 @@ jobs:
         with:
           folder: _site
           branch: gh-pages
-          clean-exclude: pr-preview/
+          # Previews, and screenshots that older issues show
+          clean-exclude: |
+            pr-preview/
+            screenshots/
           force: false
       - name: Deploy or remove preview
         if: github.event_name == 'pull_request'
