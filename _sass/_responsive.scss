@@ -24,7 +24,7 @@
   .hero-arrow { height: 48px; transform: rotate(90deg); }
   .grid-2, .grid-3, .shield, .actions-list { grid-template-columns: minmax(0, 1fr); }
   .layer { grid-template-columns: minmax(0, 1fr); }
-  .anchor, .topbar .pill-link, .viewer .help { display: none; }
+  .anchor, .topbar .pill-link { display: none; }
 }
 @media (max-width: 520px) {
   .facts { grid-template-columns: minmax(0, 1fr); }
