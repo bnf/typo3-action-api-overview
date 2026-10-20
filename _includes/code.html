@@ -1,10 +1,11 @@
 {%- comment -%}
-  Renders a code snippet from _data ({"language": …, "code": …}) with Rouge.
-  Parameters: snippet
+  Renders a code snippet from _data ({"language": …, "code": …}) with Rouge,
+  wrapped in <code-block> (assets/js/components/code-block.js).
+  Parameters: snippet, slot (optional)
 {%- endcomment -%}
 {%- capture fence -%}
 ```{{ include.snippet.language }}
 {{ include.snippet.code }}
 ```
 {%- endcapture -%}
-<div class="code-wrap">{{ fence | markdownify }}</div>
+<code-block{% if include.slot %} slot="{{ include.slot }}"{% endif %}>{{ fence | markdownify }}</code-block>

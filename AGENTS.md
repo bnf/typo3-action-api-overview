@@ -43,7 +43,7 @@ these scripts locally.
 | Hero, key facts, channel tiles | `_data/intro.json` | `_includes/hero.html` |
 | Order, titles and leads of sections | `_data/sections.json` | `index.html` |
 | Problems it solves | `_data/problems.json` | `_includes/sections/problems.html` |
-| Annotated example action | `_data/concept.json` | `_includes/sections/concept.html` |
+| Annotated example action | `_data/concept.json` | `_includes/sections/concept.html`, `assets/js/components/action-anatomy.js` |
 | One action in every channel | `_data/channels.json` | `_includes/sections/channels.html` |
 | Stack layers and scenarios | `_data/stack.json` | `_includes/sections/stack.html`, `assets/js/stack.js` |
 | Security model, scope calculator | `_data/security.json` | `_includes/sections/security.html`, `assets/js/calculator.js` |
@@ -56,6 +56,29 @@ these scripts locally.
 Styles are split per component in `_sass/_<component>.scss` and imported by
 `assets/site.scss`. Scripts are ES modules in `assets/js/`, one per
 component, started by `assets/js/main.js`.
+
+### Components
+
+New and reworked interactive parts are [Lit](https://lit.dev/) web
+components in `assets/js/components/`, one file per component, so that their
+styles cannot leak into the rest of the page or be broken by it:
+
+- Jekyll renders the content from `_data/` as the element's children (light
+  DOM), so it is in the HTML without JavaScript. The component arranges and
+  styles it in its shadow root; its styles live in `static styles` of the
+  component, not in `_sass/`.
+- The page passes design tokens (`--accent`, `--surface`, …) and a few
+  documented custom properties such as `--code-font-size` into components.
+  Global CSS must not style a component's internals.
+- Code snippets always go through `_includes/code.html`, which renders
+  `<code-block>` (highlighting theme, copy button, marks).
+- Lit is vendored as `assets/vendor/lit-core.min.js` (3.3.1, from
+  `https://cdn.jsdelivr.net/gh/lit/dist@<version>/core/lit-core.min.js`,
+  source map comment removed) and imported as `lit` through the import map in
+  `_layouts/default.html`. There is no build step.
+
+The remaining scripts (`stack.js`, `calculator.js`, `tabs.js`, …) are plain
+modules and are moved to components step by step.
 
 A new section needs an entry in `_data/sections.json` and a template
 `_includes/sections/<id>.html`; the sidebar is built automatically.

@@ -1,4 +1,5 @@
 import { el, template } from './dom.js';
+import { upgradeCode } from './components/code-block.js';
 
 export function initStack(root, data) {
   const explorer = root.querySelector('.explorer');
@@ -50,6 +51,7 @@ export function initStack(root, data) {
     panel.innerHTML = `<div class="kicker">Layer</div><h4></h4>${template('layer-' + id)}
       <p class="meta">Pick a scenario above to follow a request through the stack.</p>`;
     panel.querySelector('h4').textContent = layer.title;
+    upgradeCode(panel);
   };
 
   const render = () => {
@@ -74,6 +76,7 @@ export function initStack(root, data) {
       </div>`;
     panel.querySelector('.kicker').textContent = `${scenario.label} · Step ${step + 1} of ${steps.length}`;
     panel.querySelector('h4').textContent = current.title;
+    upgradeCode(panel);
   };
 
   const startScenario = (id) => {

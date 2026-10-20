@@ -2,6 +2,6 @@ _site/
 .jekyll-cache/
 .sass-cache/
 Gemfile.lock
-vendor/
+/vendor/
 .bundle/
 .claude/settings.local.json
