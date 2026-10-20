@@ -44,3 +44,10 @@ The preview and the build need Ruby with Bundler, or podman/docker.
 
 Changes go through pull requests against `main`; every merge to `main` is
 published. CI validates the data and builds the site for every pull request.
+
+Every pull request from a branch of this repository also gets a public
+preview at `https://bnf.github.io/typo3-action-api-overview/pr-preview/pr-<number>/`;
+the link is posted as a comment on the pull request and the preview is
+removed when it is closed. The workflow `.github/workflows/pages.yml` builds
+the site and publishes it to the `gh-pages` branch, which GitHub Pages serves
+(Settings › Pages › Deploy from a branch › `gh-pages`).
