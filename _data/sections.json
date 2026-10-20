@@ -2,7 +2,7 @@
   {
     "id": "problems",
     "title": "Problems it solves",
-    "lead": "Today, every way of talking to TYPO3 is built separately. The Action API replaces these islands with one consistent model."
+    "lead": "Today, each way of talking to TYPO3 is built separately. The Action API puts them on one common model."
   },
   {
     "id": "concept",
@@ -12,7 +12,7 @@
   {
     "id": "channels",
     "title": "One action, every channel",
-    "lead": "The example action above, as each consumer sees it. Nothing on this list requires additional code."
+    "lead": "The example action above, as each consumer sees it. None of this requires additional code."
   },
   {
     "id": "stack",
@@ -27,7 +27,7 @@
   {
     "id": "use-cases",
     "title": "Use cases",
-    "lead": "What becomes possible once features are actions."
+    "lead": "What actions can be used for."
   },
   {
     "id": "in-action",
@@ -38,7 +38,7 @@
   {
     "id": "build",
     "title": "Build your own action",
-    "lead": "Turn a method of your extension into an action: an endpoint, documentation and an AI tool, in a few lines."
+    "lead": "A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool."
   },
   {
     "id": "deep-dive",

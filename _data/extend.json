@@ -18,7 +18,7 @@
     "language": "php",
     "code": "namespace MyVendor\\MyExtension\\Action;\n\nuse MyVendor\\MyExtension\\Domain\\NewsRepository;\nuse TYPO3\\CMS\\Core\\Action\\Error\\NotFoundError;\nuse TYPO3\\CMS\\Core\\Attribute\\AsAction;\nuse TYPO3\\CMS\\Core\\Scope\\ContentReadScope;\n\nfinal readonly class NewsActions\n{\n    public function __construct(\n        private NewsRepository $newsRepository,\n    ) {}\n\n    /**\n     * @return list<array{uid: int, title: string, date: string}>\n     */\n    #[AsAction(\n        name: 'my-extension/news/latest',\n        summary: 'Fetch the latest news',\n        scopes: [ContentReadScope::class],\n    )]\n    public function latest(int $limit = 10): array\n    {\n        return $this->newsRepository->findLatest($limit);\n    }\n\n    /**\n     * @return array{uid: int, title: string, teaser: string}\n     * @throws NotFoundError if the news record does not exist\n     */\n    #[AsAction(\n        name: 'my-extension/news/{uid}',\n        summary: 'Fetch a news record',\n        scopes: [ContentReadScope::class],\n    )]\n    public function show(int $uid): array\n    {\n        return $this->newsRepository->findByUid($uid)\n            ?? throw new NotFoundError('News not found', 1792000001);\n    }\n}"
   },
-  "results_intro": "That is all. Without further code, both methods are available:",
+  "results_intro": "No further code is needed. Both methods are available as follows:",
   "results": [
     {
       "channel": "Backend JavaScript",
