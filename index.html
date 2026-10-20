@@ -29,7 +29,7 @@
   <p class="lead">The Action API turns a typed PHP method into a feature that the TYPO3 backend, external applications and AI agents can use: validated, documented and secured, without writing a single controller.</p>
 
   <div class="hero-diagram">
-    <div class="code-wrap"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#[AsAction(</span>
+    <code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#[AsAction(</span>
     <span class="n">type</span><span class="o">:</span> <span class="nc">ActionType</span><span class="o">::</span><span class="n">fetch</span><span class="p">,</span>
     <span class="n">name</span><span class="o">:</span> <span class="s1">'my-extension/page/{uid}/titles'</span><span class="p">,</span>
     <span class="n">summary</span><span class="o">:</span> <span class="s1">'Fetch the titles of a page'</span><span class="p">,</span>
@@ -40,7 +40,7 @@
     <span class="c1">// your business logic</span>
 <span class="p">}</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
     <div class="hero-arrow" aria-hidden="true">➜</div>
     <div class="channels">
@@ -154,8 +154,8 @@
   <h2 id="concept">The concept: actions</h2>
   <p class="section-lead">An action is a public method of a service, marked with the <code class="language-plaintext highlighter-rouge">#[AsAction]</code> attribute. Its signature is the contract: TYPO3 derives everything else from it, once, when the dependency injection container is compiled.</p>
   <p class="meta">Hover or tap the highlighted parts to see what each one becomes.</p>
-<div class="anatomy">
-  <div class="code-wrap"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">readonly</span> <span class="kd">class</span> <span class="nc">PageTitleAction</span>
+<action-anatomy>
+  <code-block slot="code"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">final</span> <span class="k">readonly</span> <span class="kd">class</span> <span class="nc">PageTitleAction</span>
 <span class="p">{</span>
     <span class="cd">/**
      * @return list&lt;string&gt;
@@ -176,19 +176,17 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
-  <ul class="explain">
-    <li data-ref="1"><span class="badge">1</span><div><strong>Type</strong><span><code class="language-plaintext highlighter-rouge">fetch</code> → <code class="language-plaintext highlighter-rouge">GET</code>, <code class="language-plaintext highlighter-rouge">create</code> → <code class="language-plaintext highlighter-rouge">POST</code>, <code class="language-plaintext highlighter-rouge">replace</code> → <code class="language-plaintext highlighter-rouge">PUT</code>, <code class="language-plaintext highlighter-rouge">update</code> → <code class="language-plaintext highlighter-rouge">PATCH</code>, <code class="language-plaintext highlighter-rouge">delete</code> → <code class="language-plaintext highlighter-rouge">DELETE</code>, <code class="language-plaintext highlighter-rouge">dispatch</code> → <code class="language-plaintext highlighter-rouge">POST</code>. Also sets MCP hints such as “read-only”.</span></div></li>
-    <li data-ref="2"><span class="badge">2</span><div><strong>Name</strong><span>Identifier and route: <code class="language-plaintext highlighter-rouge">/typo3/api/my-extension/page/{uid}/titles</code>. Becomes the MCP tool <code class="language-plaintext highlighter-rouge">fetch_my_extension_page_by_uid_titles</code>.</span></div></li>
-    <li data-ref="3"><span class="badge">3</span><div><strong>Summary</strong><span>Documentation for developers in OpenAPI and for AI agents in the tool list.</span></div></li>
-    <li data-ref="4"><span class="badge">4</span><div><strong>Scopes</strong><span>The caller must be granted all listed scopes, otherwise the call is rejected.</span></div></li>
-    <li data-ref="5"><span class="badge">5</span><div><strong>Parameters</strong><span>Become the input JSON Schema. Values come from the route, the query string or the JSON body, and are validated and converted to PHP types.</span></div></li>
-    <li data-ref="6"><span class="badge">6</span><div><strong>ActionContext</strong><span>Not part of the schema. Passed in automatically: TYPO3 context, user, translator, request and granted scopes.</span></div></li>
-    <li data-ref="7"><span class="badge">7</span><div><strong>Return type</strong><span>PHPDoc types like <code class="language-plaintext highlighter-rouge">list&lt;string&gt;</code> or array shapes become the output schema. The result is validated before it is returned.</span></div></li>
-    <li data-ref="8"><span class="badge">8</span><div><strong>Declared errors</strong><span>Errors must be declared with <code class="language-plaintext highlighter-rouge">@throws</code>. <code class="language-plaintext highlighter-rouge">NotFoundError</code> becomes a documented <code class="language-plaintext highlighter-rouge">404</code>, <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> a <code class="language-plaintext highlighter-rouge">403</code>.</span></div></li>
-  </ul>
-</div>
+  <anatomy-part ref="1" heading="Type" match="type: ActionType::fetch"><code class="language-plaintext highlighter-rouge">fetch</code> → <code class="language-plaintext highlighter-rouge">GET</code>, <code class="language-plaintext highlighter-rouge">create</code> → <code class="language-plaintext highlighter-rouge">POST</code>, <code class="language-plaintext highlighter-rouge">replace</code> → <code class="language-plaintext highlighter-rouge">PUT</code>, <code class="language-plaintext highlighter-rouge">update</code> → <code class="language-plaintext highlighter-rouge">PATCH</code>, <code class="language-plaintext highlighter-rouge">delete</code> → <code class="language-plaintext highlighter-rouge">DELETE</code>, <code class="language-plaintext highlighter-rouge">dispatch</code> → <code class="language-plaintext highlighter-rouge">POST</code>. Also sets MCP hints such as “read-only”.</anatomy-part>
+  <anatomy-part ref="2" heading="Name" match="name: &#39;my-extension/page/{uid}/titles&#39;">Identifier and route: <code class="language-plaintext highlighter-rouge">/typo3/api/my-extension/page/{uid}/titles</code>. Becomes the MCP tool <code class="language-plaintext highlighter-rouge">fetch_my_extension_page_by_uid_titles</code>.</anatomy-part>
+  <anatomy-part ref="3" heading="Summary" match="summary: &#39;Fetch the titles of a page&#39;">Documentation for developers in OpenAPI and for AI agents in the tool list.</anatomy-part>
+  <anatomy-part ref="4" heading="Scopes" match="scopes: [ContentReadScope::class]">The caller must be granted all listed scopes, otherwise the call is rejected.</anatomy-part>
+  <anatomy-part ref="5" heading="Parameters" match="int $uid">Become the input JSON Schema. Values come from the route, the query string or the JSON body, and are validated and converted to PHP types.</anatomy-part>
+  <anatomy-part ref="6" heading="ActionContext" match="ActionContext $context">Not part of the schema. Passed in automatically: TYPO3 context, user, translator, request and granted scopes.</anatomy-part>
+  <anatomy-part ref="7" heading="Return type" match="@return list&lt;string&gt;">PHPDoc types like <code class="language-plaintext highlighter-rouge">list&lt;string&gt;</code> or array shapes become the output schema. The result is validated before it is returned.</anatomy-part>
+  <anatomy-part ref="8" heading="Declared errors" match="@throws NotFoundError if the page does not exist">Errors must be declared with <code class="language-plaintext highlighter-rouge">@throws</code>. <code class="language-plaintext highlighter-rouge">NotFoundError</code> becomes a documented <code class="language-plaintext highlighter-rouge">404</code>, <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> a <code class="language-plaintext highlighter-rouge">403</code>.</anatomy-part>
+</action-anatomy>
 
 </section>
 
@@ -205,17 +203,17 @@
   </div>
   <div class="tabpanel" id="tab-js" role="tabpanel">
     <p>Backend modules call actions through a small client. It adds the bearer token bound to the logged-in user, so a session cookie alone is never enough.</p>
-    <div class="code-wrap"><div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">action</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@typo3/core/action/request.js</span><span class="dl">'</span><span class="p">;</span>
+    <code-block><div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">action</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@typo3/core/action/request.js</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">response</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">action</span><span class="p">(</span><span class="dl">'</span><span class="s1">/my-extension/page/{uid}/titles</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">uid</span><span class="p">:</span> <span class="dl">'</span><span class="s1">42</span><span class="dl">'</span> <span class="p">}).</span><span class="kd">get</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">titles</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">response</span><span class="p">.</span><span class="nx">resolve</span><span class="p">();</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
   </div>
   <div class="tabpanel" id="tab-http" role="tabpanel" hidden>
     <p>External applications use the same endpoint with a token from EXT:hub. Declared errors arrive with their status code.</p>
-    <div class="code-wrap"><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authorization: Bearer &lt;token&gt;'</span> <span class="se">\</span>
+    <code-block><div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">-H</span> <span class="s1">'Authorization: Bearer &lt;token&gt;'</span> <span class="se">\</span>
     https://example.org/typo3/api/my-extension/page/42/titles
 
 <span class="c"># 200 OK</span>
@@ -224,12 +222,12 @@
 <span class="c"># 404 Not Found</span>
 <span class="o">{</span><span class="s2">"error"</span>: <span class="s2">"Page not found"</span><span class="o">}</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
   </div>
   <div class="tabpanel" id="tab-openapi" role="tabpanel" hidden>
     <p>Excerpt of the generated OpenAPI 3.1 document at <code class="language-plaintext highlighter-rouge">/typo3/api/schema</code>, shown in Swagger UI in the backend.</p>
-    <div class="code-wrap"><div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">/my-extension/page/{uid}/titles</span><span class="err">:</span>
+    <code-block><div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">/my-extension/page/{uid}/titles</span><span class="err">:</span>
   <span class="na">get</span><span class="pi">:</span>
     <span class="na">summary</span><span class="pi">:</span> <span class="s">Fetch the titles of a page</span>
     <span class="na">security</span><span class="pi">:</span>
@@ -247,12 +245,12 @@
     <span class="err">  </span><span class="s1">'</span><span class="s">404'</span><span class="err">:</span>
         <span class="na">description</span><span class="pi">:</span> <span class="s">if the page does not exist</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
   </div>
   <div class="tabpanel" id="tab-mcp" role="tabpanel" hidden>
     <p>The same action in the MCP tool list (<code class="language-plaintext highlighter-rouge">tools/list</code>, abridged), and a call from an AI agent.</p>
-    <div class="code-wrap"><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    <code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fetch_my_extension_page_by_uid_titles"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fetch the titles of a page"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"inputSchema"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"object"</span><span class="p">,</span><span class="w"> </span><span class="nl">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"uid"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integer"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nl">"required"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"uid"</span><span class="p">]</span><span class="w"> </span><span class="p">},</span><span class="w">
@@ -260,9 +258,9 @@
   </span><span class="nl">"annotations"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"readOnlyHint"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nl">"destructiveHint"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w"> </span><span class="nl">"idempotentHint"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
-</div>
+</code-block>
 
-    <div class="code-wrap"><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="err">POST</span><span class="w"> </span><span class="err">/typo</span><span class="mi">3</span><span class="err">/api/mcp</span><span class="w">
+    <code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">//</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="err">POST</span><span class="w"> </span><span class="err">/typo</span><span class="mi">3</span><span class="err">/api/mcp</span><span class="w">
 </span><span class="p">{</span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nl">"method"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tools/call"</span><span class="p">,</span><span class="w">
  </span><span class="nl">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fetch_my_extension_page_by_uid_titles"</span><span class="p">,</span><span class="w"> </span><span class="nl">"arguments"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"uid"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">}}}</span><span class="w">
 
@@ -270,12 +268,12 @@
 </span><span class="p">{</span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"resultType"</span><span class="p">:</span><span class="w"> </span><span class="s2">"complete"</span><span class="p">,</span><span class="w">
  </span><span class="nl">"structuredContent"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"Home"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Startseite"</span><span class="p">,</span><span class="w"> </span><span class="s2">"Accueil"</span><span class="p">]},</span><span class="w"> </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="p">[]}}</span><span class="w">
 </span></code></pre></div></div>
-</div>
+</code-block>
 
   </div>
   <div class="tabpanel" id="tab-stdio" role="tabpanel" hidden>
     <p>Coding agents on a developer machine start TYPO3 as a local MCP server. No web server and no EXT:hub are needed; the agent acts as the given backend user.</p>
-    <div class="code-wrap"><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    <code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
   </span><span class="nl">"mcpServers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
     </span><span class="nl">"typo3"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nl">"command"</span><span class="p">:</span><span class="w"> </span><span class="s2">"vendor/bin/typo3"</span><span class="p">,</span><span class="w">
@@ -284,7 +282,7 @@
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
-</div>
+</code-block>
 
   </div>
 </div>
@@ -636,7 +634,7 @@
   <div class="card"><h4>2 · Type input and output</h4><p>Typed parameters and a precise PHPDoc return type become the JSON Schema. Values are validated and converted for you.</p></div>
   <div class="card"><h4>3 · Declare errors</h4><p>Throw <code class="language-plaintext highlighter-rouge">NotFoundError</code> or <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> and declare each one with <code class="language-plaintext highlighter-rouge">@throws</code>.</p></div>
 </div>
-<div class="spaced"><div class="code-wrap"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">MyVendor\MyExtension\Action</span><span class="p">;</span>
+<div class="spaced"><code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">MyVendor\MyExtension\Action</span><span class="p">;</span>
 
 <span class="kn">use</span> <span class="nc">MyVendor\MyExtension\Domain\NewsRepository</span><span class="p">;</span>
 <span class="kn">use</span> <span class="nc">TYPO3\CMS\Core\Action\Error\NotFoundError</span><span class="p">;</span>
@@ -678,7 +676,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
-</div>
+</code-block>
 </div>
 <p class="spaced">That is all. Without further code, both methods are available:</p>
 <div class="table-wrap">
@@ -695,7 +693,7 @@
 <details class="deep">
   <summary>Optional: a scope of your own</summary>
   <p>The scopes shipped with TYPO3 cover most cases. If an app should be able to get access to your actions separately, register a scope and reference its class in <code class="language-plaintext highlighter-rouge">scopes</code>.</p>
-  <div class="code-wrap"><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nc">Symfony\Component\DependencyInjection\Attribute\AsTaggedItem</span><span class="p">;</span>
+  <code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">use</span> <span class="nc">Symfony\Component\DependencyInjection\Attribute\AsTaggedItem</span><span class="p">;</span>
 <span class="kn">use</span> <span class="nc">TYPO3\CMS\Core\Scope\ScopeInterface</span><span class="p">;</span>
 <span class="kn">use</span> <span class="nc">TYPO3\CMS\Core\Scope\ScopeUser</span><span class="p">;</span>
 
@@ -710,7 +708,7 @@
     <span class="k">public</span> <span class="k">function</span> <span class="n">allowedForUser</span><span class="p">(</span><span class="kt">ScopeUser</span> <span class="nv">$user</span><span class="p">):</span> <span class="kt">bool</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
-</div>
+</code-block>
 
   <p></p>
 </details>
@@ -909,7 +907,6 @@
 
 <script type="application/json" id="page-data">
 {
-  "concept": [{"ref":1,"match":"type: ActionType::fetch","title":"Type","text":"`fetch` → `GET`, `create` → `POST`, `replace` → `PUT`, `update` → `PATCH`, `delete` → `DELETE`, `dispatch` → `POST`. Also sets MCP hints such as “read-only”."},{"ref":2,"match":"name: 'my-extension/page/{uid}/titles'","title":"Name","text":"Identifier and route: `/typo3/api/my-extension/page/{uid}/titles`. Becomes the MCP tool `fetch_my_extension_page_by_uid_titles`."},{"ref":3,"match":"summary: 'Fetch the titles of a page'","title":"Summary","text":"Documentation for developers in OpenAPI and for AI agents in the tool list."},{"ref":4,"match":"scopes: [ContentReadScope::class]","title":"Scopes","text":"The caller must be granted all listed scopes, otherwise the call is rejected."},{"ref":5,"match":"int $uid","title":"Parameters","text":"Become the input JSON Schema. Values come from the route, the query string or the JSON body, and are validated and converted to PHP types."},{"ref":6,"match":"ActionContext $context","title":"ActionContext","text":"Not part of the schema. Passed in automatically: TYPO3 context, user, translator, request and granted scopes."},{"ref":7,"match":"@return list<string>","title":"Return type","text":"PHPDoc types like `list<string>` or array shapes become the output schema. The result is validated before it is returned."},{"ref":8,"match":"@throws NotFoundError if the page does not exist","title":"Declared errors","text":"Errors must be declared with `@throws`. `NotFoundError` becomes a documented `404`, `PermissionDeniedError` a `403`."}],
   "stack": {"layers":[{"id":"clients","name":"Clients","tagline":"Who calls","items":["Backend UI","Scripts & integrations","AI agents","Local coding agents"],"title":"Clients: everyone talks to the same actions","body":"The TYPO3 backend itself, external scripts and integrations, AI assistants and local coding agents all use the same actions. None of them needs a dedicated endpoint.\n\n- Backend JavaScript: `@typo3/core/action/request`\n- Any HTTP client: `curl`, generated OpenAPI clients, automation tools\n- MCP clients: Claude, MCP Inspector, other AI agents","components":[]},{"id":"protocols","name":"Protocols","tagline":"How they talk","items":["HTTP + JSON","MCP over HTTP","MCP over stdio","OpenAPI"],"title":"Protocols: different wire formats, one model","body":"Every action is reachable as a JSON endpoint below `/typo3/api/`, with the HTTP method derived from its type. The same actions are offered as MCP tools, over HTTP or locally via `mcp:serve`, and described in an OpenAPI 3.1 document at `/typo3/api/schema`.","components":["ActionHandler","MCP server","OpenApiBuilder"]},{"id":"access","name":"Access","tagline":"Who is it, what may they do","items":["Backend session","EXT:hub (OAuth 2.0, tokens)","Scopes"],"title":"Access: identify the user, limit the app","body":"Every call runs as a backend user. Inside the backend, the session identifies the user. External applications authenticate with a token issued by **EXT:hub**, via OAuth 2.0 or as a static token.\n\n**Scopes** limit which actions an application may call on behalf of the user, for example `content:read` or `dashboard:write`.","components":["Backend authentication","AppResolver","OAuth 2.0 server","ScopeRegistry"]},{"id":"core","name":"Action core","tagline":"Check, validate, invoke","items":["ActionRegistry","RequestHandler","ActionInvoker","JSON Schema"],"title":"Action core: one place for the hard parts","body":"The core knows every action and its JSON Schema, compiled once with the dependency injection container. For each call it\n\n- checks the required scopes,\n- validates arguments and converts them to PHP types,\n- calls the action method with an `ActionContext`,\n- validates the result against the output schema,\n- maps declared errors to status codes.","components":["ActionRegistry","RequestHandler","ActionInvoker","Schema builder and hydrator"]},{"id":"actions","name":"Actions","tagline":"What can be done","items":["Dashboard","Page tree","Records","MCP server","Your extension"],"title":"Actions: plain PHP methods with #[AsAction]","body":"Actions are methods of regular services, marked with the `#[AsAction]` attribute. They contain only the business logic: no request parsing, no serialization, no authentication.\n\nTYPO3 provides actions for the dashboard, the page tree, file resources and records. Even the MCP server is an action. Extensions add their own.","components":[]},{"id":"typo3","name":"TYPO3","tagline":"Where it happens","items":["DataHandler","Permissions","TcaSchema","Workspaces"],"title":"TYPO3: the familiar foundation","body":"Actions use the regular TYPO3 APIs. Because they run as a backend user, page permissions, table and field access, workspaces and all other backend rules apply, exactly as in the backend.\n\nRecord schemas are derived from `TcaSchema`, so the API describes the content model of each installation.","components":[]}],"scenarios":[{"id":"backend","label":"Backend UI loads the page tree","steps":[{"layer":"clients","item":"Backend UI","title":"The page tree requests its data","body":"The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/page/tree', { … }).get()\n```\n\nThe client adds a bearer token that is embedded in the backend document."},{"layer":"protocols","item":"HTTP + JSON","title":"A regular HTTP request","body":"`GET /typo3/api/page/tree` matches the backend route that was registered for this action."},{"layer":"access","item":"Backend session","title":"The session identifies the editor","body":"Session cookie and bearer token must belong to the same user, so other websites cannot call actions in the name of a logged-in editor.\n\nAll scopes the editor may hold are granted."},{"layer":"core","item":"RequestHandler","title":"Scopes and arguments are checked","body":"The action requires `content:read`, which is granted. Query arguments are validated against the input schema."},{"layer":"core","item":"ActionInvoker","title":"The action is invoked","body":"Arguments are converted to PHP types and the method is called with an `ActionContext` holding user, scopes and request."},{"layer":"actions","item":"Page tree","title":"Business logic only","body":"The page tree action builds the tree items. It knows nothing about HTTP."},{"layer":"typo3","item":"Permissions","title":"Backend permissions apply","body":"Only pages the editor is allowed to see end up in the tree."},{"layer":"clients","item":"Backend UI","title":"Validated JSON comes back","body":"The result is validated against the output schema and returned as JSON. The former internal AJAX route is no longer needed."}]},{"id":"integration","label":"Script with a static token","steps":[{"layer":"clients","item":"Scripts & integrations","title":"An integration calls TYPO3","body":"```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/dashboards\n```\n\nAn administrator created the token for this app in the API Hub module."},{"layer":"protocols","item":"HTTP + JSON","title":"Same endpoint as the backend uses","body":"The request reaches the same route as a request from the backend UI."},{"layer":"access","item":"EXT:hub (OAuth 2.0, tokens)","title":"EXT:hub validates the token","body":"There is no backend session, so EXT:hub takes over: the app must be enabled and its secret unchanged. EXT:hub loads the backend user selected in the app record."},{"layer":"access","item":"Scopes","title":"The app only gets its scopes","body":"Granted are exactly the scopes selected in the app record, for example `dashboard:read`."},{"layer":"core","item":"RequestHandler","title":"Scope check","body":"`dashboard:read` is required and granted. A write action would be rejected with `403 Missing scope`."},{"layer":"core","item":"ActionInvoker","title":"Invoked as the app user","body":"The `ActionContext` carries the backend user of the app."},{"layer":"actions","item":"Dashboard","title":"Same code as in the backend","body":"The dashboard action that serves the backend UI also serves the integration."},{"layer":"clients","item":"Scripts & integrations","title":"JSON response","body":"The integration receives the validated JSON result."}]},{"id":"mcp","label":"AI agent via MCP","steps":[{"layer":"clients","item":"AI agents","title":"An AI client connects","body":"The MCP client discovers the authorization server at `/.well-known/oauth-authorization-server` and starts the OAuth flow."},{"layer":"access","item":"EXT:hub (OAuth 2.0, tokens)","title":"The user grants access","body":"The user logs in and approves the requested scopes on the consent screen. The token contains only scopes that were requested, are configured for the app and are allowed for this user."},{"layer":"protocols","item":"MCP over HTTP","title":"MCP is just another endpoint","body":"```text\nPOST /typo3/api/mcp\n{\"method\": \"tools/list\", …}\n```"},{"layer":"access","item":"Scopes","title":"Token checked on every request","body":"EXT:hub validates the token and intersects its scopes with the scopes the app currently has."},{"layer":"core","item":"RequestHandler","title":"The scope mcp is required","body":"The MCP server is an action and requires the scope `mcp`."},{"layer":"actions","item":"MCP server","title":"The MCP server is an action","body":"`tools/list` returns every action whose scopes are granted, with input and output schema and hints such as `readOnlyHint`."},{"layer":"protocols","item":"MCP over HTTP","title":"The agent calls a tool","body":"```json\n{\"method\": \"tools/call\",\n \"params\": {\"name\": \"fetch_dashboards\"}}\n```"},{"layer":"core","item":"ActionInvoker","title":"Nested invocation","body":"The MCP action invokes the target action through the same `ActionInvoker`, with the same user and scopes."},{"layer":"actions","item":"Dashboard","title":"Same action, third consumer","body":"The dashboard action now serves the backend, integrations and AI agents."},{"layer":"clients","item":"AI agents","title":"Structured result","body":"The validated result is returned as `structuredContent` in the JSON-RPC response. The agent can render the user's dashboard."}]},{"id":"stdio","label":"Coding agent via stdio","steps":[{"layer":"clients","item":"Local coding agents","title":"A local agent starts TYPO3","body":"```shell\nvendor/bin/typo3 mcp:serve --user=editor\n```\n\nThe MCP client starts the command and talks to it via standard input and output."},{"layer":"protocols","item":"MCP over stdio","title":"No web server needed","body":"JSON-RPC messages are exchanged line by line. EXT:hub is not required."},{"layer":"access","item":"Scopes","title":"Runs as the selected user","body":"The user `editor` must exist and be enabled. All scopes allowed for this user are granted. Without `--user`, the CLI user `_cli_` is used."},{"layer":"actions","item":"MCP server","title":"Same MCP implementation","body":"The same MCP action handles `initialize`, `tools/list` and `tools/call`."},{"layer":"core","item":"ActionInvoker","title":"Same validation","body":"Tool calls are invoked and validated exactly as over HTTP."},{"layer":"typo3","item":"Permissions","title":"The user’s permissions apply","body":"The agent can do what `editor` can do, and nothing more."}]}]},
   "calculator": {"title":"Try it: which scopes does an OAuth app get?","intro":"The scopes of an OAuth token are the intersection of what the app requests, what an administrator configured for the app and what the user may hold. Toggle the values and pick a user.","note":"Within an allowed action, the user’s own permissions still apply. On every request, the token’s scopes are intersected with the app’s current configuration again, so removing a scope from an app takes effect immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/page/tree","scopes":["content:read"]},{"method":"PATCH","name":"Update a record","path":"/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/token/generate","scopes":["token:generate"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"]}]}
 }
@@ -932,6 +929,7 @@
     <div class="help">Scroll or pinch to zoom · drag to move · double-click to fit · Esc to close</div>
   </div>
 
+  <script type="importmap">{ "imports": { "lit": "/typo3-action-api-overview/assets/vendor/lit-core.min.js" } }</script>
   <script type="module" src="/typo3-action-api-overview/assets/js/main.js"></script>
 </body>
 </html>
