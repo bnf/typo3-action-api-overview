@@ -2,52 +2,84 @@
   {
     "id": "problems",
     "title": "Problems and solutions",
-    "lead": "Today, each way to talk to TYPO3 has a separate implementation. With actions, all ways use one common model."
+    "lead": "Today, each way to talk to TYPO3 has a separate implementation. With actions, all ways use one common model.",
+    "sources": [
+      "problems"
+    ]
   },
   {
     "id": "concept",
     "title": "Actions",
-    "lead": "An action is a public method of a service with the attribute `#[AsAction]`. The signature is the contract, and TYPO3 derives everything else from the signature once, when TYPO3 compiles the dependency injection container."
+    "lead": "An action is a public method of a service with the attribute `#[AsAction]`. The signature is the contract, and TYPO3 derives everything else from the signature once, when TYPO3 compiles the dependency injection container.",
+    "sources": [
+      "concept"
+    ]
   },
   {
     "id": "channels",
     "title": "Channels",
-    "lead": "Each channel shows the example action as its consumer sees the action. No channel needs additional code."
+    "lead": "Each channel shows the example action as its consumer sees the action. No channel needs additional code.",
+    "sources": [
+      "channels"
+    ]
   },
   {
     "id": "stack",
     "title": "Stack",
-    "lead": "Each layer of the stack has one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step."
+    "lead": "Each layer of the stack has one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step.",
+    "sources": [
+      "stack"
+    ]
   },
   {
     "id": "security",
     "title": "Security model",
-    "lead": "An app can never do more than the user that the app acts for, and never more than an administrator configured for the app."
+    "lead": "An app can never do more than the user that the app acts for, and never more than an administrator configured for the app.",
+    "sources": [
+      "security",
+      "screenshots"
+    ]
   },
   {
     "id": "use-cases",
     "title": "Use cases",
-    "lead": "AI assistants, coding agents, integrations, imports, the backend and extensions use the same actions."
+    "lead": "AI assistants, coding agents, integrations, imports, the backend and extensions use the same actions.",
+    "sources": [
+      "use_cases"
+    ]
   },
   {
     "id": "in-action",
     "title": "Screenshots",
     "lead": "The screenshots come from a development installation. Click a screenshot to enlarge it.",
+    "sources": [
+      "screenshots"
+    ],
     "note": "Swagger UI is available in **System › Configuration** (button “API Documentation”) in every installation, because the backend itself uses actions. When EXT:hub is installed, the **API Hub** module also shows Swagger UI."
   },
   {
     "id": "build",
     "title": "Actions in extensions",
-    "lead": "A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool."
+    "lead": "A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool.",
+    "sources": [
+      "extend"
+    ]
   },
   {
     "id": "deep-dive",
     "title": "Technical details",
-    "lead": "The diagrams show the request lifecycle and the error handling in detail. Click a diagram to enlarge it."
+    "lead": "The diagrams show the request lifecycle and the error handling in detail. Click a diagram to enlarge it.",
+    "sources": [
+      "deep_dive"
+    ]
   },
   {
     "id": "status",
     "title": "Status and roadmap",
-    "lead": "The work consists of patches for review on Gerrit, grouped in an epic on Forge. Scripts generate the table of changes from Gerrit and Forge."
+    "lead": "The work consists of patches for review on Gerrit, grouped in an epic on Forge. Scripts generate the table of changes from Gerrit and Forge.",
+    "sources": [
+      "patches",
+      "issues"
+    ]
   }
 ]

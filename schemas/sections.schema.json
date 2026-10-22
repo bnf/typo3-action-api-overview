@@ -10,7 +10,8 @@
     "required": [
       "id",
       "title",
-      "lead"
+      "lead",
+      "sources"
     ],
     "properties": {
       "id": {
@@ -25,6 +26,16 @@
         "type": "string",
         "minLength": 1,
         "description": "Markdown (inline)"
+      },
+      "sources": {
+        "type": "array",
+        "minItems": 1,
+        "uniqueItems": true,
+        "items": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "description": "Data files (without .json) that the template of the section renders; the comments on GitHub search them first for the line of a text"
       },
       "note": {
         "type": "string",
