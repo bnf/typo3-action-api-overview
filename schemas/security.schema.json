@@ -7,7 +7,8 @@
   "required": [
     "principles",
     "calculator",
-    "app_types"
+    "app_types",
+    "mcp"
   ],
   "properties": {
     "principles": {
@@ -192,6 +193,25 @@
               }
             }
           }
+        },
+        "mcp": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "label",
+            "denied"
+          ],
+          "properties": {
+            "label": {
+              "type": "string",
+              "minLength": 1
+            },
+            "denied": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Markdown (inline), shown when the token lacks the scope mcp"
+            }
+          }
         }
       }
     },
@@ -251,6 +271,115 @@
             "type": "string",
             "minLength": 1
           }
+        }
+      }
+    },
+    "mcp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "intro",
+        "patches",
+        "steps",
+        "diagram",
+        "outcomes",
+        "note"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intro": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
+        },
+        "patches": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer"
+          },
+          "description": "Changes on Gerrit that implement the MCP server; the template derives the status"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "title",
+              "text",
+              "source"
+            ],
+            "properties": {
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Markdown (inline)"
+              },
+              "source": {
+                "type": "string",
+                "pattern": "^[a-z_]+/Classes/.+\\.php$",
+                "description": "File below typo3/sysext/ that implements the step"
+              }
+            }
+          }
+        },
+        "diagram": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "caption",
+            "source"
+          ],
+          "properties": {
+            "caption": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Mermaid source"
+            }
+          }
+        },
+        "outcomes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "call",
+              "result"
+            ],
+            "properties": {
+              "call": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Markdown (inline)"
+              },
+              "result": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Markdown (inline)"
+              }
+            }
+          }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
         }
       }
     }
