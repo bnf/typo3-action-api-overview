@@ -1,10 +1,12 @@
 {%- assign intro = site.data.intro -%}
 <section class="hero">
-  <div class="eyebrow">Proposed for {{ intro.target_version }} · {{ site.data.patches.changes.size }} changes on Gerrit</div>
-  <h1>{{ intro.headline }} <span>{{ intro.headline_accent }}</span></h1>
-  <p class="lead">{{ intro.lead }}</p>
+  <div data-comment="intro">
+    <div class="eyebrow">Proposed for {{ intro.target_version }} · {{ site.data.patches.changes.size }} changes on Gerrit</div>
+    <h1>{{ intro.headline }} <span>{{ intro.headline_accent }}</span></h1>
+    <p class="lead">{{ intro.lead }}</p>
+  </div>
 
-  <div class="hero-diagram">
+  <div class="hero-diagram" data-comment="intro-channels">
     {% include code.html snippet=intro.code %}
     <div class="hero-arrow" aria-hidden="true">➜</div>
     <div class="channels">
@@ -19,7 +21,7 @@
 
   <div class="facts">
     {%- for fact in intro.facts %}
-    <div class="fact"><strong>{{ fact.title }}</strong><span>{{ fact.text }}</span></div>
+    <div class="fact" data-comment="intro-fact-{{ forloop.index }}"><strong>{{ fact.title }}</strong><span>{{ fact.text }}</span></div>
     {%- endfor %}
   </div>
 </section>

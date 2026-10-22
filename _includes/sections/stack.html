@@ -2,7 +2,7 @@
   Rendered by <stack-explorer> (assets/js/components/stack-explorer.js):
   one element per layer and one per scenario step, shown in its panel.
 {%- endcomment -%}
-<stack-explorer>
+<stack-explorer data-comment="stack">
   {%- for layer in site.data.stack.layers %}
   <div data-layer-id="{{ layer.id }}" data-name="{{ layer.name | escape }}" data-tagline="{{ layer.tagline | escape }}" data-title="{{ layer.title | escape }}" data-items="{{ layer.items | jsonify | escape }}">
     {{ layer.body | markdownify }}

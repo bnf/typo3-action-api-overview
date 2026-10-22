@@ -1,6 +1,6 @@
 <problem-comparison before="Current situation" after="Solution with actions">
   {%- for problem in site.data.problems %}
-  <problem-item heading="{{ problem.title | escape }}" label="Solution with actions">
+  <problem-item data-comment="problems-{{ forloop.index }}" heading="{{ problem.title | escape }}" label="Solution with actions">
     <span slot="before">{% include inline.html text=problem.today %}</span>
     <span slot="after">{% include inline.html text=problem.solution %}</span>
   </problem-item>

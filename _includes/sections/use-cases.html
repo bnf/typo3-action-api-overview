@@ -5,7 +5,7 @@
     {%- assign change = site.data.patches.changes | where: "number", number | first -%}
     {%- if change.work_in_progress -%}{%- assign wip = true -%}{%- endif -%}
   {%- endfor %}
-  <div class="card usecase">
+  <div class="card usecase" data-comment="use-case-{{ forloop.index }}">
     <div class="top"><span class="channel-tag">{{ case.channel }}</span>{% if wip %}<span class="status wip">work in progress</span>{% else %}<span class="status review">in review</span>{% endif %}</div>
     <h4>{{ case.title }}</h4>
     <p>{% include inline.html text=case.text %}</p>
