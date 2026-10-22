@@ -499,16 +499,28 @@ export class GithubComments extends LitElement {
     return this.cache.get(key);
   }
 
-  // Finds the line of a data file that contains the beginning of one of the texts
-  async findLine(texts, revision) {
-    const files = (this.files || '').split(',').filter(Boolean);
-    const contents = await Promise.all(files.map((file) => this.loadFile(file, revision)));
-    for (const text of texts) {
-      const needle = normalize(text).slice(0, 60);
-      for (const [index, file] of files.entries()) {
-        const line = contents[index].split('\n').findIndex((row) => normalize(row).includes(needle));
-        if (line >= 0) {
-          return { file: `_data/${file}`, line: line + 1 };
+  // Finds the line of a data file that contains the beginning of one of the texts.
+  // A short text such as `fetch` occurs in several files: the files that the
+  // templates around the element name in data-source are searched first.
+  async findLine(texts, revision, element) {
+    const all = (this.files || '').split(',').filter(Boolean);
+    const near = [];
+    for (let node = element; node; node = node.parentElement ?? node.getRootNode().host) {
+      near.push(...(node.dataset?.source ?? '').split(',').filter(Boolean).map((name) => `${name}.json`));
+    }
+    const first = [...new Set(near)].filter((file) => all.includes(file));
+    for (const files of [first, all.filter((file) => !first.includes(file))]) {
+      const contents = await Promise.all(files.map((file) => this.loadFile(file, revision)));
+      for (const text of texts) {
+        const needle = normalize(text).slice(0, 60);
+        for (const [index, file] of files.entries()) {
+          // The shortest line that contains the text: a table cell `fetch` rather than a code example with `fetch` in it
+          const rows = contents[index].split('\n').map((row, line) => ({ row: normalize(row), line }))
+            .filter(({ row }) => row.includes(needle))
+            .sort((a, b) => a.row.length - b.row.length);
+          if (rows.length > 0) {
+            return { file: `_data/${file}`, line: rows[0].line + 1 };
+          }
         }
       }
     }
@@ -566,7 +578,7 @@ export class GithubComments extends LitElement {
 
   async targetUrl(current) {
     const revision = this.revision || 'main';
-    const source = await this.findLine([current.text, ...(current.parts ?? [])], revision);
+    const source = await this.findLine([current.text, ...(current.parts ?? [])], revision, current.anchor);
     if (source && this.pullRequest) {
       const changed = (await this.changedLines()).get(source.file);
       if (changed?.has(source.line)) {

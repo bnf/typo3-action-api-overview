@@ -32,7 +32,7 @@
       <page-navigation for=".content"></page-navigation>
     </nav>
     <main class="content">
-      <section class="hero">
+      <section class="hero" data-source="intro">
   <div data-comment="intro">
     <div class="eyebrow">Proposed for TYPO3 v15 · 13 changes on Gerrit</div>
     <h1>The TYPO3 Action API <span>A typed API for the backend, integrations and AI agents.</span></h1>
@@ -84,8 +84,8 @@
 
 
 
-<section class="chapter" id="section-problems">
-  <header data-comment="problems-intro">
+<section class="chapter" id="section-problems" data-source="problems">
+  <header data-comment="problems-intro" data-source="sections">
     <h2 id="problems">Problems and solutions</h2>
     <p class="section-lead">Today, each way to talk to TYPO3 has a separate implementation. With actions, all ways use one common model.</p>
   </header>
@@ -118,8 +118,8 @@
 
 </section>
 
-<section class="chapter" id="section-concept">
-  <header data-comment="concept-intro">
+<section class="chapter" id="section-concept" data-source="concept">
+  <header data-comment="concept-intro" data-source="sections">
     <h2 id="concept">Actions</h2>
     <p class="section-lead">An action is a public method of a service with the attribute <code class="language-plaintext highlighter-rouge">#[AsAction]</code>. The signature is the contract, and TYPO3 derives everything else from the signature once, when TYPO3 compiles the dependency injection container.</p>
   </header>
@@ -194,8 +194,8 @@
 
 </section>
 
-<section class="chapter" id="section-channels">
-  <header data-comment="channels-intro">
+<section class="chapter" id="section-channels" data-source="channels">
+  <header data-comment="channels-intro" data-source="sections">
     <h2 id="channels">Channels</h2>
     <p class="section-lead">Each channel shows the example action as its consumer sees the action. No channel needs additional code.</p>
   </header>
@@ -288,8 +288,8 @@
 
 </section>
 
-<section class="chapter" id="section-stack">
-  <header data-comment="stack-intro">
+<section class="chapter" id="section-stack" data-source="stack">
+  <header data-comment="stack-intro" data-source="sections">
     <h2 id="stack">Stack</h2>
     <p class="section-lead">Each layer of the stack has one responsibility. Click a layer for details, or play a scenario to follow a request through the stack step by step.</p>
   </header>
@@ -491,8 +491,8 @@
 
 </section>
 
-<section class="chapter" id="section-security">
-  <header data-comment="security-intro">
+<section class="chapter" id="section-security" data-source="security,screenshots">
+  <header data-comment="security-intro" data-source="sections">
     <h2 id="security">Security model</h2>
     <p class="section-lead">An app can never do more than the user that the app acts for, and never more than an administrator configured for the app.</p>
   </header>
@@ -540,8 +540,8 @@
 
 </section>
 
-<section class="chapter" id="section-use-cases">
-  <header data-comment="use-cases-intro">
+<section class="chapter" id="section-use-cases" data-source="use_cases">
+  <header data-comment="use-cases-intro" data-source="sections">
     <h2 id="use-cases">Use cases</h2>
     <p class="section-lead">AI assistants, coding agents, integrations, imports, the backend and extensions use the same actions.</p>
   </header>
@@ -592,8 +592,8 @@
 
 </section>
 
-<section class="chapter" id="section-in-action">
-  <header data-comment="in-action-intro">
+<section class="chapter" id="section-in-action" data-source="screenshots">
+  <header data-comment="in-action-intro" data-source="sections">
     <h2 id="in-action">Screenshots</h2>
     <p class="section-lead">The screenshots come from a development installation. Click a screenshot to enlarge it.</p>
   </header>
@@ -639,8 +639,8 @@
 
 </section>
 
-<section class="chapter" id="section-build">
-  <header data-comment="build-intro">
+<section class="chapter" id="section-build" data-source="extend">
+  <header data-comment="build-intro" data-source="sections">
     <h2 id="build">Actions in extensions</h2>
     <p class="section-lead">A method of your extension becomes an action with an HTTP endpoint, OpenAPI documentation and an MCP tool.</p>
   </header>
@@ -732,8 +732,8 @@
 
 </section>
 
-<section class="chapter" id="section-deep-dive">
-  <header data-comment="deep-dive-intro">
+<section class="chapter" id="section-deep-dive" data-source="deep_dive">
+  <header data-comment="deep-dive-intro" data-source="sections">
     <h2 id="deep-dive">Technical details</h2>
     <p class="section-lead">The diagrams show the request lifecycle and the error handling in detail. Click a diagram to enlarge it.</p>
   </header>
@@ -834,8 +834,8 @@
 
 </section>
 
-<section class="chapter" id="section-status">
-  <header data-comment="status-intro">
+<section class="chapter" id="section-status" data-source="patches,issues">
+  <header data-comment="status-intro" data-source="sections">
     <h2 id="status">Status and roadmap</h2>
     <p class="section-lead">The work consists of patches for review on Gerrit, grouped in an epic on Forge. Scripts generate the table of changes from Gerrit and Forge.</p>
   </header>
@@ -939,7 +939,7 @@
   </div>
 
   <zoom-viewer></zoom-viewer>
-  <github-comments repository="bnf/typo3-action-api-overview" revision="c8b5b28c396dfc0cf028ef70afb09c5f3707c185" pull-request="" files="channels.json,concept.json,deep_dive.json,extend.json,intro.json,problems.json,screenshots.json,sections.json,security.json,stack.json,use_cases.json," screenshots="/typo3-action-api-overview/screenshots/"></github-comments>
+  <github-comments repository="bnf/typo3-action-api-overview" revision="1bfc90bb584eba770fceb936865ff03442fadddd" pull-request="" files="channels.json,concept.json,deep_dive.json,extend.json,intro.json,problems.json,screenshots.json,sections.json,security.json,stack.json,use_cases.json," screenshots="/typo3-action-api-overview/screenshots/"></github-comments>
 
   <script type="importmap">{ "imports": { "lit": "/typo3-action-api-overview/assets/vendor/lit-core.min.js" } }</script>
   <script type="module" src="/typo3-action-api-overview/assets/js/main.js"></script>
