@@ -47,11 +47,11 @@
   "mcp": [
     {
       "aspect": "Methods",
-      "behaviour": "`initialize`, `tools/list`, `tools/call`"
+      "behaviour": "`initialize`, `notifications/initialized`, `server/discover`, `tools/list`, `tools/call`"
     },
     {
       "aspect": "Tool list",
-      "behaviour": "All actions with granted scopes. The tool list does not show the action `mcp`."
+      "behaviour": "All actions whose scopes the token grants. The tool list leaves out every action with the scope `mcp`, also the action `mcp`."
     },
     {
       "aspect": "Tool names",
@@ -67,7 +67,7 @@
     },
     {
       "aspect": "Errors",
-      "behaviour": "The JSON-RPC error “invalid params” for invalid arguments or an unknown tool. A tool result with `isError` for an error of the action."
+      "behaviour": "The JSON-RPC error “invalid params” (`-32602`) for invalid arguments, an unknown tool or a tool with a missing scope. The JSON-RPC error “internal error” (`-32603`) for a result that does not match the output schema. A tool result with `isError` for an error of the action."
     }
   ]
 }

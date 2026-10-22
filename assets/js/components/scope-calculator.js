@@ -12,7 +12,8 @@ const allowedFor = {
  * the token's scopes are the intersection of what the app requests, what is
  * configured for the app and what the user may hold. The data of
  * security.json → calculator is passed as a JSON <script> child, the note
- * below the result as the slot "note".
+ * below the result as the slot "note", the text for a token without the
+ * scope mcp as the slot "mcp-denied".
  */
 export class ScopeCalculator extends LitElement {
   static properties = {
@@ -103,6 +104,7 @@ export class ScopeCalculator extends LitElement {
     .action.blocked .check { color: var(--no); }
     .spaced { margin-top: 18px; }
     .note { margin: 14px 0 0; color: var(--muted); }
+    .denied { margin: 6px 0 0; padding: 10px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--no-soft); }
     @media (max-width: 960px) {
       .actions { grid-template-columns: minmax(0, 1fr); }
     }
@@ -174,8 +176,32 @@ export class ScopeCalculator extends LitElement {
             `;
           })}
         </ul>
+        ${this.renderMcp(granted)}
         <p class="note"><slot name="note"></slot></p>
       </div>
+    `;
+  }
+
+  // The tool list of the action mcp: the actions whose scopes the token grants,
+  // without the actions that have the scope mcp (ToolProvider::buildTools())
+  renderMcp(granted) {
+    const tools = this.data.actions.filter((action) => !action.scopes.includes('mcp'));
+    return html`
+      <div class="label spaced" id="mcp-label">${this.data.mcp.label}</div>
+      ${granted.has('mcp') ? html`
+        <ul class="actions" aria-labelledby="mcp-label" aria-live="polite">
+          ${tools.map((action) => {
+            const missing = action.scopes.filter((scope) => !granted.has(scope));
+            const listed = missing.length === 0;
+            return html`
+              <li class="action ${listed ? 'allowed' : 'blocked'}">
+                <span class="name">${action.name}<small>${listed ? 'listed' : `not listed, missing ${missing.join(', ')}`}</small></span>
+                <span class="check" role="img" aria-label=${listed ? 'listed' : 'not listed'}>${listed ? '✓' : '✕'}</span>
+              </li>
+            `;
+          })}
+        </ul>
+      ` : html`<p class="denied" aria-live="polite"><slot name="mcp-denied"></slot></p>`}
     `;
   }
 

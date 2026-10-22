@@ -132,7 +132,11 @@
           "mcp"
         ]
       }
-    ]
+    ],
+    "mcp": {
+      "label": "MCP tool list",
+      "denied": "Without the scope `mcp`, the core rejects the request to `/typo3/api/mcp` with `403 Missing scope: mcp`. The token can call no MCP tool."
+    }
   },
   "app_types": {
     "title": "Apps, tokens and consent",
@@ -181,5 +185,67 @@
       "oauth-consent",
       "hub-app-details"
     ]
+  },
+  "mcp": {
+    "title": "Scopes in MCP tool calls",
+    "intro": "The MCP server is the action `mcp`. The core checks the scopes of the HTTP request once, for the action `mcp`. Every MCP tool inside then runs with the same backend user and the same scopes, and the MCP server lists and calls only the MCP tools whose scopes the token grants.",
+    "patches": [
+      92223,
+      92224
+    ],
+    "steps": [
+      {
+        "title": "Scopes of the request",
+        "text": "EXT:hub validates the token and sets the scopes of the HTTP request. For an OAuth app, the scopes are the scopes of the token that the configuration of the app still contains. For a static app, the scopes are the scopes of the app.",
+        "source": "hub/Classes/Authorization/AuthorizationValidation.php"
+      },
+      {
+        "title": "Scope mcp",
+        "text": "The request handler checks the scopes of the action `mcp`. Without the scope `mcp`, the request handler rejects the call with `403 Missing scope: mcp`. Otherwise the request handler writes the scopes of the request into the `ActionContext`.",
+        "source": "core/Classes/Action/RequestHandler.php"
+      },
+      {
+        "title": "Tool list",
+        "text": "For `tools/list`, the tool provider lists an action only if the scopes of the request contain every scope of the action. The tool provider leaves out every action with the scope `mcp`, also the action `mcp`.",
+        "source": "core/Classes/Action/Ai/ToolProvider.php"
+      },
+      {
+        "title": "Tool call",
+        "text": "For `tools/call`, the MCP server checks the scopes again with the same filter. If a scope of the MCP tool is missing, the MCP server returns the JSON-RPC error `-32602` with the message `Unknown tool`, the same error as for a tool that does not exist.",
+        "source": "core/Classes/Mcp/Tool/Call.php"
+      },
+      {
+        "title": "Nested invocation",
+        "text": "The MCP tool calls the action through the `ActionInvoker`, without a second HTTP request. The `ToolContext` copies the backend user, the request and the scopes of the call to `mcp`. The `ActionInvoker` does not check the scopes again.",
+        "source": "core/Classes/Action/Ai/ToolContext.php"
+      }
+    ],
+    "diagram": {
+      "caption": "The scopes of the token in an MCP tool call",
+      "source": "sequenceDiagram\n    autonumber\n    participant A as AI client\n    participant H as EXT:hub\n    participant R as RequestHandler\n    participant M as Action mcp\n    participant P as ToolProvider\n    participant I as ActionInvoker\n    participant D as Action dashboards\n\n    A->>H: POST /typo3/api/mcp (tools/call fetch_dashboards)\n    Note over H: Validate the token<br/>scopes mcp, dashboard:read\n    H->>R: request with the scopes\n    alt scope mcp not granted\n        R-->>A: 403 Missing scope: mcp\n    end\n    R->>M: ActionContext with the scopes\n    M->>P: tool fetch_dashboards, scopes of the context\n    alt scope dashboard:read not granted\n        P-->>A: JSON-RPC error -32602 Unknown tool\n    end\n    P->>I: invoke dashboards with the ToolContext\n    Note over I: Same backend user, same scopes<br/>no second scope check\n    I->>D: call the method for the user\n    D-->>I: result\n    I-->>M: validated result\n    M-->>A: 200 structuredContent"
+    },
+    "outcomes": [
+      {
+        "call": "`tools/list`",
+        "result": "The MCP tools whose scopes the token grants, without the actions that have the scope `mcp`"
+      },
+      {
+        "call": "`tools/call` with all scopes of the MCP tool",
+        "result": "The result of the action in `structuredContent`"
+      },
+      {
+        "call": "`tools/call` with a missing scope of the MCP tool",
+        "result": "The JSON-RPC error `-32602` with the message `Unknown tool`"
+      },
+      {
+        "call": "`tools/call` with an error of the action",
+        "result": "A tool result with `isError` and the message of the error"
+      },
+      {
+        "call": "A request without the scope `mcp`",
+        "result": "The HTTP status `403` with the message `Missing scope: mcp`"
+      }
+    ],
+    "note": "The command `mcp:serve` runs the MCP server over stdio. The command calls the action `mcp` directly with all scopes that the backend user can hold. The request handler does not run, so the command does not check the scope `mcp`."
   }
 }
