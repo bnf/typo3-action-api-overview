@@ -4,7 +4,9 @@ import { ZoomViewer } from './zoom-viewer.js';
 /**
  * A screenshot from _data/screenshots.json in a stylized window frame
  * (_includes/screenshot.html). Attributes: window (title bar), heading,
- * featured (larger backdrop). The <img slot="image"> is the screenshot, the
+ * featured (larger backdrop, caption beside the image on wide screens),
+ * compact (small frame in a gallery, caption beside the image on narrow
+ * screens). The <img slot="image"> is the screenshot, the
  * remaining content is the caption. A click opens the zoom viewer.
  * --shot-height crops the image to a fixed height, from the top.
  */
@@ -13,6 +15,7 @@ export class ScreenShot extends LitElement {
     window: {},
     heading: {},
     featured: { type: Boolean, reflect: true },
+    compact: { type: Boolean, reflect: true },
   };
 
   static styles = css`
@@ -90,6 +93,31 @@ export class ScreenShot extends LitElement {
       border-top: 1px solid var(--border);
     }
     strong { color: var(--fg); display: block; }
+
+    :host([compact]) .backdrop { padding: 12px 12px 0; }
+    :host([compact]) .titlebar { height: 22px; gap: 6px; padding: 0 8px; }
+    :host([compact]) .lights { gap: 4px; }
+    :host([compact]) .lights i { width: 7px; height: 7px; }
+    :host([compact]) .title { margin-right: 33px; }
+    :host([compact]) figcaption { padding: 10px 14px; }
+
+    /* The caption beside the image: a screenshot takes less height */
+    @media (min-width: 900px) {
+      :host([featured]) figure { flex-direction: row; }
+      :host([featured]) .backdrop { flex: 0 0 68%; display: flex; align-items: flex-end; padding: 24px 28px 0; }
+      :host([featured]) .window { flex: 1; }
+      :host([featured]) figcaption { border-top: 0; border-left: 1px solid var(--border); padding: 20px 22px; }
+    }
+    @media (max-width: 640px) {
+      :host([compact]) figure { flex-direction: row; }
+      :host([compact]) .backdrop { flex: 0 0 40%; display: flex; padding: 8px 8px 0; }
+      :host([compact]) .window { flex: 1; display: flex; flex-direction: column; }
+      /* The image fills the height of the caption beside it */
+      :host([compact]) .frame { flex: 1; position: relative; height: auto; min-height: var(--shot-height, 104px); }
+      :host([compact]) ::slotted(img) { position: absolute; inset: 0; }
+      :host([compact]) .titlebar { display: none; }
+      :host([compact]) figcaption { border-top: 0; border-left: 1px solid var(--border); padding: 10px 12px; }
+    }
   `;
 
   render() {
