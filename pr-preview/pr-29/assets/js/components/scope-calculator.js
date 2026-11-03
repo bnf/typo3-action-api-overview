@@ -185,9 +185,9 @@ export class ScopeCalculator extends LitElement {
   }
 
   // The tool list of the action mcp: the actions with the target ai whose scopes
-  // the token grants, without the actions that have the scope mcp (ToolProvider::buildTools())
+  // the token grants (ToolProvider); the action mcp has no target ai
   renderMcp(granted) {
-    const tools = this.data.actions.filter((action) => !action.scopes.includes('mcp') && (!action.targets || action.targets.includes('ai')));
+    const tools = this.data.actions.filter((action) => !action.targets || action.targets.includes('ai'));
     return html`
       <div class="label spaced" id="mcp-label">${this.data.mcp.label}</div>
       ${granted.has('mcp') ? html`
