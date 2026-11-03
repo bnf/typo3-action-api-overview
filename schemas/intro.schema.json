@@ -113,6 +113,11 @@
           }
         }
       }
+    },
+    "notice": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Markdown (inline), optional: a note on the state of the code that the page describes, shown in the hero"
     }
   }
 }

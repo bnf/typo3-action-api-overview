@@ -18,6 +18,22 @@
     </table>
   </div>
 </div>
+<div data-comment="build-options">
+  <h3 id="action-options">{{ extend.options.title }}</h3>
+  <p>{% include inline.html text=extend.options.intro %}</p>
+  <div class="table-wrap">
+    <table class="plain options">
+      <thead><tr><th>Option</th><th>Effect</th></tr></thead>
+      <tbody>
+        {%- for row in extend.options.rows %}
+        <tr><td>{% include inline.html text=row.option %}</td><td>{% include inline.html text=row.text %}</td></tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% include code.html snippet=extend.options.example %}
+  <p>{% include inline.html text=extend.options.note %}</p>
+</div>
 <div data-comment="build-scope">
   <h3>{{ extend.scope.title }}</h3>
   <p>{% include inline.html text=extend.scope.text %}</p>

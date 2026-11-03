@@ -84,3 +84,13 @@
 }
 .fact strong { display: block; font-size: 1.05em; margin-bottom: 4px; }
 .fact span { color: var(--muted); font-size: var(--font-size-text); line-height: 1.45; display: block; }
+
+/* Note on the state of the code that the page describes (intro.json → notice) */
+.hero-notice {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, var(--border));
+  border-radius: 12px;
+  background: var(--accent-soft);
+  font-size: var(--font-size-small);
+}

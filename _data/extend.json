@@ -3,7 +3,7 @@
   "steps": [
     {
       "title": "Attribute",
-      "text": "Mark a public method with `#[AsAction]`, set its name and select a scope that exists, for example `content:read`."
+      "text": "Mark a public method with `#[AsAction]`, set its route and select a scope that exists, for example `content:read`."
     },
     {
       "title": "Typed input and output",
@@ -16,21 +16,21 @@
   ],
   "action_example": {
     "language": "php",
-    "code": "namespace MyVendor\\MyExtension\\Action;\n\nuse MyVendor\\MyExtension\\Domain\\NewsRepository;\nuse TYPO3\\CMS\\Core\\Action\\Error\\NotFoundError;\nuse TYPO3\\CMS\\Core\\Attribute\\AsAction;\nuse TYPO3\\CMS\\Core\\Scope\\ContentReadScope;\n\nfinal readonly class NewsActions\n{\n    public function __construct(\n        private NewsRepository $newsRepository,\n    ) {}\n\n    /**\n     * @return list<array{uid: int, title: string, date: string}>\n     */\n    #[AsAction(\n        name: 'my-extension/news/latest',\n        summary: 'Fetch the latest news',\n        scopes: [ContentReadScope::class],\n    )]\n    public function latest(int $limit = 10): array\n    {\n        return $this->newsRepository->findLatest($limit);\n    }\n\n    /**\n     * @return array{uid: int, title: string, teaser: string}\n     * @throws NotFoundError if the news record does not exist\n     */\n    #[AsAction(\n        name: 'my-extension/news/{uid}',\n        summary: 'Fetch a news record',\n        scopes: [ContentReadScope::class],\n    )]\n    public function show(int $uid): array\n    {\n        return $this->newsRepository->findByUid($uid)\n            ?? throw new NotFoundError('News not found', 1792000001);\n    }\n}"
+    "code": "namespace MyVendor\\MyExtension\\Action;\n\nuse MyVendor\\MyExtension\\Domain\\NewsRepository;\nuse TYPO3\\CMS\\Core\\Action\\Error\\NotFoundError;\nuse TYPO3\\CMS\\Core\\Attribute\\AsAction;\nuse TYPO3\\CMS\\Core\\Scope\\ContentReadScope;\n\nfinal readonly class NewsActions\n{\n    public function __construct(\n        private NewsRepository $newsRepository,\n    ) {}\n\n    /**\n     * @return list<array{uid: int, title: string, date: string}>\n     */\n    #[AsAction(\n        route: 'my-extension/news/latest',\n        summary: 'Fetch the latest news',\n        scopes: [ContentReadScope::class],\n    )]\n    public function latest(int $limit = 10): array\n    {\n        return $this->newsRepository->findLatest($limit);\n    }\n\n    /**\n     * @return array{uid: int, title: string, teaser: string}\n     * @throws NotFoundError if the news record does not exist\n     */\n    #[AsAction(\n        route: 'my-extension/news/{uid}',\n        summary: 'Fetch a news record',\n        scopes: [ContentReadScope::class],\n    )]\n    public function show(int $uid): array\n    {\n        return $this->newsRepository->findByUid($uid)\n            ?? throw new NotFoundError('News not found', 1792000001);\n    }\n}"
   },
   "results_intro": "Without more code, TYPO3 makes both methods available in these channels:",
   "results": [
     {
       "channel": "Backend JavaScript",
-      "value": "`action('/my-extension/news/latest', {}).get()`"
+      "value": "`action('/v1/my-extension/news/latest', {}).get()`"
     },
     {
       "channel": "HTTP API",
-      "value": "`GET /typo3/api/my-extension/news/latest?limit=5` and `GET /typo3/api/my-extension/news/42`"
+      "value": "`GET /typo3/api/v1/my-extension/news/latest?limit=5` and `GET /typo3/api/v1/my-extension/news/42`"
     },
     {
       "channel": "OpenAPI",
-      "value": "Both operations with parameters, response schemas and the documented `404`"
+      "value": "Both operations with the `operationId`, parameters, response schemas and the documented `404`"
     },
     {
       "channel": "MCP tools",
@@ -48,5 +48,40 @@
       "language": "php",
       "code": "use Symfony\\Component\\DependencyInjection\\Attribute\\AsTaggedItem;\nuse TYPO3\\CMS\\Core\\Scope\\ScopeInterface;\nuse TYPO3\\CMS\\Core\\Scope\\ScopeUser;\n\n#[AsTaggedItem(index: 'my-extension:news:read')]\nfinal class NewsReadScope implements ScopeInterface\n{\n    public function getName(): string { return 'Read access to news'; }\n    public function getDescription(): string { return 'Read news records.'; }\n    public function getIcon(): string { return 'content-news'; }\n\n    // Decides whether a user may hold this scope at all\n    public function allowedForUser(ScopeUser $user): bool { return true; }\n}"
     }
+  },
+  "options": {
+    "title": "Attribute options",
+    "intro": "The attribute `#[AsAction]` also takes these options.",
+    "rows": [
+      {
+        "option": "`route`",
+        "text": "The path below `/typo3/api/v<version>/`, for example `my-extension/news/{uid}`. A placeholder takes the value of the parameter with the same name. Actions of different types or versions can share a route, for example `GET` and `PATCH` on `records/{schema}/{identifier}`."
+      },
+      {
+        "option": "`id`",
+        "text": "The identifier of the action. Without `id`, TYPO3 derives the identifier from the type, the route and the version, for example `fetch_my_extension_news_by_uid`, with the suffix `_v2` from version 2. The identifier is the `operationId` in OpenAPI and the name of the MCP tool. Set `id` to keep the identifier when the route changes, or to replace a derived identifier with more than 64 characters."
+      },
+      {
+        "option": "`version`",
+        "text": "The version in the path, by default `1`. An incompatible change becomes a new version of the same route, and the old version stays available."
+      },
+      {
+        "option": "`deprecated`",
+        "text": "A Unix timestamp. Responses send the header `Deprecation: @<timestamp>` (RFC 9745). OpenAPI marks the operation as deprecated, and the description of the MCP tool starts with the date."
+      },
+      {
+        "option": "`targets`",
+        "text": "The channels of the action, by default all channels. `Target::backend` is the backend, `Target::http` is the HTTP API for apps of EXT:hub and the OpenAPI document, `Target::ai` is the MCP server. In a channel that is not a target, the HTTP API returns `404` and `tools/list` does not show the action."
+      },
+      {
+        "option": "`location`",
+        "text": "A link from a `create` action to the action that fetches the new resource. The HTTP API then returns `201` with the header `Location`, OpenAPI documents the link, and the MCP tool result names the MCP tool and its arguments in `_meta`."
+      }
+    ],
+    "example": {
+      "language": "php",
+      "code": "// Version 1 stays available and sends the header Deprecation\n#[AsAction(route: 'my-extension/news/latest', description: 'Superseded by version 2', deprecated: 1793608038)]\npublic function latest(int $limit = 10): array { … }\n\n// GET /typo3/api/v2/my-extension/news/latest, MCP tool fetch_my_extension_news_latest_v2\n#[AsAction(route: 'my-extension/news/latest', version: 2)]\npublic function latestV2(int $limit = 10, int $offset = 0): array { … }\n\n// POST /typo3/api/v1/my-extension/news returns 201 and Location: …/typo3/api/v1/my-extension/news/42\n#[AsAction(\n    route: 'my-extension/news',\n    type: ActionType::create,\n    location: new Link([NewsActions::class, 'show'], ['uid' => '$response.body#/uid']),\n)]\npublic function create(string $title, string $teaser): array { … }\n\n// Only for the backend: no HTTP API for apps, no MCP tool\n#[AsAction(route: 'my-extension/news/preview', type: ActionType::dispatch, targets: [Target::backend])]\npublic function preview(int $uid): array { … }"
+    },
+    "note": "A `Link` points to the method of the target action, not to its identifier. The parameters are runtime expressions of OpenAPI, for example `$request.path.uid` for an argument or `$response.body#/uid` for a value of the result. TYPO3 checks the link when TYPO3 compiles the container."
   }
 }

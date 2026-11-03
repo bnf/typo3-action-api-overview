@@ -36,7 +36,8 @@
     "action_example",
     "results_intro",
     "results",
-    "scope"
+    "scope",
+    "options"
   ],
   "properties": {
     "intro": {
@@ -117,6 +118,60 @@
         },
         "example": {
           "$ref": "#/$defs/snippet"
+        }
+      }
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "intro",
+        "rows",
+        "example",
+        "note"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intro": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
+        },
+        "rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "option",
+              "text"
+            ],
+            "properties": {
+              "option": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Markdown (inline)"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Markdown (inline)"
+              }
+            }
+          }
+        },
+        "example": {
+          "$ref": "#/$defs/snippet"
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline)"
         }
       }
     }

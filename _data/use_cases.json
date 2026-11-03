@@ -23,7 +23,7 @@
     "title": "Integrations and automation",
     "channel": "HTTP · static token",
     "text": "Chat bots, monitoring tools or workflow tools call TYPO3 with a token that has only the scopes they need.",
-    "example": "`GET /typo3/api/dashboards`",
+    "example": "`GET /typo3/api/v1/dashboards`",
     "patches": [
       91486,
       92322
@@ -33,7 +33,7 @@
     "title": "Imports, migrations and headless clients",
     "channel": "HTTP · OpenAPI",
     "text": "Record actions read and write all record types. TYPO3 derives the schema from TCA, so developers can generate clients for each installation.",
-    "example": "`PATCH /typo3/api/records/tt_content/42`",
+    "example": "`PATCH /typo3/api/v1/records/tt_content/42`",
     "patches": [
       92196,
       92197,
@@ -44,7 +44,7 @@
     "title": "A consistent backend",
     "channel": "Backend UI",
     "text": "The dashboard, the page tree and the file list operations move from internal AJAX routes to actions, with the same validation for all operations.",
-    "example": "`action('/page/tree').get()`",
+    "example": "`action('/v1/page/tree').get()`",
     "patches": [
       92322,
       92191,
@@ -55,7 +55,7 @@
     "title": "An API for extensions",
     "channel": "Extensions",
     "text": "An extension that adds `#[AsAction]` to a method gets an endpoint, documentation and an MCP tool, and EXT:hub handles the authorization.",
-    "example": "`#[AsAction(name: 'news/latest')]`",
+    "example": "`#[AsAction(route: 'news/latest')]`",
     "patches": [
       91563
     ]
