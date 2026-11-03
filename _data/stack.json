@@ -25,7 +25,7 @@
         "OpenAPI"
       ],
       "title": "Different wire formats with one model",
-      "body": "Every action has a JSON endpoint below `/typo3/api/`, and the type of the action sets the HTTP method. TYPO3 also offers the same actions as MCP tools, over HTTP or locally through `mcp:serve`, and describes the actions in an OpenAPI 3.1 document at `/typo3/api/schema`.",
+      "body": "Every action with the target `http` has a JSON endpoint below `/typo3/api/`, with the version of the action in the path, for example `/typo3/api/v1/`. The type of the action sets the HTTP method. TYPO3 also offers the same actions as MCP tools, over HTTP or locally through `mcp:serve`, and describes the actions in an OpenAPI 3.1 document at `/typo3/api/v1/schema`.",
       "components": [
         "ActionHandler",
         "MCP server",
@@ -108,13 +108,13 @@
           "layer": "clients",
           "item": "Backend UI",
           "title": "Request from the page tree",
-          "body": "The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/page/tree', { … }).get()\n```\n\nThe client adds a bearer token from the backend document."
+          "body": "The page tree component calls the action with the JavaScript client:\n\n```javascript\naction('/v1/page/tree', { … }).get()\n```\n\nThe client adds a bearer token from the backend document."
         },
         {
           "layer": "protocols",
           "item": "HTTP + JSON",
           "title": "HTTP request",
-          "body": "`GET /typo3/api/page/tree` matches the backend route that TYPO3 registered for the action."
+          "body": "`GET /typo3/api/v1/page/tree` matches the backend route that TYPO3 registered for the action."
         },
         {
           "layer": "access",
@@ -162,7 +162,7 @@
           "layer": "clients",
           "item": "Scripts & integrations",
           "title": "Call from an integration",
-          "body": "```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/dashboards\n```\n\nAn administrator created the token for the app in the API Hub module."
+          "body": "```shell\ncurl -H 'Authorization: Bearer <token>' \\\n  https://example.org/typo3/api/v1/dashboards\n```\n\nAn administrator created the token for the app in the API Hub module."
         },
         {
           "layer": "protocols",
@@ -246,7 +246,7 @@
           "layer": "actions",
           "item": "MCP server",
           "title": "Tool list",
-          "body": "The method `tools/list` returns every action with granted scopes, with the input and output schema and hints such as `readOnlyHint`."
+          "body": "The method `tools/list` returns every action with the target `ai` and granted scopes, with the input and output schema and hints such as `readOnlyHint`."
         },
         {
           "layer": "protocols",

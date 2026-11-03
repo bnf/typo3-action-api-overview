@@ -3,7 +3,7 @@
     "forge": "https://forge.typo3.org",
     "epic": 111053,
     "generated_by": "scripts/update-issues.py",
-    "generated_at": "2026-10-20T08:18:12Z"
+    "generated_at": "2026-11-03T17:52:04Z"
   },
   "issues": [
     {
@@ -50,6 +50,14 @@
       "number": 111047,
       "url": "https://forge.typo3.org/issues/111047",
       "subject": "Provide authenticated access to the Action API for external applications",
+      "tracker": "Feature",
+      "status": "Under Review",
+      "parent": 111053
+    },
+    {
+      "number": 111264,
+      "url": "https://forge.typo3.org/issues/111264",
+      "subject": "Provide Record Actions for generic record access via the Action API",
       "tracker": "Feature",
       "status": "Under Review",
       "parent": 111053

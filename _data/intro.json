@@ -5,7 +5,7 @@
   "target_version": "TYPO3 v15",
   "code": {
     "language": "php",
-    "code": "#[AsAction(\n    type: ActionType::fetch,\n    name: 'my-extension/page/{uid}/titles',\n    summary: 'Fetch the titles of a page',\n    scopes: [ContentReadScope::class],\n)]\npublic function titles(int $uid): array\n{\n    // your business logic\n}"
+    "code": "#[AsAction(\n    type: ActionType::fetch,\n    route: 'my-extension/page/{uid}/titles',\n    summary: 'Fetch the titles of a page',\n    scopes: [ContentReadScope::class],\n)]\npublic function titles(int $uid): array\n{\n    // your business logic\n}"
   },
   "channels": [
     {
@@ -48,7 +48,7 @@
     },
     {
       "title": "Built-in MCP server",
-      "text": "The MCP server offers every action as a tool."
+      "text": "The MCP server offers every action with the AI target as an MCP tool."
     }
   ]
 }

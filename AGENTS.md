@@ -229,8 +229,6 @@ of `rgb(r g b / a)`, and plain CSS features only.
   `scripts/check.sh` afterwards.
 - Keep JSON formatted with `scripts/validate.py --fix` and keep the order of
   existing entries, so diffs stay small and merge conflicts readable.
-- Do not regenerate `patches.json` or `issues.json` in a branch that changes
-  other things; refresh them in a separate pull request.
 
 ## Pull request workflow
 

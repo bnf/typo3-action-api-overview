@@ -8,7 +8,7 @@
     "snippets": [
       {
         "language": "javascript",
-        "code": "import { action } from '@typo3/core/action/request.js';\n\nconst response = await action('/my-extension/page/{uid}/titles', { uid: '42' }).get();\nconst titles = await response.resolve();"
+        "code": "import { action } from '@typo3/core/action/request.js';\n\nconst response = await action('/v1/my-extension/page/{uid}/titles', { uid: '42' }).get();\nconst titles = await response.resolve();"
       }
     ]
   },
@@ -21,7 +21,7 @@
     "snippets": [
       {
         "language": "shell",
-        "code": "curl -H 'Authorization: Bearer <token>' \\\n    https://example.org/typo3/api/my-extension/page/42/titles\n\n# 200 OK\n[\"Home\", \"Startseite\", \"Accueil\"]\n\n# 404 Not Found\n{\"error\": \"Page not found\"}"
+        "code": "curl -H 'Authorization: Bearer <token>' \\\n    https://example.org/typo3/api/v1/my-extension/page/42/titles\n\n# 200 OK\n[\"Home\", \"Startseite\", \"Accueil\"]\n\n# 404 Not Found\n{\"error\": \"Page not found\"}"
       }
     ]
   },
@@ -30,11 +30,11 @@
     "label": "OpenAPI",
     "icon": "DOC",
     "summary": "Generated reference and Swagger UI",
-    "intro": "The code shows an excerpt of the OpenAPI 3.1 document that TYPO3 generates at `/typo3/api/schema`. Swagger UI in the backend shows the same document.",
+    "intro": "The code shows an excerpt of the OpenAPI 3.1 document that TYPO3 generates at `/typo3/api/v1/schema`. The API Hub module shows the same document in Swagger UI. **System › Configuration** shows the document for the backend, `/typo3/api/v1/schema?target=backend`, with all actions for the backend, also the actions that only the backend can call.",
     "snippets": [
       {
         "language": "yaml",
-        "code": "/my-extension/page/{uid}/titles:\n  get:\n    summary: Fetch the titles of a page\n    security:\n      - oauth2: ['content:read']\n      - static: []\n      - beuser: []\n    parameters:\n      - { name: uid, in: path, required: true, schema: { type: integer } }\n    responses:\n      '200':\n        description: OK\n        content:\n          application/json:\n            schema: { type: array, items: { type: string } }\n      '404':\n        description: if the page does not exist"
+        "code": "/v1/my-extension/page/{uid}/titles:\n  get:\n    operationId: fetch_my_extension_page_by_uid_titles\n    summary: Fetch the titles of a page\n    security:\n      - oauth2: ['content:read']\n      - static: []\n      - beuser: []\n    parameters:\n      - { name: uid, in: path, required: true, schema: { type: integer } }\n    responses:\n      '200':\n        description: OK\n        content:\n          application/json:\n            schema: { type: array, items: { type: string } }\n      '404':\n        description: if the page does not exist"
       }
     ]
   },

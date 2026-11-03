@@ -4,7 +4,7 @@
       "id": "http-lifecycle",
       "title": "HTTP request lifecycle",
       "caption": "HTTP request lifecycle with all error paths",
-      "source": "sequenceDiagram\n    autonumber\n    participant C as Client\n    participant MW as Backend middlewares\n    participant AH as ActionHandler\n    participant RH as RequestHandler\n    participant AI as ActionInvoker\n    participant S as Action method\n\n    C->>MW: GET /typo3/api/my-extension/page/42/titles\n    alt backend session cookie\n        Note over MW: Backend authentication<br/>scopes: all allowed for the user\n    else no cookie (EXT:hub)\n        Note over MW: Validate app token<br/>scopes: those of the token\n    end\n    MW->>AH: handle(request)\n    alt no valid token\n        AH-->>C: 401 Missing access token\n    end\n    AH->>RH: handle(request)\n    alt required scope not granted\n        RH-->>C: 403 Missing scope\n    end\n    alt invalid or missing argument\n        RH-->>C: 400 error message\n    end\n    RH->>AI: invoke(action, arguments, context)\n    AI->>S: titles(uid: 42, context)\n    alt declared error\n        S-->>RH: NotFoundError\n        RH-->>C: 404 Page not found\n    end\n    S-->>AI: result\n    alt result does not match the output schema\n        AI-->>C: 500 invalid result\n    end\n    AI-->>RH: validated result\n    RH-->>C: 200 JSON (204 if empty)"
+      "source": "sequenceDiagram\n    autonumber\n    participant C as Client\n    participant MW as Backend middlewares\n    participant AH as ActionHandler\n    participant RH as RequestHandler\n    participant AI as ActionInvoker\n    participant S as Action method\n\n    C->>MW: GET /typo3/api/v1/my-extension/page/42/titles\n    alt backend session cookie\n        Note over MW: Backend authentication<br/>scopes: all allowed for the user\n    else no cookie (EXT:hub)\n        Note over MW: Validate app token<br/>scopes: those of the token\n    end\n    MW->>AH: handle(request)\n    alt no valid token\n        AH-->>C: 401 Missing access token\n    end\n    AH->>RH: handle(request)\n    alt required scope not granted\n        RH-->>C: 403 Missing scope\n    end\n    alt invalid or missing argument\n        RH-->>C: 400 error message\n    end\n    RH->>AI: invoke(action, arguments, context)\n    AI->>S: titles(uid: 42, context)\n    alt declared error\n        S-->>RH: NotFoundError\n        RH-->>C: 404 Page not found\n    end\n    S-->>AI: result\n    alt result does not match the output schema\n        AI-->>C: 500 invalid result\n    end\n    AI-->>RH: validated result\n    RH-->>C: 200 JSON (201 with Location for a created resource, 204 if empty)"
     },
     {
       "id": "mcp-nesting",
@@ -20,6 +20,10 @@
       "cause": "Success, or `204` if the action returns nothing"
     },
     {
+      "status": "201",
+      "cause": "A `create` action with a declared link created a resource. The header `Location` holds the URL of the new resource."
+    },
+    {
       "status": "400",
       "cause": "A missing argument, invalid JSON or a value that does not match the input schema"
     },
@@ -33,7 +37,7 @@
     },
     {
       "status": "404",
-      "cause": "The action throws `NotFoundError`, or the route is unknown"
+      "cause": "The action throws `NotFoundError`, the route is unknown, or the action has no target for the channel of the caller"
     },
     {
       "status": "415",
@@ -51,11 +55,11 @@
     },
     {
       "aspect": "Tool list",
-      "behaviour": "All actions whose scopes the token grants. The tool list leaves out every action with the scope `mcp`, also the action `mcp`."
+      "behaviour": "All actions with the target `ai` whose scopes the token grants. The action `mcp` has only the targets `backend` and `http`, so the tool list does not show the action `mcp`."
     },
     {
       "aspect": "Tool names",
-      "behaviour": "Type and name, for example `fetch_dashboards_by_dashboardIdentifier_widgets_by_widgetIdentifier`"
+      "behaviour": "The identifier of the action, for example `fetch_dashboards` or `fetch_dashboard_widget`"
     },
     {
       "aspect": "Hints",
