@@ -5,9 +5,6 @@
     <h1>{{ intro.headline }} <span>{{ intro.headline_accent }}</span></h1>
     <p class="lead">{{ intro.lead }}</p>
   </div>
-  {%- if intro.notice %}
-  <p class="hero-notice" data-comment="intro-notice">{% include inline.html text=intro.notice %}</p>
-  {%- endif %}
 
   <div class="hero-diagram" data-comment="intro-channels">
     {% include code.html snippet=intro.code %}

@@ -55,7 +55,7 @@
     "sources": [
       "screenshots"
     ],
-    "note": "Swagger UI is available in **System › Configuration** (button “API Documentation”) in every installation, because the backend itself uses actions. This Swagger UI shows the document for the backend, `/typo3/api/v1/schema?target=backend`. When EXT:hub is installed, the **API Hub** module shows Swagger UI with the document for the HTTP API of apps."
+    "note": "The module **System › Configuration** of EXT:lowlevel shows Swagger UI (button “API Documentation”) with the document for the backend, `/typo3/api/v1/schema?target=backend`. When EXT:hub is installed, the **API Hub** module shows Swagger UI with the document for the HTTP API of apps."
   },
   {
     "id": "build",

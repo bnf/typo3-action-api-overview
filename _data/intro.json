@@ -50,6 +50,5 @@
       "title": "Built-in MCP server",
       "text": "The MCP server offers every action with the AI target as an MCP tool."
     }
-  ],
-  "notice": "The page describes a local state of the patch chain from 2026-11-03 (branch `hub-2026-11-03d`). This state is not on Gerrit yet. The patch sets on Gerrit still use `name` instead of `route` and have no versions, targets or links."
+  ]
 }

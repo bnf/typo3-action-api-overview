@@ -88,6 +88,9 @@
         "path": "/v1/page/tree",
         "scopes": [
           "content:read"
+        ],
+        "targets": [
+          "backend"
         ]
       },
       {

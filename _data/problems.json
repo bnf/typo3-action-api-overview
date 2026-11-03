@@ -7,7 +7,7 @@
   {
     "title": "No general-purpose API in the core",
     "today": "Integrations depend on extensions, and each extension builds and maintains separate endpoints.",
-    "solution": "Every action of TYPO3 or of an extension has a versioned HTTP endpoint below `/typo3/api/`, for example `/typo3/api/v1/dashboards`."
+    "solution": "By default, every action of TYPO3 or of an extension has a versioned HTTP endpoint below `/typo3/api/`, for example `/typo3/api/v1/dashboards`."
   },
   {
     "title": "Separate authorization for every integration",
