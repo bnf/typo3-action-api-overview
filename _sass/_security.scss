@@ -1,3 +1,42 @@
 /* Layers of protection */
 .shield { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
 .shield .card { border-top: 4px solid var(--accent); }
+
+/* Steps of the scopes in an MCP tool call (_includes/sections/security.html) */
+.flow { list-style: none; counter-reset: flow; margin: 18px 0; padding: 0; display: grid; gap: 10px; }
+.flow li {
+  counter-increment: flow;
+  position: relative;
+  padding: 14px 18px 14px 58px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.flow li::before {
+  content: counter(flow);
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: var(--font-size-label);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+}
+/* The line between two steps: the scopes go from one step to the next */
+.flow li + li::after {
+  content: "";
+  position: absolute;
+  left: 29px;
+  top: -11px;
+  height: 11px;
+  border-left: 2px solid var(--accent-soft);
+}
+.flow h4 { margin: 2px 0 4px; }
+.flow p { margin: 0 0 6px; }
+.flow-source { font-size: var(--font-size-label); color: var(--muted); }
+.patch-links .status { align-self: center; }

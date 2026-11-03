@@ -108,6 +108,10 @@ def check_references(data):
         if shot not in screenshots:
             errors.append(f'security.json: unknown screenshot "{shot}"')
 
+    for number in data['security']['mcp']['patches']:
+        if number not in patches:
+            errors.append(f'security.json: mcp references change {number}, which is not in patches.json')
+
     for case in data['use_cases']:
         for number in case['patches']:
             if number not in patches:
