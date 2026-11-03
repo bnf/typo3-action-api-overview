@@ -164,11 +164,13 @@ export class ScopeCalculator extends LitElement {
         <ul class="actions" aria-labelledby="actions-label" aria-live="polite">
           ${actions.map((action) => {
             const missing = action.scopes.filter((scope) => !granted.has(scope));
-            const allowed = missing.length === 0;
+            // An action without the target http has no HTTP API for app tokens (#[AsAction] targets)
+            const http = !action.targets || action.targets.includes('http');
+            const allowed = http && missing.length === 0;
             return html`
               <li class="action ${allowed ? 'allowed' : 'blocked'}">
                 <span class="verb ${action.method === 'GET' ? '' : 'write'}">${action.method}</span>
-                <span class="name">${action.name}<small>${allowed ? action.path : `missing ${missing.join(', ')}`}</small></span>
+                <span class="name">${action.name}<small>${!http ? this.data.backend_only : allowed ? action.path : `missing ${missing.join(', ')}`}</small></span>
                 <span class="check" role="img" aria-label=${allowed ? 'callable' : 'not callable'}>${allowed ? '✓' : '✕'}</span>
               </li>
             `;
