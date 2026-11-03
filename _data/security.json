@@ -85,7 +85,7 @@
       {
         "method": "GET",
         "name": "Page tree",
-        "path": "/page/tree",
+        "path": "/v1/page/tree",
         "scopes": [
           "content:read"
         ]
@@ -93,7 +93,7 @@
       {
         "method": "PATCH",
         "name": "Update a record",
-        "path": "/records/{schema}/{identifier}",
+        "path": "/v1/records/{schema}/{identifier}",
         "scopes": [
           "content:read",
           "content:write"
@@ -102,7 +102,7 @@
       {
         "method": "GET",
         "name": "Fetch dashboards",
-        "path": "/dashboards",
+        "path": "/v1/dashboards",
         "scopes": [
           "dashboard:read"
         ]
@@ -110,7 +110,7 @@
       {
         "method": "POST",
         "name": "Create a dashboard",
-        "path": "/dashboards",
+        "path": "/v1/dashboards",
         "scopes": [
           "dashboard:read",
           "dashboard:write"
@@ -119,9 +119,12 @@
       {
         "method": "POST",
         "name": "Generate an app token",
-        "path": "/token/generate",
+        "path": "/v1/token/generate",
         "scopes": [
           "token:generate"
+        ],
+        "targets": [
+          "backend"
         ]
       },
       {
@@ -136,7 +139,8 @@
     "mcp": {
       "label": "MCP tool list",
       "denied": "Without the scope `mcp`, the core rejects the request to `/typo3/api/mcp` with `403 Missing scope: mcp`. The token can call no MCP tool."
-    }
+    },
+    "backend_only": "only for the backend, no HTTP API for app tokens"
   },
   "app_types": {
     "title": "Apps, tokens and consent",
