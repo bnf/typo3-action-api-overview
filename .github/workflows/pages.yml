@@ -23,7 +23,8 @@ concurrency:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # Playwright 1.56.1 (screenshots of the blocks) has no Chromium for Ubuntu 26.04
+    runs-on: ubuntu-24.04
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
     env:
       PREVIEW_PATH: pr-preview/pr-${{ github.event.pull_request.number }}
