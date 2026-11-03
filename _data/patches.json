@@ -4,7 +4,7 @@
     "project": "Packages/TYPO3.CMS",
     "tip": 92197,
     "generated_by": "scripts/update-patches.py",
-    "generated_at": "2026-10-20T08:18:06Z"
+    "generated_at": "2026-11-03T17:51:51Z"
   },
   "changes": [
     {
@@ -14,7 +14,7 @@
       "change_id": "Id8ade10afb445bd03780cb3de57597e6343f81b7",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 24,
+      "patchset": 25,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -23,9 +23,9 @@
         109428
       ],
       "related": [],
-      "insertions": 2093,
+      "insertions": 2440,
       "deletions": 0,
-      "updated": "2026-10-14T08:56:33Z"
+      "updated": "2026-10-28T13:55:49Z"
     },
     {
       "number": 91563,
@@ -34,7 +34,7 @@
       "change_id": "I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 57,
+      "patchset": 59,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -43,9 +43,9 @@
         111046
       ],
       "related": [],
-      "insertions": 2439,
+      "insertions": 3414,
       "deletions": 153,
-      "updated": "2026-10-18T17:51:51Z"
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 91666,
@@ -54,7 +54,7 @@
       "change_id": "I54da4f59cf07af56fb1b766fbef7ff9e89ef51d0",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 33,
+      "patchset": 35,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -63,9 +63,9 @@
         111052
       ],
       "related": [],
-      "insertions": 1135,
+      "insertions": 1830,
       "deletions": 3,
-      "updated": "2026-10-14T13:10:56Z"
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 93423,
@@ -74,7 +74,7 @@
       "change_id": "I5dc801e852620b4fc65ef982017f1fb648b1b612",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 17,
+      "patchset": 19,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -85,7 +85,7 @@
       "related": [],
       "insertions": 62,
       "deletions": 2,
-      "updated": "2026-10-14T13:10:32Z"
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 91486,
@@ -94,7 +94,7 @@
       "change_id": "I4c2bf613b592221f458cf88c74c8fe4f6ee4bd9d",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 42,
+      "patchset": 44,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -103,103 +103,9 @@
         111047
       ],
       "related": [],
-      "insertions": 5118,
+      "insertions": 4785,
       "deletions": 1,
-      "updated": "2026-10-14T13:28:07Z"
-    },
-    {
-      "number": 92223,
-      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223",
-      "subject": "[TASK] Provide AI tool provider based on Actions API",
-      "change_id": "I14b8fb18295100af456b439df452bef3773baddb",
-      "status": "NEW",
-      "work_in_progress": true,
-      "patchset": 28,
-      "branch": "main",
-      "hashtags": [
-        "actions"
-      ],
-      "resolves": [
-        111049
-      ],
-      "related": [],
-      "insertions": 220,
-      "deletions": 0,
-      "updated": "2026-10-14T13:35:21Z"
-    },
-    {
-      "number": 92224,
-      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224",
-      "subject": "[WIP][FEATURE] Implement MCP Server based on Actions API",
-      "change_id": "I2f2ff276cb533422b6aa6393a16d1ea7c9bf55ef",
-      "status": "NEW",
-      "work_in_progress": true,
-      "patchset": 32,
-      "branch": "main",
-      "hashtags": [
-        "actions"
-      ],
-      "resolves": [
-        111050
-      ],
-      "related": [],
-      "insertions": 1468,
-      "deletions": 0,
-      "updated": "2026-10-18T17:52:43Z"
-    },
-    {
-      "number": 92322,
-      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322",
-      "subject": "[WIP][TASK] Migrate Dashboard to Actions API",
-      "change_id": "I0fcc4e68d0c10918fe6fd761137f5023d57f4ea6",
-      "status": "NEW",
-      "work_in_progress": true,
-      "patchset": 18,
-      "branch": "main",
-      "hashtags": [
-        "actions"
-      ],
-      "resolves": [],
-      "related": [],
-      "insertions": 788,
-      "deletions": 680,
-      "updated": "2026-10-14T14:02:59Z"
-    },
-    {
-      "number": 92191,
-      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191",
-      "subject": "[WIP][TASK] Migrate PageTree to Action API",
-      "change_id": "I659215cbaa53bf7688d3f799edadcefd60d62374",
-      "status": "NEW",
-      "work_in_progress": true,
-      "patchset": 28,
-      "branch": "main",
-      "hashtags": [
-        "actions"
-      ],
-      "resolves": [],
-      "related": [],
-      "insertions": 228,
-      "deletions": 190,
-      "updated": "2026-10-14T13:58:48Z"
-    },
-    {
-      "number": 93599,
-      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599",
-      "subject": "[WIP][TASK] Migrate resource endpoints to Actions API",
-      "change_id": "I1c294383d6e9a835e3bd2b530a6687e55cc04fda",
-      "status": "NEW",
-      "work_in_progress": true,
-      "patchset": 8,
-      "branch": "main",
-      "hashtags": [
-        "actions"
-      ],
-      "resolves": [],
-      "related": [],
-      "insertions": 301,
-      "deletions": 104,
-      "updated": "2026-10-14T14:05:13Z"
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 92196,
@@ -208,16 +114,16 @@
       "change_id": "Idb35eb28830066d73bf9667ae6744aaff8bc80b6",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 14,
+      "patchset": 16,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 1374,
-      "deletions": 4,
-      "updated": "2026-10-14T14:09:38Z"
+      "insertions": 1370,
+      "deletions": 0,
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 92197,
@@ -226,16 +132,132 @@
       "change_id": "I455266664387f5bb28c7518fb962a13d90b75ff0",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 14,
+      "patchset": 17,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111264
+      ],
+      "related": [
+        111046
+      ],
+      "insertions": 4066,
+      "deletions": 33,
+      "updated": "2026-11-03T17:36:47Z"
+    },
+    {
+      "number": 92223,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223",
+      "subject": "[TASK] Provide AI tool provider based on Actions API",
+      "change_id": "I14b8fb18295100af456b439df452bef3773baddb",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 30,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111049
+      ],
+      "related": [],
+      "insertions": 271,
+      "deletions": 0,
+      "updated": "2026-11-03T17:36:47Z"
+    },
+    {
+      "number": 93599,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599",
+      "subject": "[WIP][TASK] Migrate resource endpoints to Actions API",
+      "change_id": "I1c294383d6e9a835e3bd2b530a6687e55cc04fda",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 10,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 733,
+      "insertions": 3038,
+      "deletions": 812,
+      "updated": "2026-11-03T17:36:47Z"
+    },
+    {
+      "number": 92191,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191",
+      "subject": "[WIP][TASK] Migrate PageTree to Action API",
+      "change_id": "I659215cbaa53bf7688d3f799edadcefd60d62374",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 30,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 246,
+      "deletions": 190,
+      "updated": "2026-11-03T17:36:47Z"
+    },
+    {
+      "number": 97327,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/97327",
+      "subject": "[WIP][TASK] Migrate file storage tree to Actions API",
+      "change_id": "Ief8a2b0756811c60a27cfa83648bae5aa1aefb9e",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 1,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 144,
+      "deletions": 77,
+      "updated": "2026-11-03T17:37:34Z"
+    },
+    {
+      "number": 92322,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322",
+      "subject": "[WIP][TASK] Migrate Dashboard to Actions API",
+      "change_id": "I0fcc4e68d0c10918fe6fd761137f5023d57f4ea6",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 20,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [],
+      "related": [],
+      "insertions": 792,
+      "deletions": 680,
+      "updated": "2026-11-03T17:36:47Z"
+    },
+    {
+      "number": 92224,
+      "url": "https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224",
+      "subject": "[WIP][FEATURE] Implement MCP Server based on Actions API",
+      "change_id": "I2f2ff276cb533422b6aa6393a16d1ea7c9bf55ef",
+      "status": "NEW",
+      "work_in_progress": true,
+      "patchset": 34,
+      "branch": "main",
+      "hashtags": [
+        "actions"
+      ],
+      "resolves": [
+        111050
+      ],
+      "related": [],
+      "insertions": 1584,
       "deletions": 0,
-      "updated": "2026-10-18T17:46:17Z"
+      "updated": "2026-11-03T17:36:47Z"
     },
     {
       "number": 88507,
