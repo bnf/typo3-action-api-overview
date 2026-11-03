@@ -5,7 +5,7 @@
 <div class="grid-3 gallery">
   {%- for shot in site.data.screenshots %}
   {%- unless shot.featured %}
-  {% include screenshot.html id=shot.id %}
+  {% include screenshot.html id=shot.id compact=true %}
   {%- endunless %}
   {%- endfor %}
 </div>
