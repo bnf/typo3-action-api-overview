@@ -133,6 +133,10 @@
         "path": "/mcp",
         "scopes": [
           "mcp"
+        ],
+        "targets": [
+          "backend",
+          "http"
         ]
       }
     ],
@@ -210,7 +214,7 @@
       },
       {
         "title": "Tool list",
-        "text": "For `tools/list`, the tool provider lists an action only if the action has the target `ai` and the scopes of the request contain every scope of the action. The tool provider leaves out every action with the scope `mcp`, also the action `mcp`.",
+        "text": "For `tools/list`, the tool provider lists an action only if the action has the target `ai` and the scopes of the request contain every scope of the action. The action `mcp` has only the targets `backend` and `http`, so the tool list does not show the action `mcp`.",
         "source": "core/Classes/Action/Ai/ToolProvider.php"
       },
       {
@@ -231,7 +235,7 @@
     "outcomes": [
       {
         "call": "`tools/list`",
-        "result": "The actions with the target `ai` whose scopes the token grants, without the actions that have the scope `mcp`"
+        "result": "The actions with the target `ai` whose scopes the token grants"
       },
       {
         "call": "`tools/call` with all scopes of the MCP tool",

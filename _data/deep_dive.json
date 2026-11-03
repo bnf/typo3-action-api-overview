@@ -55,7 +55,7 @@
     },
     {
       "aspect": "Tool list",
-      "behaviour": "All actions with the target `ai` whose scopes the token grants. The tool list leaves out every action with the scope `mcp`, also the action `mcp`, which has no target `ai`."
+      "behaviour": "All actions with the target `ai` whose scopes the token grants. The action `mcp` has only the targets `backend` and `http`, so the tool list does not show the action `mcp`."
     },
     {
       "aspect": "Tool names",

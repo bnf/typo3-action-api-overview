@@ -30,7 +30,7 @@
     "label": "OpenAPI",
     "icon": "DOC",
     "summary": "Generated reference and Swagger UI",
-    "intro": "The code shows an excerpt of the OpenAPI 3.1 document that TYPO3 generates at `/typo3/api/v1/schema`. Swagger UI in the backend shows the same document.",
+    "intro": "The code shows an excerpt of the OpenAPI 3.1 document that TYPO3 generates at `/typo3/api/v1/schema`. The API Hub module shows the same document in Swagger UI. **System › Configuration** shows the document for the backend, `/typo3/api/v1/schema?target=backend`, with the actions that only the backend can call.",
     "snippets": [
       {
         "language": "yaml",

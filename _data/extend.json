@@ -67,7 +67,7 @@
       },
       {
         "option": "`deprecated`",
-        "text": "A Unix timestamp. Responses send the header `Deprecation: @<timestamp>` (RFC 9745). OpenAPI marks the operation as deprecated, and the description of the MCP tool starts with the date."
+        "text": "A Unix timestamp. Responses send the header `Deprecation: @<timestamp>` (RFC 9745). OpenAPI marks the operation as deprecated, and the description of the MCP tool starts with “Deprecated since” and the date."
       },
       {
         "option": "`targets`",
@@ -80,7 +80,7 @@
     ],
     "example": {
       "language": "php",
-      "code": "// Version 1 stays available and sends the header Deprecation\n#[AsAction(route: 'my-extension/news/latest', description: 'Superseded by version 2', deprecated: 1793608038)]\npublic function latest(int $limit = 10): array { … }\n\n// GET /typo3/api/v2/my-extension/news/latest, MCP tool fetch_my_extension_news_latest_v2\n#[AsAction(route: 'my-extension/news/latest', version: 2)]\npublic function latestV2(int $limit = 10, int $offset = 0): array { … }\n\n// POST /typo3/api/v1/my-extension/news returns 201 and Location: …/typo3/api/v1/my-extension/news/42\n#[AsAction(\n    route: 'my-extension/news',\n    type: ActionType::create,\n    location: new Link([NewsActions::class, 'show'], ['uid' => '$response.body#/uid']),\n)]\npublic function create(string $title, string $teaser): array { … }\n\n// Only for the backend: no HTTP API for apps, no MCP tool\n#[AsAction(route: 'my-extension/news/preview', type: ActionType::dispatch, targets: [Target::backend])]\npublic function preview(int $uid): array { … }"
+      "code": "use TYPO3\\CMS\\Core\\Action\\ActionType;\nuse TYPO3\\CMS\\Core\\Action\\Link;\nuse TYPO3\\CMS\\Core\\Action\\Target;\nuse TYPO3\\CMS\\Core\\Attribute\\AsAction;\n\n// Version 1 stays available and sends the header Deprecation\n#[AsAction(route: 'my-extension/news/latest', description: 'Superseded by version 2', deprecated: 1793608038)]\npublic function latest(int $limit = 10): array { … }\n\n// GET /typo3/api/v2/my-extension/news/latest, MCP tool fetch_my_extension_news_latest_v2\n#[AsAction(route: 'my-extension/news/latest', version: 2)]\npublic function latestV2(int $limit = 10, int $offset = 0): array { … }\n\n// POST /typo3/api/v1/my-extension/news returns 201 and Location: …/typo3/api/v1/my-extension/news/42\n#[AsAction(\n    route: 'my-extension/news',\n    type: ActionType::create,\n    location: new Link([NewsActions::class, 'show'], ['uid' => '$response.body#/uid']),\n)]\npublic function create(string $title, string $teaser): array { … }\n\n// Only for the backend: no HTTP API for apps, no MCP tool\n#[AsAction(route: 'my-extension/news/preview', type: ActionType::dispatch, targets: [Target::backend])]\npublic function preview(int $uid): array { … }"
     },
     "note": "A `Link` points to the method of the target action, not to its identifier. The parameters are runtime expressions of OpenAPI, for example `$request.path.uid` for an argument or `$response.body#/uid` for a value of the result. TYPO3 checks the link when TYPO3 compiles the container."
   }
