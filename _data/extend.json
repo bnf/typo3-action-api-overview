@@ -59,7 +59,7 @@
       },
       {
         "option": "`id`",
-        "text": "The identifier of the action. Without `id`, TYPO3 derives the identifier from the type, the route and the version, for example `fetch_my_extension_news_by_uid`, with the suffix `_v2` from version 2. The identifier is the `operationId` in OpenAPI and the name of the MCP tool. Set `id` to keep the identifier when the route changes, or to replace a derived identifier with more than 64 characters."
+        "text": "The identifier of the action. Without `id`, TYPO3 derives the identifier from the type, the route and the version, for example `fetch_my_extension_news_by_uid`, with the suffix `_v2` from version 2. The identifier is the `operationId` in OpenAPI and the name of the MCP tool. TYPO3 also uses the identifier in the registry of the actions and in `_meta`. Set `id` to keep the identifier when the route changes, or to replace a derived identifier with more than 64 characters."
       },
       {
         "option": "`version`",
@@ -67,7 +67,7 @@
       },
       {
         "option": "`deprecated`",
-        "text": "A Unix timestamp. Responses send the header `Deprecation: @<timestamp>` (RFC 9745). OpenAPI marks the operation as deprecated, and the description of the MCP tool starts with “Deprecated since” and the date."
+        "text": "A Unix timestamp. Responses send the header `Deprecation: @<timestamp>` (RFC 9745). OpenAPI marks the operation as deprecated, and the description of the MCP tool starts with “Deprecated since” and the date. TYPO3 sends no header `Sunset`, because the next major version removes the action, and the core does not know when an installation updates."
       },
       {
         "option": "`targets`",
@@ -75,7 +75,7 @@
       },
       {
         "option": "`location`",
-        "text": "A link from a `create` action to the action that fetches the new resource. The HTTP API then returns `201` with the header `Location`, OpenAPI documents the link, and the MCP tool result names the MCP tool and its arguments in `_meta`."
+        "text": "A link from a `create` action to the action that fetches the new resource. The HTTP API then returns `201` with the header `Location`, OpenAPI documents the link, and the MCP tool result names the MCP tool and its arguments in `_meta`. TYPO3 sets the status and the header from the declaration, so the action cannot forget the header and the three channels always match. If a later version adds a link to an existing `create` action, the status of the action changes from `200` to `201`."
       }
     ],
     "example": {
