@@ -210,6 +210,7 @@
         ]
       }
     ],
+    "note": "The token endpoint and the API send no CORS headers, because apps are confidential clients that exchange the code on their server. Only the metadata of the authorization server at `/.well-known/oauth-authorization-server` allows every origin.",
     "screenshots": [
       "oauth-consent",
       "hub-app-details"

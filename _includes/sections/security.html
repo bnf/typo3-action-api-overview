@@ -58,6 +58,9 @@
       </tbody>
     </table>
   </div>
+  {%- if security.app_types.note %}
+  <p>{% include inline.html text=security.app_types.note %}</p>
+  {%- endif %}
 </div>
 <div class="grid-2">
   {%- for id in security.app_types.screenshots %}
