@@ -188,7 +188,7 @@
     PHPDoc types such as <code class="language-plaintext highlighter-rouge">list&lt;string&gt;</code> or array shapes define the output schema. TYPO3 validates the result before TYPO3 returns the result.
   </anatomy-part>
   <anatomy-part data-comment="concept-part-8" ref="8" heading="Declared errors" match="@throws NotFoundError if the page does not exist">
-    The action must declare every error with <code class="language-plaintext highlighter-rouge">@throws</code>. TYPO3 returns <code class="language-plaintext highlighter-rouge">NotFoundError</code> as <code class="language-plaintext highlighter-rouge">404</code> and <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> as <code class="language-plaintext highlighter-rouge">403</code>, and documents both errors in OpenAPI.
+    The action must declare every error with <code class="language-plaintext highlighter-rouge">@throws</code>. TYPO3 returns <code class="language-plaintext highlighter-rouge">NotFoundError</code> as <code class="language-plaintext highlighter-rouge">404</code> and <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> as <code class="language-plaintext highlighter-rouge">403</code>, and documents both errors in OpenAPI. The exception code <code class="language-plaintext highlighter-rouge">1791975434</code> sets the <code class="language-plaintext highlighter-rouge">type</code> of the error response, <code class="language-plaintext highlighter-rouge">https://typo3.org/go/exception/CMS/1791975434</code>.
   </anatomy-part>
 </action-anatomy>
 
@@ -218,8 +218,8 @@
 <span class="c"># 200 OK</span>
 <span class="o">[</span><span class="s2">"Home"</span>, <span class="s2">"Startseite"</span>, <span class="s2">"Accueil"</span><span class="o">]</span>
 
-<span class="c"># 404 Not Found</span>
-<span class="o">{</span><span class="s2">"error"</span>: <span class="s2">"Page not found"</span><span class="o">}</span>
+<span class="c"># 404 Not Found, Content-Type: application/problem+json</span>
+<span class="o">{</span><span class="s2">"type"</span>: <span class="s2">"https://typo3.org/go/exception/CMS/1791975434"</span>, <span class="s2">"title"</span>: <span class="s2">"Not Found"</span>, <span class="s2">"status"</span>: 404, <span class="s2">"detail"</span>: <span class="s2">"Page not found"</span><span class="o">}</span>
 </code></pre></div></div>
 </code-block>
 
@@ -500,13 +500,15 @@
   <div class="shield">
   <div class="card" data-comment="security-principle-1"><h4>1 · Scopes of the app</h4><p>An app with only <code class="language-plaintext highlighter-rouge">content:read</code> cannot call a write action, even if the user can.</p></div>
   <div class="card" data-comment="security-principle-2"><h4>2 · Permissions of the user</h4><p>Actions run as the backend user. Page permissions, table and field access and workspaces apply as usual.</p></div>
+  <div class="card" data-comment="security-principle-3"><h4>3 · Data for administrators</h4><p>Records of tables for administrators only, for example <code class="language-plaintext highlighter-rouge">be_users</code>, need the scope <code class="language-plaintext highlighter-rouge">admin</code> in addition to <code class="language-plaintext highlighter-rouge">content:read</code> or <code class="language-plaintext highlighter-rouge">content:write</code>. TYPO3 grants <code class="language-plaintext highlighter-rouge">admin</code> only to administrators.</p></div>
+  <div class="card" data-comment="security-principle-4"><h4>4 · Passwords</h4><p>A record in a response never contains a password field, also not as a hash. An app can still set a password.</p></div>
 </div>
 
 <div data-comment="scope-calculator">
   <h3 id="scope-calculator">Scope calculator</h3>
   <p>The scopes of an OAuth token are the intersection of the scopes that the app requests, the scopes that an administrator configured for the app and the scopes that the user can hold. Change the values and select a user.</p>
   <scope-calculator>
-    <script type="application/json">{"title":"Scope calculator","intro":"The scopes of an OAuth token are the intersection of the scopes that the app requests, the scopes that an administrator configured for the app and the scopes that the user can hold. Change the values and select a user.","note":"In an action that the token can call, the permissions of the user still apply. On every request, EXT:hub intersects the scopes of the token with the current configuration of the app again, so when an administrator removes a scope from an app, the change applies immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"token:generate","name":"Management of app tokens","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/v1/page/tree","scopes":["content:read"],"targets":["backend"]},{"method":"PATCH","name":"Update a record","path":"/v1/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"GET","name":"Fetch dashboards","path":"/v1/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/v1/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/v1/token/generate","scopes":["token:generate"],"targets":["backend"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"],"targets":["backend","http"]}],"mcp":{"label":"MCP tool list","denied":"Without the scope `mcp`, the core rejects the request to `/typo3/api/mcp` with `403 Missing scope: mcp`. The token can call no MCP tool."},"backend_only":"only for the backend, no HTTP API for app tokens"}</script>
+    <script type="application/json">{"title":"Scope calculator","intro":"The scopes of an OAuth token are the intersection of the scopes that the app requests, the scopes that an administrator configured for the app and the scopes that the user can hold. Change the values and select a user.","note":"In an action that the token can call, the permissions of the user still apply. On every request, EXT:hub intersects the scopes of the token with the current configuration of the app again, so when an administrator removes a scope from an app, the change applies immediately.","scopes":[{"id":"content:read","name":"Read access to content","allowed_for":"everyone"},{"id":"content:write","name":"Writable access to content","allowed_for":"everyone"},{"id":"dashboard:read","name":"Dashboard read access","allowed_for":"dashboard_access"},{"id":"dashboard:write","name":"Dashboard write access","allowed_for":"dashboard_access"},{"id":"admin","name":"Administrative tasks","allowed_for":"admin"},{"id":"mcp","name":"Model Context Protocol (MCP)","allowed_for":"everyone"}],"users":[{"id":"admin","label":"Administrator","admin":true,"dashboard_access":true},{"id":"editor","label":"Editor with dashboard","admin":false,"dashboard_access":true},{"id":"limited","label":"Editor without dashboard","admin":false,"dashboard_access":false}],"defaults":{"user":"editor","requested":["content:read","content:write","dashboard:read","dashboard:write","mcp"],"configured":["content:read","dashboard:read","dashboard:write","mcp"]},"actions":[{"method":"GET","name":"Page tree","path":"/v1/page/tree","scopes":["content:read"],"targets":["backend"]},{"method":"PATCH","name":"Update a record","path":"/v1/records/{schema}/{identifier}","scopes":["content:read","content:write"]},{"method":"PATCH","name":"Update a backend user","path":"/v1/records/be_users/{identifier}","scopes":["content:read","content:write","admin"]},{"method":"GET","name":"Fetch dashboards","path":"/v1/dashboards","scopes":["dashboard:read"]},{"method":"POST","name":"Create a dashboard","path":"/v1/dashboards","scopes":["dashboard:read","dashboard:write"]},{"method":"POST","name":"Generate an app token","path":"/v1/token/generate","scopes":["admin"],"targets":["backend"]},{"method":"POST","name":"Use actions as MCP tools","path":"/mcp","scopes":["mcp"],"targets":["backend","http"]}],"mcp":{"label":"MCP tool list","denied":"Without the scope `mcp`, the core rejects the request to `/typo3/api/mcp` with `403 Missing scope: mcp`. The token can call no MCP tool."},"backend_only":"only for the backend, no HTTP API for app tokens"}</script>
     <span slot="mcp-denied">Without the scope <code class="language-plaintext highlighter-rouge">mcp</code>, the core rejects the request to <code class="language-plaintext highlighter-rouge">/typo3/api/mcp</code> with <code class="language-plaintext highlighter-rouge">403 Missing scope: mcp</code>. The token can call no MCP tool.</span>
     <span slot="note">In an action that the token can call, the permissions of the user still apply. On every request, EXT:hub intersects the scopes of the token with the current configuration of the app again, so when an administrator removes a scope from an app, the change applies immediately.</span>
   </scope-calculator>
@@ -558,7 +560,8 @@
         <tr><td><code class="language-plaintext highlighter-rouge">tools/list</code></td><td>The actions with the target <code class="language-plaintext highlighter-rouge">ai</code> whose scopes the token grants</td></tr>
         <tr><td><code class="language-plaintext highlighter-rouge">tools/call</code> with all scopes of the MCP tool</td><td>The result of the action in <code class="language-plaintext highlighter-rouge">structuredContent</code></td></tr>
         <tr><td><code class="language-plaintext highlighter-rouge">tools/call</code> with a missing scope of the MCP tool</td><td>The JSON-RPC error <code class="language-plaintext highlighter-rouge">-32602</code> with the message <code class="language-plaintext highlighter-rouge">Unknown tool</code></td></tr>
-        <tr><td><code class="language-plaintext highlighter-rouge">tools/call</code> with an error of the action</td><td>A tool result with <code class="language-plaintext highlighter-rouge">isError</code> and the message of the error</td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">tools/call</code> with a declared error of the action</td><td>A tool result with <code class="language-plaintext highlighter-rouge">isError</code> and the message of the error</td></tr>
+        <tr><td><code class="language-plaintext highlighter-rouge">tools/call</code> with an unexpected error of the action</td><td>The JSON-RPC error <code class="language-plaintext highlighter-rouge">-32603</code> with the request ID of the log entry, without the message of the error</td></tr>
         <tr><td>A request without the scope <code class="language-plaintext highlighter-rouge">mcp</code></td><td>The HTTP status <code class="language-plaintext highlighter-rouge">403</code> with the message <code class="language-plaintext highlighter-rouge">Missing scope: mcp</code></td></tr>
       </tbody>
     </table>
@@ -574,12 +577,13 @@
       <tbody>
         <tr><td><strong>Typical client</strong></td><td>AI assistants, MCP clients, third-party tools</td><td>Server-to-server integrations, scripts</td></tr>
         <tr><td><strong>User of the app</strong></td><td>The user who granted access</td><td>The backend user selected in the app record</td></tr>
-        <tr><td><strong>Scopes</strong></td><td>Requested ∩ configured for the app ∩ available to the user</td><td>Selected in the app record</td></tr>
+        <tr><td><strong>Scopes</strong></td><td>Requested ∩ configured for the app ∩ available to the user</td><td>Selected in the app record ∩ available to the user of the app</td></tr>
         <tr><td><strong>Token</strong></td><td>OAuth 2.0 authorization code flow with refresh tokens</td><td>An administrator generates the token. The token is valid until an administrator disables the app or changes the secret of the app.</td></tr>
         <tr><td><strong>Discovery</strong></td><td><code class="language-plaintext highlighter-rouge">/.well-known/oauth-authorization-server</code> (RFC 8414)</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
+  <p>The token endpoint and the API send no CORS headers, because apps are confidential clients that exchange the code on their server. Only the metadata of the authorization server at <code class="language-plaintext highlighter-rouge">/.well-known/oauth-authorization-server</code> allows every origin.</p>
 </div>
 <div class="grid-2">
   <screen-shot data-comment="app-types-oauth-consent" window="TYPO3 · Authorize app" heading="OAuth consent">
@@ -704,7 +708,7 @@
 <div class="grid-3">
   <div class="card" data-comment="build-step-1"><h4>1 · Attribute</h4><p>Mark a public method with <code class="language-plaintext highlighter-rouge">#[AsAction]</code>, set its route and select a scope that exists, for example <code class="language-plaintext highlighter-rouge">content:read</code>.</p></div>
   <div class="card" data-comment="build-step-2"><h4>2 · Typed input and output</h4><p>Typed parameters and an exact PHPDoc return type define the JSON Schema. TYPO3 validates the values and converts them.</p></div>
-  <div class="card" data-comment="build-step-3"><h4>3 · Declared errors</h4><p>Throw <code class="language-plaintext highlighter-rouge">NotFoundError</code> or <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> and declare each one with <code class="language-plaintext highlighter-rouge">@throws</code>.</p></div>
+  <div class="card" data-comment="build-step-3"><h4>3 · Declared errors</h4><p>Throw <code class="language-plaintext highlighter-rouge">NotFoundError</code> or <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code> and declare each one with <code class="language-plaintext highlighter-rouge">@throws</code>. The exception code is part of the API, because the code sets the <code class="language-plaintext highlighter-rouge">type</code> of the error response.</p></div>
 </div>
 <div class="spaced" data-comment="build-example"><code-block><div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">namespace</span> <span class="nn">MyVendor\MyExtension\Action</span><span class="p">;</span>
 
@@ -858,24 +862,24 @@
     end
     MW-&gt;&gt;AH: handle(request)
     alt no valid token
-        AH--&gt;&gt;C: 401 Missing access token
+        AH--&gt;&gt;C: 401 problem+json, WWW-Authenticate Bearer
     end
     AH-&gt;&gt;RH: handle(request)
     alt required scope not granted
-        RH--&gt;&gt;C: 403 Missing scope
+        RH--&gt;&gt;C: 403 Missing scope, insufficient_scope
     end
     alt invalid or missing argument
-        RH--&gt;&gt;C: 400 error message
+        RH--&gt;&gt;C: 400 problem+json with all invalid parameters
     end
     RH-&gt;&gt;AI: invoke(action, arguments, context)
     AI-&gt;&gt;S: titles(uid: 42, context)
     alt declared error
         S--&gt;&gt;RH: NotFoundError
-        RH--&gt;&gt;C: 404 Page not found
+        RH--&gt;&gt;C: 404 problem+json, type from the exception code
     end
     S--&gt;&gt;AI: result
     alt result does not match the output schema
-        AI--&gt;&gt;C: 500 invalid result
+        AI--&gt;&gt;C: 500 problem+json with the request ID
     end
     AI--&gt;&gt;RH: validated result
     RH--&gt;&gt;C: 200 JSON (201 with Location for a created resource, 204 if empty)</pre></mermaid-diagram>
@@ -885,15 +889,45 @@
     <tbody>
       <tr><td><code>200 / 204</code></td><td>Success, or <code class="language-plaintext highlighter-rouge">204</code> if the action returns nothing</td></tr>
       <tr><td><code>201</code></td><td>A <code class="language-plaintext highlighter-rouge">create</code> action with a declared link created a resource. The header <code class="language-plaintext highlighter-rouge">Location</code> holds the URL of the new resource.</td></tr>
-      <tr><td><code>400</code></td><td>A missing argument, invalid JSON or a value that does not match the input schema</td></tr>
-      <tr><td><code>401</code></td><td>No valid access token</td></tr>
-      <tr><td><code>403</code></td><td>The token lacks a needed scope, or the action throws <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code></td></tr>
+      <tr><td><code>400</code></td><td>A missing argument, invalid JSON or a value that does not match the input schema. The member <code class="language-plaintext highlighter-rouge">errors</code> lists all invalid parameters.</td></tr>
+      <tr><td><code>401</code></td><td>No valid access token. The header <code class="language-plaintext highlighter-rouge">WWW-Authenticate</code> contains <code class="language-plaintext highlighter-rouge">Bearer</code>, with <code class="language-plaintext highlighter-rouge">error="invalid_token"</code> if the request contained a token.</td></tr>
+      <tr><td><code>403</code></td><td>The token lacks a scope of the action, the data needs a scope that the token lacks (<code class="language-plaintext highlighter-rouge">InsufficientScopeError</code>), or the action throws <code class="language-plaintext highlighter-rouge">PermissionDeniedError</code>. For a missing scope, the header <code class="language-plaintext highlighter-rouge">WWW-Authenticate</code> names the scope with <code class="language-plaintext highlighter-rouge">error="insufficient_scope"</code>.</td></tr>
       <tr><td><code>404</code></td><td>The action throws <code class="language-plaintext highlighter-rouge">NotFoundError</code>, the route is unknown, or the action has no target for the channel of the caller</td></tr>
       <tr><td><code>415</code></td><td>The request body is not <code class="language-plaintext highlighter-rouge">application/json</code></td></tr>
-      <tr><td><code>500</code></td><td>The result does not match the output schema</td></tr>
+      <tr><td><code>500</code></td><td>The result does not match the output schema, or the action fails with an unexpected error. The response contains the request ID of the log entry, but no internal details.</td></tr>
     </tbody>
   </table>
 </div>
+</div>
+<div data-comment="error-responses">
+<h3 id="error-responses">Error responses</h3>
+<p>Every error of the HTTP API is a problem details object of RFC 9457 with the content type <code class="language-plaintext highlighter-rouge">application/problem+json</code>. The OAuth endpoints of EXT:hub keep the error format of RFC 6749.</p>
+<div class="table-wrap">
+  <table class="plain options">
+    <thead><tr><th>Member</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td><code class="language-plaintext highlighter-rouge">type</code></td><td>The URL of the exception code in the exception reference of TYPO3, for example <code class="language-plaintext highlighter-rouge">https://typo3.org/go/exception/CMS/1791975434</code>. For an error without an exception code, for example a missing scope or an unknown route, and for <code class="language-plaintext highlighter-rouge">500</code>, the value is <code class="language-plaintext highlighter-rouge">about:blank</code>.</td></tr>
+      <tr><td><code class="language-plaintext highlighter-rouge">title</code></td><td>The reason phrase of the status code, for example <code class="language-plaintext highlighter-rouge">Not Found</code>.</td></tr>
+      <tr><td><code class="language-plaintext highlighter-rouge">status</code></td><td>The HTTP status code.</td></tr>
+      <tr><td><code class="language-plaintext highlighter-rouge">detail</code></td><td>The message of the exception.</td></tr>
+      <tr><td><code class="language-plaintext highlighter-rouge">errors</code></td><td>For <code class="language-plaintext highlighter-rouge">400</code>, a list of all invalid parameters. Each entry has a <code class="language-plaintext highlighter-rouge">detail</code> and a <code class="language-plaintext highlighter-rouge">pointer</code> into the request body, for example <code class="language-plaintext highlighter-rouge">#/record/title</code>, or the name of the query or path parameter in <code class="language-plaintext highlighter-rouge">parameter</code>.</td></tr>
+      <tr><td><code class="language-plaintext highlighter-rouge">requestId</code></td><td>For <code class="language-plaintext highlighter-rouge">500</code>, the ID of the request in the log. The response contains no internal details, also not for a PHP error of the action.</td></tr>
+    </tbody>
+  </table>
+</div>
+<code-block><div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://typo3.org/go/exception/CMS/1793870604"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bad Request"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The request contains invalid parameters"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="nl">"pointer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"#/record/title"</span><span class="p">,</span><span class="w"> </span><span class="nl">"detail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Integer value found, but a string is required"</span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+</code-block>
+
+<p>The exception code of a declared error is part of the API, also in an extension, because the code sets the <code class="language-plaintext highlighter-rouge">type</code>. OpenAPI documents every declared error and a <code class="language-plaintext highlighter-rouge">default</code> response with the schema <code class="language-plaintext highlighter-rouge">ProblemDetails</code>.</p>
 </div>
 <div data-comment="mcp-nesting">
 <h3 id="mcp-nesting">MCP tool calls</h3><p>The MCP server is the action <code class="language-plaintext highlighter-rouge">mcp</code> (<code class="language-plaintext highlighter-rouge">POST /typo3/api/mcp</code>, scope <code class="language-plaintext highlighter-rouge">mcp</code>). TYPO3 authenticates, checks the scopes and validates a call to the action <code class="language-plaintext highlighter-rouge">mcp</code> like any other call. The action <code class="language-plaintext highlighter-rouge">mcp</code> then calls the requested tool through the same <code class="language-plaintext highlighter-rouge">ActionInvoker</code>.</p>
@@ -928,7 +962,7 @@
       <tr><td>Tool names</td><td>The identifier of the action, for example <code class="language-plaintext highlighter-rouge">fetch_dashboards</code> or <code class="language-plaintext highlighter-rouge">fetch_dashboard_widget</code></td></tr>
       <tr><td>Hints</td><td><code class="language-plaintext highlighter-rouge">readOnlyHint</code> for <code class="language-plaintext highlighter-rouge">fetch</code>, <code class="language-plaintext highlighter-rouge">destructiveHint</code> for <code class="language-plaintext highlighter-rouge">delete</code> and <code class="language-plaintext highlighter-rouge">dispatch</code>, <code class="language-plaintext highlighter-rouge">idempotentHint</code> for <code class="language-plaintext highlighter-rouge">replace</code></td></tr>
       <tr><td>Results</td><td><code class="language-plaintext highlighter-rouge">structuredContent</code>. TYPO3 wraps a result that is not an object as <code class="language-plaintext highlighter-rouge">{"data": …}</code>.</td></tr>
-      <tr><td>Errors</td><td>The JSON-RPC error “invalid params” (<code class="language-plaintext highlighter-rouge">-32602</code>) for invalid arguments, an unknown tool or a tool with a missing scope. The JSON-RPC error “internal error” (<code class="language-plaintext highlighter-rouge">-32603</code>) for a result that does not match the output schema. A tool result with <code class="language-plaintext highlighter-rouge">isError</code> for an error of the action.</td></tr>
+      <tr><td>Errors</td><td>The JSON-RPC error “invalid params” (<code class="language-plaintext highlighter-rouge">-32602</code>) for invalid arguments, an unknown tool or a tool with a missing scope. The JSON-RPC error “internal error” (<code class="language-plaintext highlighter-rouge">-32603</code>) for a result that does not match the output schema, and for an unexpected error of the action with the request ID of the log entry instead of the message. A tool result with <code class="language-plaintext highlighter-rouge">isError</code> and the message for a declared error of the action, for example <code class="language-plaintext highlighter-rouge">NotFoundError</code>.</td></tr>
     </tbody>
   </table>
 </div>
@@ -949,79 +983,79 @@
       <tbody><tr>
           <td class="num">1</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/93064">93064</a></td>
-          <td>[FEATURE] Introduce JSON SchemaBuilder and Schema based Hydrator<small>Patch set 25 · +2440 −0</small></td>
+          <td>[FEATURE] Introduce JSON SchemaBuilder and Schema based Hydrator<small>Patch set 27 · +2525 −0</small></td>
           <td><a href="https://forge.typo3.org/issues/109428">#109428</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">2</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/91563">91563</a></td>
-          <td>[FEATURE] Introduce Action API<small>Patch set 59 · +3414 −153</small></td>
+          <td>[FEATURE] Introduce Action API<small>Patch set 62 · +3959 −143</small></td>
           <td><a href="https://forge.typo3.org/issues/111046">#111046</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">3</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/91666">91666</a></td>
-          <td>[TASK] Provide OpenAPI spec w/ Swagger UI for Actions API<small>Patch set 35 · +1830 −3</small></td>
+          <td>[TASK] Provide OpenAPI spec w/ Swagger UI for Actions API<small>Patch set 38 · +1379 −3</small></td>
           <td><a href="https://forge.typo3.org/issues/111052">#111052</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">4</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/93423">93423</a></td>
-          <td>[FEATURE] Implement standalone redirect route option<small>Patch set 19 · +62 −2</small></td>
+          <td>[FEATURE] Implement standalone redirect route option<small>Patch set 22 · +62 −2</small></td>
           <td><a href="https://forge.typo3.org/issues/111048">#111048</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">5</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/91486">91486</a></td>
-          <td>[FEATURE] Implement API Hub<small>Patch set 44 · +4785 −1</small></td>
+          <td>[FEATURE] Implement API Hub<small>Patch set 48 · +5905 −1</small></td>
           <td><a href="https://forge.typo3.org/issues/111047">#111047</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">6</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92196">92196</a></td>
-          <td>[WIP][TASK] Add Record DTO, Schema and Serializer<small>Patch set 16 · +1370 −0</small></td>
+          <td>[WIP][TASK] Add Record DTO, Schema and Serializer<small>Patch set 18 · +1583 −0</small></td>
           <td><span class="muted">—</span></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">7</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92197">92197</a></td>
-          <td>[WIP][FEATURE] Provide Record Actions<small>Patch set 17 · +4066 −33</small></td>
+          <td>[WIP][FEATURE] Provide Record Actions<small>Patch set 19 · +5227 −53</small></td>
           <td><a href="https://forge.typo3.org/issues/111264">#111264</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">8</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92223">92223</a></td>
-          <td>[TASK] Provide AI tool provider based on Actions API<small>Patch set 30 · +271 −0</small></td>
+          <td>[TASK] Provide AI tool provider based on Actions API<small>Patch set 31 · +271 −0</small></td>
           <td><a href="https://forge.typo3.org/issues/111049">#111049</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">9</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/93599">93599</a></td>
-          <td>[WIP][TASK] Migrate resource endpoints to Actions API<small>Patch set 10 · +3038 −812</small></td>
+          <td>[WIP][TASK] Migrate resource endpoints to Actions API<small>Patch set 11 · +3026 −808</small></td>
           <td><span class="muted">—</span></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">10</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92191">92191</a></td>
-          <td>[WIP][TASK] Migrate PageTree to Action API<small>Patch set 30 · +246 −190</small></td>
+          <td>[WIP][TASK] Migrate PageTree to Action API<small>Patch set 31 · +279 −203</small></td>
           <td><span class="muted">—</span></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">11</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/97327">97327</a></td>
-          <td>[WIP][TASK] Migrate file storage tree to Actions API<small>Patch set 1 · +144 −77</small></td>
+          <td>[WIP][TASK] Migrate file storage tree to Actions API<small>Patch set 2 · +145 −81</small></td>
           <td><span class="muted">—</span></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">12</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92322">92322</a></td>
-          <td>[WIP][TASK] Migrate Dashboard to Actions API<small>Patch set 20 · +792 −680</small></td>
+          <td>[WIP][TASK] Migrate Dashboard to Actions API<small>Patch set 21 · +807 −687</small></td>
           <td><span class="muted">—</span></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
           <td class="num">13</td>
           <td><a href="https://review.typo3.org/c/Packages/TYPO3.CMS/+/92224">92224</a></td>
-          <td>[WIP][FEATURE] Implement MCP Server based on Actions API<small>Patch set 34 · +1584 −0</small></td>
+          <td>[WIP][FEATURE] Implement MCP Server based on Actions API<small>Patch set 35 · +1613 −0</small></td>
           <td><a href="https://forge.typo3.org/issues/111050">#111050</a><small>Under Review</small></td>
           <td><span class="status wip">work in progress</span></td>
         </tr><tr>
@@ -1034,7 +1068,7 @@
       </tbody>
     </table>
   </div>
-  <p class="meta">The scripts <code>scripts/update-patches.py</code> and <code>scripts/update-issues.py</code> generated the table from Gerrit and Forge on 2026-11-03. The table starts with the base of the chain and ends with its tip.</p>
+  <p class="meta">The scripts <code>scripts/update-patches.py</code> and <code>scripts/update-issues.py</code> generated the table from Gerrit and Forge on 2026-11-06. The table starts with the base of the chain and ends with its tip.</p>
 </div>
 
 </section>
@@ -1047,7 +1081,7 @@
   </div>
 
   <zoom-viewer></zoom-viewer>
-  <github-comments repository="bnf/typo3-action-api-overview" revision="4b81d3414a208039cd037438f405184656e35e97" pull-request="" files="channels.json,concept.json,deep_dive.json,extend.json,intro.json,problems.json,screenshots.json,sections.json,security.json,stack.json,use_cases.json," screenshots="/typo3-action-api-overview/screenshots/"></github-comments>
+  <github-comments repository="bnf/typo3-action-api-overview" revision="e57f2528384ffcb4750915843d777f814973c85b" pull-request="" files="channels.json,concept.json,deep_dive.json,extend.json,intro.json,problems.json,screenshots.json,sections.json,security.json,stack.json,use_cases.json," screenshots="/typo3-action-api-overview/screenshots/"></github-comments>
 
   <script type="importmap">{ "imports": { "lit": "/typo3-action-api-overview/assets/vendor/lit-core.min.js" } }</script>
   <script type="module" src="/typo3-action-api-overview/assets/js/main.js"></script>
