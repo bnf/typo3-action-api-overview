@@ -290,6 +290,11 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Markdown (inline), below the table"
         }
       }
     },

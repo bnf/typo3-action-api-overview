@@ -15,6 +15,22 @@
     </tbody>
   </table>
 </div>
+</div>
+<div data-comment="error-responses">
+<h3 id="error-responses">{{ deep.errors.title }}</h3>
+<p>{% include inline.html text=deep.errors.intro %}</p>
+<div class="table-wrap">
+  <table class="plain options">
+    <thead><tr><th>Member</th><th>Content</th></tr></thead>
+    <tbody>
+      {%- for row in deep.errors.fields %}
+      <tr><td>{% include inline.html text=row.field %}</td><td>{% include inline.html text=row.text %}</td></tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+</div>
+{% include code.html snippet=deep.errors.example %}
+<p>{% include inline.html text=deep.errors.note %}</p>
 {%- else %}
 <div class="table-wrap">
   <table class="plain">

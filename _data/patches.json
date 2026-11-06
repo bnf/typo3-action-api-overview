@@ -4,7 +4,7 @@
     "project": "Packages/TYPO3.CMS",
     "tip": 92197,
     "generated_by": "scripts/update-patches.py",
-    "generated_at": "2026-11-03T17:51:51Z"
+    "generated_at": "2026-11-06T10:47:27Z"
   },
   "changes": [
     {
@@ -14,7 +14,7 @@
       "change_id": "Id8ade10afb445bd03780cb3de57597e6343f81b7",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 25,
+      "patchset": 27,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -23,9 +23,9 @@
         109428
       ],
       "related": [],
-      "insertions": 2440,
+      "insertions": 2525,
       "deletions": 0,
-      "updated": "2026-10-28T13:55:49Z"
+      "updated": "2026-11-04T16:30:13Z"
     },
     {
       "number": 91563,
@@ -34,7 +34,7 @@
       "change_id": "I242eedc16bb7ca1e5c83adeaa0526a9e68f275e2",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 59,
+      "patchset": 62,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -43,9 +43,9 @@
         111046
       ],
       "related": [],
-      "insertions": 3414,
-      "deletions": 153,
-      "updated": "2026-11-03T17:36:47Z"
+      "insertions": 3959,
+      "deletions": 143,
+      "updated": "2026-11-06T10:43:06Z"
     },
     {
       "number": 91666,
@@ -54,7 +54,7 @@
       "change_id": "I54da4f59cf07af56fb1b766fbef7ff9e89ef51d0",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 35,
+      "patchset": 38,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -63,9 +63,9 @@
         111052
       ],
       "related": [],
-      "insertions": 1830,
+      "insertions": 1379,
       "deletions": 3,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:45:12Z"
     },
     {
       "number": 93423,
@@ -74,7 +74,7 @@
       "change_id": "I5dc801e852620b4fc65ef982017f1fb648b1b612",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 19,
+      "patchset": 22,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -85,7 +85,7 @@
       "related": [],
       "insertions": 62,
       "deletions": 2,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:30:19Z"
     },
     {
       "number": 91486,
@@ -94,7 +94,7 @@
       "change_id": "I4c2bf613b592221f458cf88c74c8fe4f6ee4bd9d",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 44,
+      "patchset": 48,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -103,9 +103,9 @@
         111047
       ],
       "related": [],
-      "insertions": 4785,
+      "insertions": 5905,
       "deletions": 1,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:33:13Z"
     },
     {
       "number": 92196,
@@ -114,16 +114,16 @@
       "change_id": "Idb35eb28830066d73bf9667ae6744aaff8bc80b6",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 16,
+      "patchset": 18,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 1370,
+      "insertions": 1583,
       "deletions": 0,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:43:01Z"
     },
     {
       "number": 92197,
@@ -132,7 +132,7 @@
       "change_id": "I455266664387f5bb28c7518fb962a13d90b75ff0",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 17,
+      "patchset": 19,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -143,9 +143,9 @@
       "related": [
         111046
       ],
-      "insertions": 4066,
-      "deletions": 33,
-      "updated": "2026-11-03T17:36:47Z"
+      "insertions": 5227,
+      "deletions": 53,
+      "updated": "2026-11-06T10:39:45Z"
     },
     {
       "number": 92223,
@@ -154,7 +154,7 @@
       "change_id": "I14b8fb18295100af456b439df452bef3773baddb",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 30,
+      "patchset": 31,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -165,7 +165,7 @@
       "related": [],
       "insertions": 271,
       "deletions": 0,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 93599,
@@ -174,16 +174,16 @@
       "change_id": "I1c294383d6e9a835e3bd2b530a6687e55cc04fda",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 10,
+      "patchset": 11,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 3038,
-      "deletions": 812,
-      "updated": "2026-11-03T17:36:47Z"
+      "insertions": 3026,
+      "deletions": 808,
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 92191,
@@ -192,16 +192,16 @@
       "change_id": "I659215cbaa53bf7688d3f799edadcefd60d62374",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 30,
+      "patchset": 31,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 246,
-      "deletions": 190,
-      "updated": "2026-11-03T17:36:47Z"
+      "insertions": 279,
+      "deletions": 203,
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 97327,
@@ -210,16 +210,16 @@
       "change_id": "Ief8a2b0756811c60a27cfa83648bae5aa1aefb9e",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 1,
+      "patchset": 2,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 144,
-      "deletions": 77,
-      "updated": "2026-11-03T17:37:34Z"
+      "insertions": 145,
+      "deletions": 81,
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 92322,
@@ -228,16 +228,16 @@
       "change_id": "I0fcc4e68d0c10918fe6fd761137f5023d57f4ea6",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 20,
+      "patchset": 21,
       "branch": "main",
       "hashtags": [
         "actions"
       ],
       "resolves": [],
       "related": [],
-      "insertions": 792,
-      "deletions": 680,
-      "updated": "2026-11-03T17:36:47Z"
+      "insertions": 807,
+      "deletions": 687,
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 92224,
@@ -246,7 +246,7 @@
       "change_id": "I2f2ff276cb533422b6aa6393a16d1ea7c9bf55ef",
       "status": "NEW",
       "work_in_progress": true,
-      "patchset": 34,
+      "patchset": 35,
       "branch": "main",
       "hashtags": [
         "actions"
@@ -255,9 +255,9 @@
         111050
       ],
       "related": [],
-      "insertions": 1584,
+      "insertions": 1613,
       "deletions": 0,
-      "updated": "2026-11-03T17:36:47Z"
+      "updated": "2026-11-06T10:37:35Z"
     },
     {
       "number": 88507,

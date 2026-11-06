@@ -90,7 +90,7 @@
       "ref": 8,
       "match": "@throws NotFoundError if the page does not exist",
       "title": "Declared errors",
-      "text": "The action must declare every error with `@throws`. TYPO3 returns `NotFoundError` as `404` and `PermissionDeniedError` as `403`, and documents both errors in OpenAPI."
+      "text": "The action must declare every error with `@throws`. TYPO3 returns `NotFoundError` as `404` and `PermissionDeniedError` as `403`, and documents both errors in OpenAPI. The exception code `1791975434` sets the `type` of the error response, `https://typo3.org/go/exception/CMS/1791975434`."
     }
   ]
 }

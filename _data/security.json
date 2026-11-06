@@ -7,6 +7,14 @@
     {
       "title": "Permissions of the user",
       "text": "Actions run as the backend user. Page permissions, table and field access and workspaces apply as usual."
+    },
+    {
+      "title": "Data for administrators",
+      "text": "Records of tables for administrators only, for example `be_users`, need the scope `admin` in addition to `content:read` or `content:write`. TYPO3 grants `admin` only to administrators."
+    },
+    {
+      "title": "Passwords",
+      "text": "A record in a response never contains a password field, also not as a hash. An app can still set a password."
     }
   ],
   "calculator": {
@@ -35,8 +43,8 @@
         "allowed_for": "dashboard_access"
       },
       {
-        "id": "token:generate",
-        "name": "Management of app tokens",
+        "id": "admin",
+        "name": "Administrative tasks",
         "allowed_for": "admin"
       },
       {
@@ -103,6 +111,16 @@
         ]
       },
       {
+        "method": "PATCH",
+        "name": "Update a backend user",
+        "path": "/v1/records/be_users/{identifier}",
+        "scopes": [
+          "content:read",
+          "content:write",
+          "admin"
+        ]
+      },
+      {
         "method": "GET",
         "name": "Fetch dashboards",
         "path": "/v1/dashboards",
@@ -124,7 +142,7 @@
         "name": "Generate an app token",
         "path": "/v1/token/generate",
         "scopes": [
-          "token:generate"
+          "admin"
         ],
         "targets": [
           "backend"
@@ -174,7 +192,7 @@
         "label": "Scopes",
         "values": [
           "Requested ∩ configured for the app ∩ available to the user",
-          "Selected in the app record"
+          "Selected in the app record ∩ available to the user of the app"
         ]
       },
       {
@@ -192,6 +210,7 @@
         ]
       }
     ],
+    "note": "The token endpoint and the API send no CORS headers, because apps are confidential clients that exchange the code on their server. Only the metadata of the authorization server at `/.well-known/oauth-authorization-server` allows every origin.",
     "screenshots": [
       "oauth-consent",
       "hub-app-details"
@@ -249,8 +268,12 @@
         "result": "The JSON-RPC error `-32602` with the message `Unknown tool`"
       },
       {
-        "call": "`tools/call` with an error of the action",
+        "call": "`tools/call` with a declared error of the action",
         "result": "A tool result with `isError` and the message of the error"
+      },
+      {
+        "call": "`tools/call` with an unexpected error of the action",
+        "result": "The JSON-RPC error `-32603` with the request ID of the log entry, without the message of the error"
       },
       {
         "call": "A request without the scope `mcp`",

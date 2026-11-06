@@ -21,7 +21,7 @@
     "snippets": [
       {
         "language": "shell",
-        "code": "curl -H 'Authorization: Bearer <token>' \\\n    https://example.org/typo3/api/v1/my-extension/page/42/titles\n\n# 200 OK\n[\"Home\", \"Startseite\", \"Accueil\"]\n\n# 404 Not Found\n{\"error\": \"Page not found\"}"
+        "code": "curl -H 'Authorization: Bearer <token>' \\\n    https://example.org/typo3/api/v1/my-extension/page/42/titles\n\n# 200 OK\n[\"Home\", \"Startseite\", \"Accueil\"]\n\n# 404 Not Found, Content-Type: application/problem+json\n{\"type\": \"https://typo3.org/go/exception/CMS/1791975434\", \"title\": \"Not Found\", \"status\": 404, \"detail\": \"Page not found\"}"
       }
     ]
   },
