@@ -11,7 +11,7 @@
     },
     {
       "title": "Declared errors",
-      "text": "Throw `NotFoundError` or `PermissionDeniedError` and declare each one with `@throws`."
+      "text": "Throw `NotFoundError` or `PermissionDeniedError` and declare each one with `@throws`. The exception code is part of the API, because the code sets the `type` of the error response."
     }
   ],
   "action_example": {

@@ -4,7 +4,7 @@
       "id": "http-lifecycle",
       "title": "HTTP request lifecycle",
       "caption": "HTTP request lifecycle with all error paths",
-      "source": "sequenceDiagram\n    autonumber\n    participant C as Client\n    participant MW as Backend middlewares\n    participant AH as ActionHandler\n    participant RH as RequestHandler\n    participant AI as ActionInvoker\n    participant S as Action method\n\n    C->>MW: GET /typo3/api/v1/my-extension/page/42/titles\n    alt backend session cookie\n        Note over MW: Backend authentication<br/>scopes: all allowed for the user\n    else no cookie (EXT:hub)\n        Note over MW: Validate app token<br/>scopes: those of the token\n    end\n    MW->>AH: handle(request)\n    alt no valid token\n        AH-->>C: 401 Missing access token\n    end\n    AH->>RH: handle(request)\n    alt required scope not granted\n        RH-->>C: 403 Missing scope\n    end\n    alt invalid or missing argument\n        RH-->>C: 400 error message\n    end\n    RH->>AI: invoke(action, arguments, context)\n    AI->>S: titles(uid: 42, context)\n    alt declared error\n        S-->>RH: NotFoundError\n        RH-->>C: 404 Page not found\n    end\n    S-->>AI: result\n    alt result does not match the output schema\n        AI-->>C: 500 invalid result\n    end\n    AI-->>RH: validated result\n    RH-->>C: 200 JSON (201 with Location for a created resource, 204 if empty)"
+      "source": "sequenceDiagram\n    autonumber\n    participant C as Client\n    participant MW as Backend middlewares\n    participant AH as ActionHandler\n    participant RH as RequestHandler\n    participant AI as ActionInvoker\n    participant S as Action method\n\n    C->>MW: GET /typo3/api/v1/my-extension/page/42/titles\n    alt backend session cookie\n        Note over MW: Backend authentication<br/>scopes: all allowed for the user\n    else no cookie (EXT:hub)\n        Note over MW: Validate app token<br/>scopes: those of the token\n    end\n    MW->>AH: handle(request)\n    alt no valid token\n        AH-->>C: 401 problem+json, WWW-Authenticate Bearer\n    end\n    AH->>RH: handle(request)\n    alt required scope not granted\n        RH-->>C: 403 Missing scope, insufficient_scope\n    end\n    alt invalid or missing argument\n        RH-->>C: 400 problem+json with all invalid parameters\n    end\n    RH->>AI: invoke(action, arguments, context)\n    AI->>S: titles(uid: 42, context)\n    alt declared error\n        S-->>RH: NotFoundError\n        RH-->>C: 404 problem+json, type from the exception code\n    end\n    S-->>AI: result\n    alt result does not match the output schema\n        AI-->>C: 500 problem+json with the request ID\n    end\n    AI-->>RH: validated result\n    RH-->>C: 200 JSON (201 with Location for a created resource, 204 if empty)"
     },
     {
       "id": "mcp-nesting",
@@ -25,15 +25,15 @@
     },
     {
       "status": "400",
-      "cause": "A missing argument, invalid JSON or a value that does not match the input schema"
+      "cause": "A missing argument, invalid JSON or a value that does not match the input schema. The member `errors` lists all invalid parameters."
     },
     {
       "status": "401",
-      "cause": "No valid access token"
+      "cause": "No valid access token. The header `WWW-Authenticate` contains `Bearer`, with `error=\"invalid_token\"` if the request contained a token."
     },
     {
       "status": "403",
-      "cause": "The token lacks a needed scope, or the action throws `PermissionDeniedError`"
+      "cause": "The token lacks a scope of the action, the data needs a scope that the token lacks (`InsufficientScopeError`), or the action throws `PermissionDeniedError`. For a missing scope, the header `WWW-Authenticate` names the scope with `error=\"insufficient_scope\"`."
     },
     {
       "status": "404",
@@ -45,9 +45,44 @@
     },
     {
       "status": "500",
-      "cause": "The result does not match the output schema"
+      "cause": "The result does not match the output schema, or the action fails with an unexpected error. The response contains the request ID of the log entry, but no internal details."
     }
   ],
+  "errors": {
+    "title": "Error responses",
+    "intro": "Every error of the HTTP API is a problem details object of RFC 9457 with the content type `application/problem+json`. The OAuth endpoints of EXT:hub keep the error format of RFC 6749.",
+    "fields": [
+      {
+        "field": "`type`",
+        "text": "The URL of the exception code in the exception reference of TYPO3, for example `https://typo3.org/go/exception/CMS/1791975434`. For an error without an exception code, for example a missing scope or an unknown route, and for `500`, the value is `about:blank`."
+      },
+      {
+        "field": "`title`",
+        "text": "The reason phrase of the status code, for example `Not Found`."
+      },
+      {
+        "field": "`status`",
+        "text": "The HTTP status code."
+      },
+      {
+        "field": "`detail`",
+        "text": "The message of the exception."
+      },
+      {
+        "field": "`errors`",
+        "text": "For `400`, a list of all invalid parameters. Each entry has a `detail` and a `pointer` into the request body, for example `#/record/title`, or the name of the query or path parameter in `parameter`."
+      },
+      {
+        "field": "`requestId`",
+        "text": "For `500`, the ID of the request in the log. The response contains no internal details, also not for a PHP error of the action."
+      }
+    ],
+    "example": {
+      "language": "json",
+      "code": "{\n  \"type\": \"https://typo3.org/go/exception/CMS/1793870604\",\n  \"title\": \"Bad Request\",\n  \"status\": 400,\n  \"detail\": \"The request contains invalid parameters\",\n  \"errors\": [\n    {\"pointer\": \"#/record/title\", \"detail\": \"Integer value found, but a string is required\"}\n  ]\n}"
+    },
+    "note": "The exception code of a declared error is part of the API, also in an extension, because the code sets the `type`. OpenAPI documents every declared error and a `default` response with the schema `ProblemDetails`."
+  },
   "mcp": [
     {
       "aspect": "Methods",
@@ -71,7 +106,7 @@
     },
     {
       "aspect": "Errors",
-      "behaviour": "The JSON-RPC error “invalid params” (`-32602`) for invalid arguments, an unknown tool or a tool with a missing scope. The JSON-RPC error “internal error” (`-32603`) for a result that does not match the output schema. A tool result with `isError` for an error of the action."
+      "behaviour": "The JSON-RPC error “invalid params” (`-32602`) for invalid arguments, an unknown tool or a tool with a missing scope. The JSON-RPC error “internal error” (`-32603`) for a result that does not match the output schema, and for an unexpected error of the action with the request ID of the log entry instead of the message. A tool result with `isError` and the message for a declared error of the action, for example `NotFoundError`."
     }
   ]
 }
